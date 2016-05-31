@@ -16,12 +16,11 @@
  *
  */
 
-#include <QApplication>
-#include "src/mainwindow.h"
+#include "src/centralwidget.h"
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
-    MainWindow mainWindow;
-    mainWindow.show();
-    return app.exec();
+CentralWidget::CentralWidget(QWidget *parent) :
+    QWidget(parent) {
+    top_bar_ = new TopBar(this);
+    main_layout_ = new QVBoxLayout(this);
+    main_layout_->addWidget(top_bar_);
 }

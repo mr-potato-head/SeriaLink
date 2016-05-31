@@ -16,12 +16,31 @@
  *
  */
 
-#include <QApplication>
-#include "src/mainwindow.h"
+#ifndef SRC_PAGESWITCHER_H_
+#define SRC_PAGESWITCHER_H_
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
-    MainWindow mainWindow;
-    mainWindow.show();
-    return app.exec();
-}
+#include <QWidget>
+#include <QHBoxLayout>
+#include <QPushButton>
+
+class PageSwitcher : public QWidget {
+  Q_OBJECT
+ public:
+  //! Default constructor
+  explicit PageSwitcher(QWidget *parent = 0);
+
+ private:
+  //! Main horizontal layout of the widget
+  QHBoxLayout* main_layout_ {NULL};
+
+  //! Button to switch to the next right page
+  QPushButton* right_button_ {NULL};
+
+  //! Button to switch to the next left page
+  QPushButton* left_button_ {NULL};
+
+  //! Button to add new page
+  QPushButton* add_button_ {NULL};
+};
+
+#endif  // SRC_PAGESWITCHER_H_

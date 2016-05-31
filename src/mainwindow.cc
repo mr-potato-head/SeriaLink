@@ -16,14 +16,14 @@
  *
  */
 
-#include "mainwindow.h"
+#include "src/mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-{
+    : QMainWindow(parent) {
+    central_widget_ = new CentralWidget(this);
+    this->setCentralWidget(central_widget_);
+
+    this->setFixedSize(800, 600);
 }
 
-MainWindow::~MainWindow()
-{
-
-}
+MainWindow::~MainWindow() {}

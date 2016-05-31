@@ -16,12 +16,25 @@
  *
  */
 
-#include <QApplication>
-#include "src/mainwindow.h"
+#ifndef SRC_TOPBAR_H_
+#define SRC_TOPBAR_H_
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
-    MainWindow mainWindow;
-    mainWindow.show();
-    return app.exec();
-}
+#include <QWidget>
+#include <QHBoxLayout>
+#include "src/pageswitcher.h"
+
+class TopBar : public QWidget {
+  Q_OBJECT
+ public:
+  //! Default constructor
+  explicit TopBar(QWidget *parent = 0);
+
+ private:
+  //! Main layout of the widget
+  QHBoxLayout* main_layout_ {NULL};
+
+  //! Page switcher widget
+  PageSwitcher* page_switcher_ {NULL};
+};
+
+#endif  // SRC_TOPBAR_H_

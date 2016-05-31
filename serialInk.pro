@@ -13,10 +13,16 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = serialInk
 TEMPLATE = app
 
-SOURCES += main.cc\
-        mainwindow.cc
+SOURCES += src/main.cc\
+        src/mainwindow.cc \
+    src/pageswitcher.cc \
+    src/topbar.cc \
+    src/centralwidget.cc
 
-HEADERS += mainwindow.h
+HEADERS += src/mainwindow.h \
+    src/pageswitcher.h \
+    src/topbar.h \
+    src/centralwidget.h
 
 OTHER_FILES += \
     LICENSE.txt \

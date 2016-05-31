@@ -16,12 +16,11 @@
  *
  */
 
-#include <QApplication>
-#include "src/mainwindow.h"
+#include "src/topbar.h"
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
-    MainWindow mainWindow;
-    mainWindow.show();
-    return app.exec();
+TopBar::TopBar(QWidget *parent) :
+    QWidget(parent) {
+    page_switcher_ = new PageSwitcher(this);
+    main_layout_ = new QHBoxLayout(this);
+    main_layout_->addWidget(page_switcher_);
 }

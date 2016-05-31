@@ -16,12 +16,24 @@
  *
  */
 
-#include <QApplication>
-#include "src/mainwindow.h"
+#ifndef SRC_CENTRALWIDGET_H_
+#define SRC_CENTRALWIDGET_H_
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
-    MainWindow mainWindow;
-    mainWindow.show();
-    return app.exec();
-}
+#include <QWidget>
+#include <QVBoxLayout>
+#include "src/topbar.h"
+
+class CentralWidget : public QWidget {
+  Q_OBJECT
+ public:
+  explicit CentralWidget(QWidget *parent = 0);
+
+ private:
+  //! Main layout of the window
+  QVBoxLayout* main_layout_ {NULL};
+
+  //! Top bar with menu
+  TopBar* top_bar_ {NULL};
+};
+
+#endif  // SRC_CENTRALWIDGET_H_

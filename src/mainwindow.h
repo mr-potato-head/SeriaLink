@@ -19,15 +19,22 @@
 #ifndef SRC_MAINWINDOW_H_
 #define SRC_MAINWINDOW_H_
 
+
 #include <QMainWindow>
+#include "src/centralwidget.h"
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+  Q_OBJECT
+ public:
+  //! Default constructor
+  explicit MainWindow(QWidget *parent = 0);
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+  //! Destructor
+  ~MainWindow();
+
+ private:
+  //! Central widget of the main window
+  CentralWidget* central_widget_ {NULL};
 };
 
-#endif // SRC_MAINWINDOW_H_
+#endif  // SRC_MAINWINDOW_H_
