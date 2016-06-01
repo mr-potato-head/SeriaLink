@@ -25,9 +25,33 @@
 
 class PageSwitcher : public QWidget {
   Q_OBJECT
+
  public:
+  //! Button type
+    enum class ButtonType {
+      kDecreaseButton = 0,
+      kAddButton,
+      kIncreaseButton
+    };
+
   //! Default constructor
   explicit PageSwitcher(QWidget *parent = 0);
+
+  //! Enable button
+  void EnableButton(ButtonType type);
+
+  //! Disable button
+  void DisableButton(ButtonType type);
+
+ signals:
+  //! Signal emitted when left button is clicked
+  void DecreaseCurrentPageIndex(void);
+
+  //! Signal emitted when right button is clicked
+  void IncreaseCurrentPageIndex(void);
+
+  //! Signal emitted when add button is clicked
+  void AddPage(void);
 
  private:
   //! Main horizontal layout of the widget

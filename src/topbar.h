@@ -26,9 +26,24 @@
 
 class TopBar : public QWidget {
   Q_OBJECT
+
  public:
   //! Default constructor
   explicit TopBar(QWidget *parent = 0);
+
+ signals:
+  //! Signal emitted when index is updated
+  void PageIndexUpdated(qint8);
+
+  //! Signal emitted when add button is clicked
+  void AddPage(void);
+
+ private slots:  // NOLINT
+  //! Slots called when page index should be increased
+  void OnIncreaseCurrentPageIndex(void);
+
+  //! Slots called when page index should be decreased
+  void OnDecreaseCurrentPageIndex(void);
 
  private:
   //! Main layout of the widget
@@ -39,6 +54,12 @@ class TopBar : public QWidget {
 
   //! Page switcher widget
   PageSwitcher* page_switcher_ {NULL};
+
+  //! Current page index
+  qint8 page_index_ {-1};
+
+  //! Current page number
+  qint8 page_number_ {0};
 };
 
 #endif  // SRC_TOPBAR_H_

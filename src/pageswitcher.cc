@@ -36,3 +36,35 @@ PageSwitcher::PageSwitcher(QWidget *parent) :
   main_layout_->addWidget(add_button_);
   main_layout_->addWidget(right_button_);
 }
+
+void PageSwitcher::EnableButton(ButtonType type) {
+  switch (type) {
+    case ButtonType::kDecreaseButton:
+      left_button_->setEnabled(true);
+    break;
+    case ButtonType::kAddButton:
+      add_button_->setEnabled(true);
+    break;
+    case ButtonType::kIncreaseButton:
+      right_button_->setEnabled(true);
+    break;
+    default:
+    break;
+  }
+}
+
+void PageSwitcher::DisableButton(ButtonType type) {
+  switch (type) {
+    case ButtonType::kDecreaseButton:
+      left_button_->setEnabled(false);
+    break;
+    case ButtonType::kAddButton:
+      add_button_->setEnabled(false);
+    break;
+    case ButtonType::kIncreaseButton:
+      right_button_->setEnabled(false);
+    break;
+    default:
+    break;
+  }
+}

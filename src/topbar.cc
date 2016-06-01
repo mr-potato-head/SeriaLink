@@ -31,4 +31,29 @@ TopBar::TopBar(QWidget *parent) :
 
   main_layout_->setMargin(0);
   main_layout_->setSpacing(0);
+
+  connect(page_switcher_, SIGNAL(IncreaseCurrentPageIndex()),
+          this, SLOT(OnIncreaseCurrentPageIndex()));
+  connect(page_switcher_, SIGNAL(DecreaseCurrentPageIndex()),
+          this, SLOT(OnDecreaseCurrentPageIndex()));
+  connect(page_switcher_, SIGNAL(AddPage()),
+          this, SIGNAL(AddPage()));
+}
+
+void TopBar::OnIncreaseCurrentPageIndex(void) {
+  if (page_number_ > 0) {
+    if (page_index_ < page_number_-1) {
+      page_index_++;
+      emit PageIndexUpdated(page_index_);
+    }
+  }
+}
+
+void TopBar::OnDecreaseCurrentPageIndex(void) {
+  if (page_number_ > 0) {
+    if (page_index_ > 0) {
+      page_index_--;
+      emit PageIndexUpdated(page_index_);
+    }
+  }
 }
