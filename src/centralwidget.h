@@ -22,6 +22,7 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include "src/topbar.h"
+#include "src/pagecontainer.h"
 
 class CentralWidget : public QWidget {
   Q_OBJECT
@@ -34,6 +35,9 @@ class CentralWidget : public QWidget {
 
   //! Top bar with menu
   TopBar* top_bar_ {NULL};
+
+  //! Page container
+  PageContainer* page_container_ {NULL};
 };
 
 #endif  // SRC_CENTRALWIDGET_H_

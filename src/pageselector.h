@@ -16,19 +16,16 @@
  *
  */
 
-#include "src/topbar.h"
+#ifndef SRC_PAGESELECTOR_H_
+#define SRC_PAGESELECTOR_H_
 
-TopBar::TopBar(QWidget *parent) :
-  QWidget(parent) {
-  page_selector_ = new PageSelector(this);
-  page_switcher_ = new PageSwitcher(this);
-  main_layout_ = new QHBoxLayout(this);
-  main_layout_->addWidget(page_selector_);
-  main_layout_->addWidget(page_switcher_);
+#include <QWidget>
 
-  main_layout_->setStretchFactor(static_cast<QWidget*>(page_selector_), 80);
-  main_layout_->setStretchFactor(static_cast<QWidget*>(page_switcher_), 20);
+class PageSelector : public QWidget {
+  Q_OBJECT
+ public:
+  //! Default constructor
+  explicit PageSelector(QWidget *parent = 0);
+};
 
-  main_layout_->setMargin(0);
-  main_layout_->setSpacing(0);
-}
+#endif  // SRC_PAGESELECTOR_H_

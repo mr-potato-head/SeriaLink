@@ -16,19 +16,8 @@
  *
  */
 
-#include "src/topbar.h"
+#include "src/pagecontainer.h"
 
-TopBar::TopBar(QWidget *parent) :
-  QWidget(parent) {
-  page_selector_ = new PageSelector(this);
-  page_switcher_ = new PageSwitcher(this);
-  main_layout_ = new QHBoxLayout(this);
-  main_layout_->addWidget(page_selector_);
-  main_layout_->addWidget(page_switcher_);
-
-  main_layout_->setStretchFactor(static_cast<QWidget*>(page_selector_), 80);
-  main_layout_->setStretchFactor(static_cast<QWidget*>(page_switcher_), 20);
-
-  main_layout_->setMargin(0);
-  main_layout_->setSpacing(0);
+PageContainer::PageContainer(QWidget *parent) :
+  QStackedWidget(parent) {
 }

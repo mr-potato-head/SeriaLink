@@ -17,12 +17,16 @@ SOURCES += src/main.cc\
         src/mainwindow.cc \
     src/pageswitcher.cc \
     src/topbar.cc \
-    src/centralwidget.cc
+    src/centralwidget.cc \
+    src/pagecontainer.cc \
+    src/pageselector.cc
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \
     src/topbar.h \
-    src/centralwidget.h
+    src/centralwidget.h \
+    src/pagecontainer.h \
+    src/pageselector.h
 
 OTHER_FILES += \
     LICENSE.txt \

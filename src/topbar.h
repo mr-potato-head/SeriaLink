@@ -22,6 +22,7 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include "src/pageswitcher.h"
+#include "src/pageselector.h"
 
 class TopBar : public QWidget {
   Q_OBJECT
@@ -32,6 +33,9 @@ class TopBar : public QWidget {
  private:
   //! Main layout of the widget
   QHBoxLayout* main_layout_ {NULL};
+
+  //! Page selector with COM port buttons
+  PageSelector* page_selector_ {NULL};
 
   //! Page switcher widget
   PageSwitcher* page_switcher_ {NULL};
