@@ -19,14 +19,24 @@ SOURCES += src/main.cc\
     src/topbar.cc \
     src/centralwidget.cc \
     src/pagecontainer.cc \
-    src/pageselector.cc
+    src/pageselector.cc \
+    src/sessionmanager.cc \
+    src/session.cc \
+    src/comportsettings.cc \
+    src/localcomport.cc \
+    src/comport.cc
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \
     src/topbar.h \
     src/centralwidget.h \
     src/pagecontainer.h \
-    src/pageselector.h
+    src/pageselector.h \
+    src/sessionmanager.h \
+    src/session.h \
+    src/comportsettings.h \
+    src/comport.h \
+    src/localcomport.h
 
 OTHER_FILES += \
     LICENSE.txt \
