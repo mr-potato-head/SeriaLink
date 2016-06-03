@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core gui
+QT += core gui serialport
 
 CONFIG += c++11
 
@@ -24,7 +24,8 @@ SOURCES += src/main.cc\
     src/session.cc \
     src/comportsettings.cc \
     src/localcomport.cc \
-    src/comport.cc
+    src/comport.cc \
+    src/addormodifyportdialog.cc
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \
@@ -36,8 +37,12 @@ HEADERS += src/mainwindow.h \
     src/session.h \
     src/comportsettings.h \
     src/comport.h \
-    src/localcomport.h
+    src/localcomport.h \
+    src/addormodifyportdialog.h
 
 OTHER_FILES += \
     LICENSE.txt \
     README.md
+
+RESOURCES += \
+    resources.qrc

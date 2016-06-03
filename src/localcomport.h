@@ -19,9 +19,9 @@
 #ifndef SRC_LOCALCOMPORT_H_
 #define SRC_LOCALCOMPORT_H_
 
-#include <QObject>
+#include <src/comport.h>
 
-class LocalComPort : public QObject {
+class LocalComPort : public ComPort {
   Q_OBJECT
  public:
   explicit LocalComPort(QObject *parent = 0);

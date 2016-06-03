@@ -19,9 +19,16 @@
 #ifndef SRC_SESSION_H_
 #define SRC_SESSION_H_
 
+#include <QList>
+#include "src/comport.h"
+
 class Session {
  public:
   Session();
+
+ private:
+  //! COM port list
+  QList<ComPort*> com_port_list_;
 };
 
 #endif  // SRC_SESSION_H_

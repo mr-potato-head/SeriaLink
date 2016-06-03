@@ -35,15 +35,15 @@ class TopBar : public QWidget {
   //! Signal emitted when index is updated
   void PageIndexUpdated(qint8);
 
-  //! Signal emitted when add button is clicked
-  void AddPage(void);
-
  private slots:  // NOLINT
   //! Slots called when page index should be increased
   void OnIncreaseCurrentPageIndex(void);
 
   //! Slots called when page index should be decreased
   void OnDecreaseCurrentPageIndex(void);
+
+  //! Slots called when add button is clicked
+  void openAddOrModifyDialog(void);
 
  private:
   //! Main layout of the widget

@@ -19,5 +19,5 @@
 #include "src/localcomport.h"
 
 LocalComPort::LocalComPort(QObject *parent) :
-  QObject(parent) {
+  ComPort(parent) {
 }

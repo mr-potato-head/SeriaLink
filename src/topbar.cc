@@ -17,6 +17,7 @@
  */
 
 #include "src/topbar.h"
+#include "src/addormodifyportdialog.h"
 
 TopBar::TopBar(QWidget *parent) :
   QWidget(parent) {
@@ -37,7 +38,7 @@ TopBar::TopBar(QWidget *parent) :
   connect(page_switcher_, SIGNAL(DecreaseCurrentPageIndex()),
           this, SLOT(OnDecreaseCurrentPageIndex()));
   connect(page_switcher_, SIGNAL(AddPage()),
-          this, SIGNAL(AddPage()));
+          this, SLOT(openAddOrModifyDialog()));
 }
 
 void TopBar::OnIncreaseCurrentPageIndex(void) {
@@ -56,4 +57,9 @@ void TopBar::OnDecreaseCurrentPageIndex(void) {
       emit PageIndexUpdated(page_index_);
     }
   }
+}
+
+void TopBar::openAddOrModifyDialog(void) {
+  AddOrModifyPortDialog addDialog(this);
+  addDialog.exec();
 }

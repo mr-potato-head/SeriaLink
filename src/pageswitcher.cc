@@ -35,6 +35,9 @@ PageSwitcher::PageSwitcher(QWidget *parent) :
   main_layout_->addWidget(left_button_);
   main_layout_->addWidget(add_button_);
   main_layout_->addWidget(right_button_);
+
+  connect(add_button_, SIGNAL(clicked()),
+          this, SIGNAL(AddPage()));
 }
 
 void PageSwitcher::EnableButton(ButtonType type) {

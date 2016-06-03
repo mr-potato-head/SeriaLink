@@ -20,11 +20,16 @@
 #define SRC_COMPORT_H_
 
 #include <QObject>
+#include "src/comportsettings.h"
 
 class ComPort : public QObject {
   Q_OBJECT
  public:
   explicit ComPort(QObject *parent = 0);
+
+ private:
+  //! COM port settings
+  ComPortSettings* com_port_settings_;
 };
 
 #endif  // SRC_COMPORT_H_

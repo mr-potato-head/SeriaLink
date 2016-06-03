@@ -19,11 +19,16 @@
 #include "src/mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent) {
-    central_widget_ = new CentralWidget(this);
-    this->setCentralWidget(central_widget_);
+  : QMainWindow(parent) {
+  // Set window title
+  this->setWindowTitle(tr("SeriaLink"));
 
-    this->setFixedSize(800, 600);
+  // Set central widget
+  central_widget_ = new CentralWidget(this);
+  this->setCentralWidget(central_widget_);
+
+  // Set window size
+  this->setFixedSize(800, 600);
 }
 
 MainWindow::~MainWindow() {}
