@@ -26,8 +26,10 @@ static const quint16 kMinimumWidth = 400;
 static const quint8 kPortComboBoxSF = 85;
 static const quint8 kPortUpdateBtnSF = 15;
 
-AddOrModifyPortDialog::AddOrModifyPortDialog(QWidget *parent) :
-  QDialog(parent) {
+AddOrModifyPortDialog::AddOrModifyPortDialog(ComPortSettings* port_settings,
+                                             QWidget *parent)
+  : QDialog(parent),
+    port_settings_{port_settings} {
   this->setWindowTitle(tr("Port settings"));
   port_label_ = new QLabel(tr("Port"), this);
   port_combobox_ = new QComboBox(this);

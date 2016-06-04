@@ -18,9 +18,11 @@
 
 #include "src/topbar.h"
 #include "src/addormodifyportdialog.h"
+#include "src/comport.h"
 
-TopBar::TopBar(QWidget *parent) :
-  QWidget(parent) {
+TopBar::TopBar(SessionManager* session_manager, QWidget *parent)
+  : QWidget(parent),
+    session_manager_{session_manager} {
   page_selector_ = new PageSelector(this);
   page_switcher_ = new PageSwitcher(this);
   main_layout_ = new QHBoxLayout(this);
@@ -60,6 +62,26 @@ void TopBar::OnDecreaseCurrentPageIndex(void) {
 }
 
 void TopBar::openAddOrModifyDialog(void) {
-  AddOrModifyPortDialog addDialog(this);
-  addDialog.exec();
+  ComPortSettings* port_settings = new ComPortSettings();
+  AddOrModifyPortDialog addDialog(port_settings, this);
+  qint32 result = addDialog.exec();
+
+  switch (result) {
+    case QDialog::Accepted:
+    {
+      // Create new port
+      ComPort* com_port = new ComPort();
+      com_port->SetPortSettings(port_settings);
+
+      // Add port in session
+      session_manager_->GetCurrentSession()->AddPort(com_port);
+
+      // Add button in top bar
+
+      break;
+    }
+    case QDialog::Rejected:
+    default:
+      break;
+  }
 }

@@ -21,3 +21,7 @@
 ComPort::ComPort(QObject *parent) :
   QObject(parent) {
 }
+
+void ComPort::SetPortSettings(ComPortSettings* port_settings) {
+  com_port_settings_ =  port_settings;
+}

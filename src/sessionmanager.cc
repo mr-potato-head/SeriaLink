@@ -20,4 +20,14 @@
 
 SessionManager::SessionManager(QObject *parent) :
   QObject(parent) {
+  // Create default session
+  Session* default_session = new Session();
+  session_list_.append(default_session);
+
+  // Initialize current session index
+  current_session_index_ = 0;
+}
+
+Session* SessionManager::GetCurrentSession(void) const {
+  return session_list_.at(current_session_index_);
 }

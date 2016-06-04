@@ -24,8 +24,13 @@
 
 class ComPort : public QObject {
   Q_OBJECT
+
  public:
+  //! Default constructor
   explicit ComPort(QObject *parent = 0);
+
+  //! Setter of port settings
+  void SetPortSettings(ComPortSettings* port_settings);
 
  private:
   //! COM port settings

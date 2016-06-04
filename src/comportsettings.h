@@ -19,9 +19,68 @@
 #ifndef SRC_COMPORTSETTINGS_H_
 #define SRC_COMPORTSETTINGS_H_
 
+#include <QSerialPort>
+#include <QSerialPortInfo>
+
 class ComPortSettings {
  public:
+  //! Default constructor
   ComPortSettings();
+
+  //! Getter of port infos
+  QSerialPortInfo GetPortInfo(void);
+
+  //! Getter of port baud rate
+  QSerialPort::BaudRate GetBaudRate(void) const;
+
+  //! Getter of port parity
+  QSerialPort::Parity GetParity(void) const;
+
+  //! Getter of data bits
+  QSerialPort::DataBits GetDataBits(void) const;
+
+  //! Getter of stop bits
+  QSerialPort::StopBits GetStopBits(void) const;
+
+  //! Getter of flow control
+  QSerialPort::FlowControl GetFlowControl(void) const;
+
+  //! Setter of port infos
+  void SetPortInfo(QSerialPortInfo port_info);
+
+  //! Setter of port baud rate
+  void SetBaudRate(QSerialPort::BaudRate baud_rate);
+
+  //! Setter of port parity
+  void SetParity(QSerialPort::Parity parity);
+
+  //! Setter of data bits
+  void SetDataBits(QSerialPort::DataBits data_bits);
+
+  //! Setter of stop bits
+  void SetStopBits(QSerialPort::StopBits stop_bits);
+
+  //! Setter of flow control
+  void SetFlowControl(QSerialPort::FlowControl flow_control);
+
+ private:
+  //! Port infos
+  QSerialPortInfo port_info_;
+
+  //! Baud rate of the port
+  QSerialPort::BaudRate port_baud_rate_ {QSerialPort::UnknownBaud};
+
+  //! Parity of the port
+  QSerialPort::Parity port_parity_ {QSerialPort::UnknownParity};
+
+  //! Data bits of the port
+  QSerialPort::DataBits port_data_bits_ {QSerialPort::UnknownDataBits};
+
+  //! Stop bits of the port
+  QSerialPort::StopBits port_stop_bits_ {QSerialPort::UnknownStopBits};
+
+  //! Flow control of the port
+  QSerialPort::FlowControl port_flow_control_ {QSerialPort::UnknownFlowControl};
 };
 
 #endif  // SRC_COMPORTSETTINGS_H_

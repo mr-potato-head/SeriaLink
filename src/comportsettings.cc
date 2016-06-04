@@ -20,3 +20,51 @@
 
 ComPortSettings::ComPortSettings() {
 }
+
+QSerialPortInfo ComPortSettings::GetPortInfo(void) {
+  return port_info_;
+}
+
+QSerialPort::BaudRate ComPortSettings::GetBaudRate(void) const {
+  return port_baud_rate_;
+}
+
+QSerialPort::Parity ComPortSettings::GetParity(void) const {
+  return port_parity_;
+}
+
+QSerialPort::DataBits ComPortSettings::GetDataBits(void) const {
+  return port_data_bits_;
+}
+
+QSerialPort::StopBits ComPortSettings::GetStopBits(void) const {
+  return port_stop_bits_;
+}
+
+QSerialPort::FlowControl ComPortSettings::GetFlowControl(void) const {
+  return port_flow_control_;
+}
+
+void ComPortSettings::SetPortInfo(QSerialPortInfo port_info) {
+  port_info = port_info;
+}
+
+void ComPortSettings::SetBaudRate(QSerialPort::BaudRate baud_rate) {
+  port_baud_rate_ = baud_rate;
+}
+
+void ComPortSettings::SetParity(QSerialPort::Parity parity) {
+  port_parity_ = parity;
+}
+
+void ComPortSettings::SetDataBits(QSerialPort::DataBits data_bits) {
+  port_data_bits_ = data_bits;
+}
+
+void ComPortSettings::SetStopBits(QSerialPort::StopBits stop_bits) {
+  port_stop_bits_ = stop_bits;
+}
+
+void ComPortSettings::SetFlowControl(QSerialPort::FlowControl flow_control) {
+  port_flow_control_ = flow_control;
+}

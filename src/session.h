@@ -24,11 +24,18 @@
 
 class Session {
  public:
+  //! Default constructor
   Session();
+
+  //! Add port in this session
+  void AddPort(ComPort* port);
 
  private:
   //! COM port list
   QList<ComPort*> com_port_list_;
+
+  //! Index of the current port;
+  qint8 current_port_index_ {-1};
 };
 
 #endif  // SRC_SESSION_H_

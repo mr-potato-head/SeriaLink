@@ -26,13 +26,15 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QDialogButtonBox>
+#include "src/comportsettings.h"
 
 class AddOrModifyPortDialog : public QDialog {
   Q_OBJECT
 
  public:
   //! Default constructor
-  explicit AddOrModifyPortDialog(QWidget *parent = 0);
+  explicit AddOrModifyPortDialog(ComPortSettings* port_settings,
+                                 QWidget *parent = 0);
 
  private slots: // NOLINT
   //! Slot called when update button is clicked
@@ -86,6 +88,9 @@ class AddOrModifyPortDialog : public QDialog {
 
   //! Button bar
   QDialogButtonBox* button_bar_ {NULL};
+
+  //! Pointer on port settings
+  ComPortSettings* port_settings_ {NULL};
 
   //! Fill parity comboBox
   void FillParityList(void);

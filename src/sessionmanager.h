@@ -20,11 +20,25 @@
 #define SRC_SESSIONMANAGER_H_
 
 #include <QObject>
+#include <QList>
+#include "src/session.h"
 
 class SessionManager : public QObject {
   Q_OBJECT
+
  public:
+  //! Default constructor
   explicit SessionManager(QObject *parent = 0);
+
+  //! Current session pointer getter
+  Session* GetCurrentSession(void) const;
+
+ private:
+  //! Session list
+  QList<Session*> session_list_;
+
+  //! Index of the current session;
+  qint8 current_session_index_ {-1};
 };
 
 #endif  // SRC_SESSIONMANAGER_H_

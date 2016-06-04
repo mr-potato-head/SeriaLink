@@ -19,17 +19,20 @@
 #include "src/centralwidget.h"
 
 CentralWidget::CentralWidget(QWidget *parent) :
-    QWidget(parent) {
-    top_bar_ = new TopBar(this);
-    page_container_ = new PageContainer(this);
+  QWidget(parent) {
+  // Instanciate session manager
+  session_manager_ = new SessionManager(this);
 
-    main_layout_ = new QVBoxLayout(this);
-    main_layout_->addWidget(top_bar_);
-    main_layout_->addWidget(page_container_);
+  top_bar_ = new TopBar(session_manager_, this);
+  page_container_ = new PageContainer(this);
 
-    main_layout_->setStretchFactor(static_cast<QWidget*>(top_bar_), 10);
-    main_layout_->setStretchFactor(static_cast<QWidget*>(page_container_), 90);
+  main_layout_ = new QVBoxLayout(this);
+  main_layout_->addWidget(top_bar_);
+  main_layout_->addWidget(page_container_);
 
-    main_layout_->setMargin(0);
-    main_layout_->setSpacing(0);
+  main_layout_->setStretchFactor(static_cast<QWidget*>(top_bar_), 10);
+  main_layout_->setStretchFactor(static_cast<QWidget*>(page_container_), 90);
+
+  main_layout_->setMargin(0);
+  main_layout_->setSpacing(0);
 }

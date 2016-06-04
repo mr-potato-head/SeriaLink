@@ -20,3 +20,8 @@
 
 Session::Session() {
 }
+
+void Session::AddPort(ComPort* port) {
+  com_port_list_.append(port);
+  current_port_index_ = com_port_list_.size()-1;
+}
