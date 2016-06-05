@@ -64,7 +64,7 @@ AddOrModifyPortDialog::AddOrModifyPortDialog(ComPortSettings* port_settings,
   button_bar_ = new QDialogButtonBox(QDialogButtonBox::Ok |
                                      QDialogButtonBox::Cancel);
 
-  connect(button_bar_, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(button_bar_, SIGNAL(accepted()), this, SLOT(FillPortSettings()));
   connect(button_bar_, SIGNAL(rejected()), this, SLOT(reject()));
 
   port_hbox_layout_ = new QHBoxLayout();
@@ -176,4 +176,36 @@ void AddOrModifyPortDialog::FillFlowControlList(void) {
   flow_control_combobox_->addItem(tr("None"), QSerialPort::NoFlowControl);
   flow_control_combobox_->addItem(tr("RTS/CTS"), QSerialPort::HardwareControl);
   flow_control_combobox_->addItem(tr("XON/XOFF"), QSerialPort::SoftwareControl);
+}
+
+void AddOrModifyPortDialog::FillPortSettings(void) {
+  port_settings_->SetBaudRate(
+        static_cast<QSerialPort::BaudRate>(
+          baudrate_combobox_->itemData(
+            baudrate_combobox_->currentIndex()).toInt()));
+  port_settings_->SetParity(
+        static_cast<QSerialPort::Parity>(
+          parity_combobox_->itemData(
+            parity_combobox_->currentIndex()).toInt()));
+  port_settings_->SetStopBits(
+        static_cast<QSerialPort::StopBits>(
+          stop_bits_combobox_->itemData(
+            stop_bits_combobox_->currentIndex()).toInt()));
+  port_settings_->SetDataBits(
+        static_cast<QSerialPort::DataBits>(
+          data_bits_combobox_->itemData(
+            data_bits_combobox_->currentIndex()).toInt()));
+  port_settings_->SetFlowControl(
+        static_cast<QSerialPort::FlowControl>(
+          flow_control_combobox_->itemData(
+            flow_control_combobox_->currentIndex()).toInt()));
+
+  foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
+    if (info.portName() == port_combobox_->currentText()) {
+      QSerialPortInfo port_info(info);
+      port_settings_->SetPortInfo(port_info);
+    }
+  }
+
+  this->accept();
 }

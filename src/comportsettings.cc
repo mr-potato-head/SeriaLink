@@ -46,7 +46,7 @@ QSerialPort::FlowControl ComPortSettings::GetFlowControl(void) const {
 }
 
 void ComPortSettings::SetPortInfo(QSerialPortInfo port_info) {
-  port_info = port_info;
+  port_info_ = port_info;
 }
 
 void ComPortSettings::SetBaudRate(QSerialPort::BaudRate baud_rate) {

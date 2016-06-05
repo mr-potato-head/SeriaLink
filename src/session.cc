@@ -21,7 +21,12 @@
 Session::Session() {
 }
 
-void Session::AddPort(ComPort* port) {
+qint32 Session::AddPort(ComPort* port) {
   com_port_list_.append(port);
   current_port_index_ = com_port_list_.size()-1;
+  return current_port_index_;
+}
+
+ComPort* Session::GetPort(qint32 index) {
+  return com_port_list_.at(index);
 }

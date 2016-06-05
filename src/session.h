@@ -28,7 +28,10 @@ class Session {
   Session();
 
   //! Add port in this session
-  void AddPort(ComPort* port);
+  qint32 AddPort(ComPort* port);
+
+  //! Get port by index
+  ComPort* GetPort(qint32 index);
 
  private:
   //! COM port list

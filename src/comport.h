@@ -32,6 +32,9 @@ class ComPort : public QObject {
   //! Setter of port settings
   void SetPortSettings(ComPortSettings* port_settings);
 
+  //! Getter of port settings
+  ComPortSettings* GetPortSettings(void);
+
  private:
   //! COM port settings
   ComPortSettings* com_port_settings_;

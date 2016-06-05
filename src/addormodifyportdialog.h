@@ -40,6 +40,9 @@ class AddOrModifyPortDialog : public QDialog {
   //! Slot called when update button is clicked
   void FillPortList(void);
 
+  //! Slot called when window is accepted
+  void FillPortSettings(void);
+
  private:
   //! Form grid layout
   QGridLayout* form_grid_layout_ {NULL};

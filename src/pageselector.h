@@ -20,12 +20,26 @@
 #define SRC_PAGESELECTOR_H_
 
 #include <QWidget>
+#include <QHBoxLayout>
+#include "src/sessionmanager.h"
 
 class PageSelector : public QWidget {
   Q_OBJECT
+
  public:
   //! Default constructor
-  explicit PageSelector(QWidget *parent = 0);
+  explicit PageSelector(SessionManager* session_manager,
+                        QWidget *parent = 0);
+
+  //! Add button
+  void AddButton(qint32 portIndex);
+
+ private:
+  //! Button layout
+  QHBoxLayout* button_layout_ {NULL};
+
+  //! Pointer on session manager
+  SessionManager* session_manager_ {NULL};
 };
 
 #endif  // SRC_PAGESELECTOR_H_

@@ -16,8 +16,22 @@
  *
  */
 
+#include <QPushButton>
 #include "src/pageselector.h"
 
-PageSelector::PageSelector(QWidget *parent) :
-  QWidget(parent) {
+PageSelector::PageSelector(SessionManager* session_manager,
+                           QWidget *parent)
+  : QWidget(parent),
+    session_manager_{session_manager} {
+  button_layout_ = new QHBoxLayout(this);
+}
+
+void PageSelector::AddButton(qint32 portIndex) {
+  // Get port name
+  ComPort* port = session_manager_->GetCurrentSession()->GetPort(portIndex);
+  ComPortSettings* portSettings = port->GetPortSettings();
+
+  QPushButton* button = new QPushButton(portSettings->GetPortInfo().portName());
+  button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  button_layout_->addWidget(button);
 }
