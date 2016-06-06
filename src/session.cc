@@ -18,13 +18,14 @@
 
 #include "src/session.h"
 
-Session::Session() {
+Session::Session(QObject *parent)
+  : QObject(parent) {
 }
 
-qint32 Session::AddPort(ComPort* port) {
+void Session::AddPort(ComPort* port) {
   com_port_list_.append(port);
   current_port_index_ = com_port_list_.size()-1;
-  return current_port_index_;
+  emit PortAdded(current_port_index_);
 }
 
 ComPort* Session::GetPort(qint32 index) {

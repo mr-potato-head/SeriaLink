@@ -19,19 +19,26 @@
 #ifndef SRC_SESSION_H_
 #define SRC_SESSION_H_
 
+#include <QObject>
 #include <QList>
 #include "src/comport.h"
 
-class Session {
+class Session : public QObject {
+  Q_OBJECT
+
  public:
   //! Default constructor
-  Session();
+  explicit Session(QObject *parent = 0);
 
   //! Add port in this session
-  qint32 AddPort(ComPort* port);
+  void AddPort(ComPort* port);
 
   //! Get port by index
   ComPort* GetPort(qint32 index);
+
+ signals:
+  //! Emitted when a new port is added in session
+  void PortAdded(qint32);
 
  private:
   //! COM port list

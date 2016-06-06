@@ -41,6 +41,8 @@ TopBar::TopBar(SessionManager* session_manager, QWidget *parent)
           this, SLOT(OnDecreaseCurrentPageIndex()));
   connect(page_switcher_, SIGNAL(AddPage()),
           this, SLOT(openAddOrModifyDialog()));
+  connect(session_manager_->GetCurrentSession(), SIGNAL(PortAdded(qint32)),
+          page_selector_, SLOT(AddButton(qint32)));
 }
 
 void TopBar::OnIncreaseCurrentPageIndex(void) {
@@ -74,10 +76,7 @@ void TopBar::openAddOrModifyDialog(void) {
       com_port->SetPortSettings(port_settings);
 
       // Add port in session
-      qint32 index = session_manager_->GetCurrentSession()->AddPort(com_port);
-
-      // Add button in page selector
-      page_selector_->AddButton(index);
+      session_manager_->GetCurrentSession()->AddPort(com_port);
 
       break;
     }

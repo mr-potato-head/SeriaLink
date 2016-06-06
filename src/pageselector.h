@@ -31,6 +31,7 @@ class PageSelector : public QWidget {
   explicit PageSelector(SessionManager* session_manager,
                         QWidget *parent = 0);
 
+ public slots: // NOLINT
   //! Add button
   void AddButton(qint32 portIndex);
 
