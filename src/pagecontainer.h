@@ -20,12 +20,23 @@
 #define SRC_PAGECONTAINER_H_
 
 #include <QStackedWidget>
+#include "src/sessionmanager.h"
+#include "src/portpage.h"
 
 class PageContainer : public QStackedWidget {
   Q_OBJECT
+
  public:
   //! Default constructor
-  explicit PageContainer(QWidget *parent = 0);
+  explicit PageContainer(SessionManager* session_manager, QWidget *parent = 0);
+
+ private slots: //NOLINT
+  //! Add page in page container
+  void AddPage(qint32 port_index);
+
+ private:
+  //! Session manager
+  SessionManager* session_manager_ {NULL};
 };
 
 #endif  // SRC_PAGECONTAINER_H_

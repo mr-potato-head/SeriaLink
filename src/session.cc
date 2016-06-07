@@ -31,3 +31,8 @@ void Session::AddPort(ComPort* port) {
 ComPort* Session::GetPort(qint32 index) {
   return com_port_list_.at(index);
 }
+
+void Session::SetCurrentPortIndex(qint32 index) {
+  current_port_index_ = index;
+  emit IndexChanged(index);
+}

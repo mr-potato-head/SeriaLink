@@ -18,6 +18,18 @@
 
 #include "src/pagecontainer.h"
 
-PageContainer::PageContainer(QWidget *parent) :
-  QStackedWidget(parent) {
+PageContainer::PageContainer(SessionManager* session_manager,
+                             QWidget *parent)
+  : QStackedWidget(parent),
+    session_manager_{session_manager} {
+  connect(session_manager_->GetCurrentSession(), SIGNAL(PortAdded(qint32)),
+          this, SLOT(AddPage(qint32)));
+  connect(session_manager_->GetCurrentSession(), SIGNAL(IndexChanged(qint32)),
+          this, SLOT(setCurrentIndex(int)));
+}
+
+void PageContainer::AddPage(qint32 port_index) {
+  PortPage* page = new PortPage(session_manager_, port_index, this);
+  this->insertWidget(port_index, page);
+  this->setCurrentIndex(port_index);
 }

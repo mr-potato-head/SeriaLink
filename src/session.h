@@ -36,9 +36,16 @@ class Session : public QObject {
   //! Get port by index
   ComPort* GetPort(qint32 index);
 
+ public slots: //NOLINT
+  //! Set current port index
+  void SetCurrentPortIndex(qint32 index);
+
  signals:
   //! Emitted when a new port is added in session
   void PortAdded(qint32);
+
+  //! Emitted when the current port index is changed
+  void IndexChanged(qint32);
 
  private:
   //! COM port list

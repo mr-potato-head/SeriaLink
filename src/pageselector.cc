@@ -24,14 +24,23 @@ PageSelector::PageSelector(SessionManager* session_manager,
   : QWidget(parent),
     session_manager_{session_manager} {
   button_layout_ = new QHBoxLayout(this);
+  signal_mapper_ = new QSignalMapper(this);
+
+  connect(signal_mapper_,
+          SIGNAL(mapped(int)),
+          session_manager_->GetCurrentSession(),
+          SLOT(SetCurrentPortIndex(qint32)));
 }
 
-void PageSelector::AddButton(qint32 portIndex) {
+void PageSelector::AddButton(qint32 port_index) {
   // Get port name
-  ComPort* port = session_manager_->GetCurrentSession()->GetPort(portIndex);
+  ComPort* port = session_manager_->GetCurrentSession()->GetPort(port_index);
   ComPortSettings* portSettings = port->GetPortSettings();
 
   QPushButton* button = new QPushButton(portSettings->GetPortInfo().portName());
   button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   button_layout_->addWidget(button);
+
+  connect(button, SIGNAL(clicked()), signal_mapper_, SLOT(map()));
+  signal_mapper_->setMapping(button, port_index);
 }

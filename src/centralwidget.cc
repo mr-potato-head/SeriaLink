@@ -24,7 +24,7 @@ CentralWidget::CentralWidget(QWidget *parent) :
   session_manager_ = new SessionManager(this);
 
   top_bar_ = new TopBar(session_manager_, this);
-  page_container_ = new PageContainer(this);
+  page_container_ = new PageContainer(session_manager_, this);
 
   main_layout_ = new QVBoxLayout(this);
   main_layout_->addWidget(top_bar_);

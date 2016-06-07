@@ -16,35 +16,17 @@
  *
  */
 
-#ifndef SRC_PAGESELECTOR_H_
-#define SRC_PAGESELECTOR_H_
+#include "src/portpage.h"
 
-#include <QWidget>
-#include <QHBoxLayout>
-#include <QSignalMapper>
-#include "src/sessionmanager.h"
+PortPage::PortPage(SessionManager* session_manager,
+                   qint32 port_index,
+                   QWidget *parent)
+  : QWidget(parent),
+    session_manager_{session_manager} {
+  main_layout_ = new QGridLayout(this);
+  ComPort* port = session_manager_->GetCurrentSession()->GetPort(port_index);
+  ComPortSettings* portSettings = port->GetPortSettings();
+  PortInfoWidget* portInfoWidget = new PortInfoWidget(portSettings, this);
 
-class PageSelector : public QWidget {
-  Q_OBJECT
-
- public:
-  //! Default constructor
-  explicit PageSelector(SessionManager* session_manager,
-                        QWidget *parent = 0);
-
- public slots: // NOLINT
-  //! Add button
-  void AddButton(qint32 port_index);
-
- private:
-  //! Button layout
-  QHBoxLayout* button_layout_ {NULL};
-
-  //! Pointer on session manager
-  SessionManager* session_manager_ {NULL};
-
-  //! Signal mapper for buttons
-  QSignalMapper* signal_mapper_ {NULL};
-};
-
-#endif  // SRC_PAGESELECTOR_H_
+  main_layout_->addWidget(portInfoWidget);
+}

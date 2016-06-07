@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
   this->setCentralWidget(central_widget_);
 
   // Set window size
-  this->setFixedSize(800, 600);
+  this->setMinimumSize(800, 600);
 }
 
 MainWindow::~MainWindow() {}
