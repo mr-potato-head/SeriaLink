@@ -19,12 +19,27 @@
 #ifndef SRC_LOCALCOMPORT_H_
 #define SRC_LOCALCOMPORT_H_
 
+#include <QSerialPort>
+#include <QDebug>
 #include <src/comport.h>
 
 class LocalComPort : public ComPort {
   Q_OBJECT
+
  public:
+  //! Default constructor
   explicit LocalComPort(QObject *parent = 0);
+
+ public slots: //NOLINT
+  //! Executed to open port
+  virtual void OpenPort(void);
+
+  //! Executed to close port
+  virtual void ClosePort(void);
+
+ private:
+  //! QSerialPort instance
+  QSerialPort* serial_port_ {NULL};
 };
 
 #endif  // SRC_LOCALCOMPORT_H_

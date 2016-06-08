@@ -20,4 +20,26 @@
 
 LocalComPort::LocalComPort(QObject *parent) :
   ComPort(parent) {
+  port_type_ = PortType::kLocalPort;
+}
+
+void LocalComPort::OpenPort(void) {
+  serial_port_ = new QSerialPort(com_port_settings_->GetPortInfo(), this);
+  serial_port_->setBaudRate(com_port_settings_->GetBaudRate());
+  serial_port_->setParity(com_port_settings_->GetParity());
+  serial_port_->setDataBits(com_port_settings_->GetDataBits());
+  serial_port_->setStopBits(com_port_settings_->GetStopBits());
+  serial_port_->setFlowControl(com_port_settings_->GetFlowControl());
+
+  if (!serial_port_->open(QIODevice::ReadWrite)) {
+    qDebug() << tr("Opening error.");
+    qDebug() << serial_port_->errorString();
+  } else {
+    qDebug() << com_port_settings_->GetPortInfo().portName() << tr(" opened.");
+  }
+}
+
+void LocalComPort::ClosePort(void) {
+  serial_port_->close();
+  qDebug() << tr("Port closed.");
 }

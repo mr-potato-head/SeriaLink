@@ -22,16 +22,32 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QPushButton>
 #include "src/comportsettings.h"
+#include "src/sessionmanager.h"
 
 class PortInfoWidget : public QWidget {
   Q_OBJECT
 
  public:
-  explicit PortInfoWidget(ComPortSettings* port_settings,
+  explicit PortInfoWidget(SessionManager* session_manager,
+                          qint32 port_index,
                           QWidget *parent = 0);
 
+ private slots: //NOLINT
+  //! Executed on click on open button
+  void OnOpenPortClicked(void);
+
+  //! Executed on click on close button
+  void OnClosePortClicked(void);
+
  private:
+  //! Session manager
+  SessionManager* session_manager_ {NULL};
+
+  //! Port index
+  qint32 port_index_ {-1};
+
   //! Com port settings
   ComPortSettings* port_settings_ {NULL};
 
@@ -73,6 +89,12 @@ class PortInfoWidget : public QWidget {
 
   //! Port flow control value
   QLabel* port_flow_control_value_ {NULL};
+
+  //! Open COM port button
+  QPushButton* open_button_ {NULL};
+
+  //! Close COM port button
+  QPushButton* close_button_ {NULL};
 };
 
 #endif  // SRC_PORTINFOWIDGET_H_

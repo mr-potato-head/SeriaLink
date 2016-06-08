@@ -23,10 +23,8 @@ PortPage::PortPage(SessionManager* session_manager,
                    QWidget *parent)
   : QWidget(parent),
     session_manager_{session_manager} {
+  PortInfoWidget* portInfoWidget = new PortInfoWidget(session_manager_,
+                                                      port_index, this);
   main_layout_ = new QGridLayout(this);
-  ComPort* port = session_manager_->GetCurrentSession()->GetPort(port_index);
-  ComPortSettings* portSettings = port->GetPortSettings();
-  PortInfoWidget* portInfoWidget = new PortInfoWidget(portSettings, this);
-
   main_layout_->addWidget(portInfoWidget);
 }

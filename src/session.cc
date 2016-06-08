@@ -22,8 +22,17 @@ Session::Session(QObject *parent)
   : QObject(parent) {
 }
 
-void Session::AddPort(ComPort* port) {
-  com_port_list_.append(port);
+void Session::AddPort(ComPortSettings* port_settings) {
+  // Create new port
+  LocalComPort* com_port = new LocalComPort();
+  com_port->SetPortSettings(port_settings);
+  com_port_list_.append(com_port);
+
+  // Create thread for this port
+  QThread* thread = new QThread(this);
+  com_port->moveToThread(thread);
+  thread->start(QThread::TimeCriticalPriority);
+
   current_port_index_ = com_port_list_.size()-1;
   emit PortAdded(current_port_index_);
 }
@@ -35,4 +44,18 @@ ComPort* Session::GetPort(qint32 index) {
 void Session::SetCurrentPortIndex(qint32 index) {
   current_port_index_ = index;
   emit IndexChanged(index);
+}
+
+void Session::OpenPort(qint32 index) {
+  ComPort* port = com_port_list_.at(index);
+  connect(this, SIGNAL(OpenPortSignal()),
+          port, SLOT(OpenPort()));
+  emit OpenPortSignal();
+}
+
+void Session::ClosePort(qint32 index) {
+  ComPort* port = com_port_list_.at(index);
+  connect(this, SIGNAL(ClosePortSignal()),
+          port, SLOT(ClosePort()));
+  emit ClosePortSignal();
 }

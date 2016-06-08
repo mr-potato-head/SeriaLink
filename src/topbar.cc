@@ -71,13 +71,8 @@ void TopBar::openAddOrModifyDialog(void) {
   switch (result) {
     case QDialog::Accepted:
     {
-      // Create new port
-      ComPort* com_port = new ComPort();
-      com_port->SetPortSettings(port_settings);
-
       // Add port in session
-      session_manager_->GetCurrentSession()->AddPort(com_port);
-
+      session_manager_->GetCurrentSession()->AddPort(port_settings);
       break;
     }
     case QDialog::Rejected:

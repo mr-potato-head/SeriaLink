@@ -21,7 +21,9 @@
 
 #include <QObject>
 #include <QList>
-#include "src/comport.h"
+#include <QThread>
+#include "src/localcomport.h"
+#include "src/comportsettings.h"
 
 class Session : public QObject {
   Q_OBJECT
@@ -31,7 +33,7 @@ class Session : public QObject {
   explicit Session(QObject *parent = 0);
 
   //! Add port in this session
-  void AddPort(ComPort* port);
+  void AddPort(ComPortSettings* port_settings);
 
   //! Get port by index
   ComPort* GetPort(qint32 index);
@@ -40,6 +42,12 @@ class Session : public QObject {
   //! Set current port index
   void SetCurrentPortIndex(qint32 index);
 
+  //! Open port
+  void OpenPort(qint32 index);
+
+  //! Close port
+  void ClosePort(qint32 index);
+
  signals:
   //! Emitted when a new port is added in session
   void PortAdded(qint32);
@@ -47,9 +55,18 @@ class Session : public QObject {
   //! Emitted when the current port index is changed
   void IndexChanged(qint32);
 
+  //! Emitted for opening the port
+  void OpenPortSignal(void);
+
+  //! Emitted for closing the port
+  void ClosePortSignal(void);
+
  private:
   //! COM port list
   QList<ComPort*> com_port_list_;
+
+  //! Thread list
+  QList<QThread*> thread_list_;
 
   //! Index of the current port;
   qint8 current_port_index_ {-1};

@@ -29,3 +29,7 @@ void ComPort::SetPortSettings(ComPortSettings* port_settings) {
 ComPortSettings* ComPort::GetPortSettings(void) {
   return com_port_settings_;
 }
+
+ComPort::PortType ComPort::GetPortType(void) const {
+  return port_type_;
+}

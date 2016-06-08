@@ -18,11 +18,19 @@
 
 #include "src/portinfowidget.h"
 
-PortInfoWidget::PortInfoWidget(ComPortSettings* port_settings,
+PortInfoWidget::PortInfoWidget(SessionManager* session_manager,
+                               qint32 port_index,
                                QWidget *parent)
   : QWidget(parent),
-    port_settings_{port_settings}
+    session_manager_{session_manager},
+    port_index_{port_index}
 {
+  // Get port settings
+  Session* session = session_manager_->GetCurrentSession();
+  ComPort* port = session->GetPort(port_index);
+  ComPortSettings* port_settings = port->GetPortSettings();
+  port_settings_ = port_settings;
+
   // Port name
   port_name_label_ = new QLabel(tr("Port name:"), this);
   port_name_value_  = new QLabel(
@@ -104,6 +112,14 @@ PortInfoWidget::PortInfoWidget(ComPortSettings* port_settings,
   port_flow_control_label_  = new QLabel(tr("Port flow control:"), this);
   port_flow_control_value_  = new QLabel(flow_control_str, this);
 
+  // Create buttons
+  open_button_ = new QPushButton(tr("Open"), this);
+  connect(open_button_, SIGNAL(clicked()),
+          this, SLOT(OnOpenPortClicked()));
+  close_button_ = new QPushButton(tr("Close"), this);
+  connect(close_button_, SIGNAL(clicked()),
+          this, SLOT(OnClosePortClicked()));
+
   main_layout_ = new QVBoxLayout(this);
   main_layout_->addWidget(port_name_label_);
   main_layout_->addWidget(port_name_value_);
@@ -117,4 +133,16 @@ PortInfoWidget::PortInfoWidget(ComPortSettings* port_settings,
   main_layout_->addWidget(port_stop_bits_value_);
   main_layout_->addWidget(port_flow_control_label_);
   main_layout_->addWidget(port_flow_control_value_);
+  main_layout_->addWidget(open_button_);
+  main_layout_->addWidget(close_button_);
+}
+
+void PortInfoWidget::OnOpenPortClicked(void) {
+  Session* session = session_manager_->GetCurrentSession();
+  session->OpenPort(port_index_);
+}
+
+void PortInfoWidget::OnClosePortClicked(void) {
+  Session* session = session_manager_->GetCurrentSession();
+  session->ClosePort(port_index_);
 }
