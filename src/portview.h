@@ -16,36 +16,25 @@
  *
  */
 
-#ifndef SRC_PORTPAGE_H_
-#define SRC_PORTPAGE_H_
+#ifndef SRC_PORTVIEW_H_
+#define SRC_PORTVIEW_H_
 
 #include <QWidget>
 #include <QGridLayout>
-#include "src/sessionmanager.h"
-#include "src/portinfowidget.h"
-#include "src/portview.h"
+#include <QTextEdit>
 
-class PortPage : public QWidget {
+class PortView : public QWidget {
   Q_OBJECT
 
  public:
-  explicit PortPage(SessionManager* session_manager,
-                    qint32 port_index,
-                    QWidget *parent = 0);
-
- private slots: //NOLINT
-  //! Executed when new view button is clicked
-  void OnNewViewClicked(void);
+  explicit PortView(QWidget *parent = 0);
 
  private:
-  //! Main grid layout of the page
+  //! Main grid layout of the view
   QGridLayout* main_layout_ {NULL};
 
-  //! Pointer on session manager
-  SessionManager* session_manager_ {NULL};
-
-  //! Port index in session
-  qint32 port_index_ {-1};
+  //! Text edit of the view
+  QTextEdit* text_edit_ {NULL};
 };
 
-#endif  // SRC_PORTPAGE_H_
+#endif  // SRC_PORTVIEW_H_

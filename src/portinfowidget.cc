@@ -119,6 +119,9 @@ PortInfoWidget::PortInfoWidget(SessionManager* session_manager,
   close_button_ = new QPushButton(tr("Close"), this);
   connect(close_button_, SIGNAL(clicked()),
           this, SLOT(OnClosePortClicked()));
+  new_view_button_ = new QPushButton(tr("+"), this);
+  connect(new_view_button_, SIGNAL(clicked()),
+          this, SIGNAL(NewViewClicked()));
 
   main_layout_ = new QVBoxLayout(this);
   main_layout_->addWidget(port_name_label_);
@@ -135,6 +138,7 @@ PortInfoWidget::PortInfoWidget(SessionManager* session_manager,
   main_layout_->addWidget(port_flow_control_value_);
   main_layout_->addWidget(open_button_);
   main_layout_->addWidget(close_button_);
+  main_layout_->addWidget(new_view_button_);
 }
 
 void PortInfoWidget::OnOpenPortClicked(void) {

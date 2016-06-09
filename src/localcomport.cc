@@ -37,9 +37,17 @@ void LocalComPort::OpenPort(void) {
   } else {
     qDebug() << com_port_settings_->GetPortInfo().portName() << tr(" opened.");
   }
+
+  connect(serial_port_, SIGNAL(readyRead()),
+          this, SLOT(OnReadyRead()));
 }
 
 void LocalComPort::ClosePort(void) {
   serial_port_->close();
   qDebug() << tr("Port closed.");
+}
+
+void LocalComPort::OnReadyRead(void) {
+  QByteArray data = serial_port_->readAll();
+  emit receivedData(data);
 }

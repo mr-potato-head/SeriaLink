@@ -30,9 +30,14 @@ class PortInfoWidget : public QWidget {
   Q_OBJECT
 
  public:
+  //! Default constructor
   explicit PortInfoWidget(SessionManager* session_manager,
                           qint32 port_index,
                           QWidget *parent = 0);
+
+ signals:
+  //! Emitted when the new view button is clicked
+  void NewViewClicked(void);
 
  private slots: //NOLINT
   //! Executed on click on open button
@@ -95,6 +100,9 @@ class PortInfoWidget : public QWidget {
 
   //! Close COM port button
   QPushButton* close_button_ {NULL};
+
+  //! Create new view
+  QPushButton* new_view_button_ {NULL};
 };
 
 #endif  // SRC_PORTINFOWIDGET_H_

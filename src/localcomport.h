@@ -37,6 +37,10 @@ class LocalComPort : public ComPort {
   //! Executed to close port
   virtual void ClosePort(void);
 
+ private slots: //NOLINT
+  //! Executed when data are ready to read on port
+  void OnReadyRead(void);
+
  private:
   //! QSerialPort instance
   QSerialPort* serial_port_ {NULL};

@@ -25,6 +25,16 @@ PortPage::PortPage(SessionManager* session_manager,
     session_manager_{session_manager} {
   PortInfoWidget* portInfoWidget = new PortInfoWidget(session_manager_,
                                                       port_index, this);
+
+  connect(portInfoWidget, SIGNAL(NewViewClicked()),
+          this, SLOT(OnNewViewClicked()));
+
   main_layout_ = new QGridLayout(this);
-  main_layout_->addWidget(portInfoWidget);
+  main_layout_->addWidget(portInfoWidget, 0, 0);
+}
+
+void PortPage::OnNewViewClicked(void) {
+  static int index = 1;
+  PortView* view = new PortView(this);
+  main_layout_->addWidget(view, 0, index++);
 }
