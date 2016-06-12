@@ -28,8 +28,8 @@ SOURCES += src/main.cc\
     src/addormodifyportdialog.cc \
     src/portinfowidget.cc \
     src/portpage.cc \
-    src/portview.cpp \
-    src/sendwidget.cc
+    src/sendwidget.cc \
+    src/portview.cc
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \

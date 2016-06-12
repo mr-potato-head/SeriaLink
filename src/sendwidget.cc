@@ -35,5 +35,5 @@ SendWidget::SendWidget(SessionManager* session_manager,
 }
 
 void SendWidget::OnSendButtonClicked(void) {
- emit sendData(send_line_edit_->text().toUtf8());
+  emit sendData(send_line_edit_->text().toUtf8());
 }

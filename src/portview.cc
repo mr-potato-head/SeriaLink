@@ -16,29 +16,16 @@
  *
  */
 
-#ifndef SRC_PORTVIEW_H_
-#define SRC_PORTVIEW_H_
+#include "src/portview.h"
 
-#include <QWidget>
-#include <QGridLayout>
-#include <QTextEdit>
+PortView::PortView(QWidget *parent)
+  : QWidget(parent) {
+  main_layout_ = new QGridLayout(this);
+  text_edit_ = new QTextEdit(this);
 
-class PortView : public QWidget {
-  Q_OBJECT
+  main_layout_->addWidget(text_edit_);
+}
 
- public:
-  explicit PortView(QWidget *parent = 0);
-
- public slots: //NOLINT
-  //! Executed when new data are received
-  void OnReceivedData(QByteArray data);
-
- private:
-  //! Main grid layout of the view
-  QGridLayout* main_layout_ {NULL};
-
-  //! Text edit of the view
-  QTextEdit* text_edit_ {NULL};
-};
-
-#endif  // SRC_PORTVIEW_H_
+void PortView::OnReceivedData(QByteArray data) {
+    text_edit_->append(QString(data));
+}

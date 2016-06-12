@@ -16,8 +16,8 @@
  *
  */
 
-#ifndef SENDWIDGET_H
-#define SENDWIDGET_H
+#ifndef SRC_SENDWIDGET_H_
+#define SRC_SENDWIDGET_H_
 
 #include <QWidget>
 #include <QGridLayout>
@@ -25,9 +25,9 @@
 #include <QPushButton>
 #include "src/sessionmanager.h"
 
-class SendWidget : public QWidget
-{
+class SendWidget : public QWidget {
   Q_OBJECT
+
  public:
   //! Default costructor
   explicit SendWidget(SessionManager* session_manager,
@@ -37,7 +37,7 @@ class SendWidget : public QWidget
   //! Emitted when data have to be sent
   void sendData(QByteArray);
 
- private slots:
+ private slots: //NOLINT
   //! Executed on click on send button
   void OnSendButtonClicked(void);
 
@@ -58,4 +58,4 @@ class SendWidget : public QWidget
   qint32 port_index_ {-1};
 };
 
-#endif // SENDWIDGET_H
+#endif  // SRC_SENDWIDGET_H_
