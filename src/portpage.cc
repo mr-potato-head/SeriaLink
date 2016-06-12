@@ -37,4 +37,9 @@ void PortPage::OnNewViewClicked(void) {
   static int index = 1;
   PortView* view = new PortView(this);
   main_layout_->addWidget(view, 0, index++);
+
+  Session* session = session_manager_->GetCurrentSession();
+  ComPort* port = session->GetCurrentPort();
+  connect(port, SIGNAL(receivedData(QByteArray)),
+          view, SLOT(OnReceivedData(QByteArray)));
 }

@@ -38,6 +38,9 @@ class Session : public QObject {
   //! Get port by index
   ComPort* GetPort(qint32 index);
 
+  //! Get current port
+  ComPort* GetCurrentPort(void);
+
  public slots: //NOLINT
   //! Set current port index
   void SetCurrentPortIndex(qint32 index);

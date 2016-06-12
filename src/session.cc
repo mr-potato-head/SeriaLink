@@ -41,6 +41,10 @@ ComPort* Session::GetPort(qint32 index) {
   return com_port_list_.at(index);
 }
 
+ComPort* Session::GetCurrentPort(void) {
+  return com_port_list_.at(current_port_index_);
+}
+
 void Session::SetCurrentPortIndex(qint32 index) {
   current_port_index_ = index;
   emit IndexChanged(index);

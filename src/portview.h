@@ -29,6 +29,10 @@ class PortView : public QWidget {
  public:
   explicit PortView(QWidget *parent = 0);
 
+ public slots:
+  //! Executed when new data are received
+  void OnReceivedData(QByteArray data);
+
  private:
   //! Main grid layout of the view
   QGridLayout* main_layout_ {NULL};
