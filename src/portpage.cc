@@ -22,15 +22,17 @@ PortPage::PortPage(SessionManager* session_manager,
                    qint32 port_index,
                    QWidget *parent)
   : QWidget(parent),
-    session_manager_{session_manager} {
-  PortInfoWidget* portInfoWidget = new PortInfoWidget(session_manager_,
-                                                      port_index, this);
+    session_manager_{session_manager},
+    port_index_{port_index} {
+  port_info_ = new PortInfoWidget(session_manager_, port_index, this);
+  send_widget_ = new SendWidget(session_manager_, port_index, this);
 
-  connect(portInfoWidget, SIGNAL(NewViewClicked()),
+  connect(port_info_, SIGNAL(NewViewClicked()),
           this, SLOT(OnNewViewClicked()));
 
   main_layout_ = new QGridLayout(this);
-  main_layout_->addWidget(portInfoWidget, 0, 0);
+  main_layout_->addWidget(port_info_, 0, 0);
+  main_layout_->addWidget(send_widget_, 1, 0, 1, 2);
 }
 
 void PortPage::OnNewViewClicked(void) {
@@ -39,7 +41,13 @@ void PortPage::OnNewViewClicked(void) {
   main_layout_->addWidget(view, 0, index++);
 
   Session* session = session_manager_->GetCurrentSession();
-  ComPort* port = session->GetCurrentPort();
+  ComPort* port = session->GetPort(port_index_);
+
+  // Connect received data to port
   connect(port, SIGNAL(receivedData(QByteArray)),
           view, SLOT(OnReceivedData(QByteArray)));
+
+  // Connect to send data to port
+  connect(send_widget_, SIGNAL(sendData(QByteArray)),
+          port, SLOT(sendData(QByteArray)));
 }

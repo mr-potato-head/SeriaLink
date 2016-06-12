@@ -51,3 +51,7 @@ void LocalComPort::OnReadyRead(void) {
   QByteArray data = serial_port_->readAll();
   emit receivedData(data);
 }
+
+void LocalComPort::sendData(QByteArray data) {
+  serial_port_->write(data.constData(), data.size());
+}

@@ -28,7 +28,8 @@ SOURCES += src/main.cc\
     src/addormodifyportdialog.cc \
     src/portinfowidget.cc \
     src/portpage.cc \
-    src/portview.cpp
+    src/portview.cpp \
+    src/sendwidget.cc
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \
@@ -44,7 +45,8 @@ HEADERS += src/mainwindow.h \
     src/addormodifyportdialog.h \
     src/portinfowidget.h \
     src/portpage.h \
-    src/portview.h
+    src/portview.h \
+    src/sendwidget.h
 
 OTHER_FILES += \
     LICENSE.txt \

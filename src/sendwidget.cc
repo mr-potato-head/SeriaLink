@@ -16,37 +16,24 @@
  *
  */
 
-#ifndef SRC_LOCALCOMPORT_H_
-#define SRC_LOCALCOMPORT_H_
+#include "src/sendwidget.h"
 
-#include <QSerialPort>
-#include <QDebug>
-#include <src/comport.h>
+SendWidget::SendWidget(SessionManager* session_manager,
+                       qint32 port_index, QWidget *parent)
+  : QWidget(parent),
+    session_manager_{session_manager},
+    port_index_{port_index} {
+  send_button_ = new QPushButton(tr("Send >"), this);
+  send_line_edit_ = new QLineEdit(this);
 
-class LocalComPort : public ComPort {
-  Q_OBJECT
+  main_layout_ = new QGridLayout(this);
+  main_layout_->addWidget(send_line_edit_, 0, 0);
+  main_layout_->addWidget(send_button_, 0, 1);
 
- public:
-  //! Default constructor
-  explicit LocalComPort(QObject *parent = 0);
+  connect(send_button_, SIGNAL(clicked()),
+          this, SLOT(OnSendButtonClicked()));
+}
 
- public slots: //NOLINT
-  //! Executed to open port
-  virtual void OpenPort(void);
-
-  //! Executed to close port
-  virtual void ClosePort(void);
-
-  //! Executed to send data
-  virtual void sendData(QByteArray data);
-
- private slots: //NOLINT
-  //! Executed when data are ready to read on port
-  void OnReadyRead(void);
-
- private:
-  //! QSerialPort instance
-  QSerialPort* serial_port_ {NULL};
-};
-
-#endif  // SRC_LOCALCOMPORT_H_
+void SendWidget::OnSendButtonClicked(void) {
+ emit sendData(send_line_edit_->text().toUtf8());
+}

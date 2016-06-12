@@ -16,43 +16,46 @@
  *
  */
 
-#ifndef SRC_PORTPAGE_H_
-#define SRC_PORTPAGE_H_
+#ifndef SENDWIDGET_H
+#define SENDWIDGET_H
 
 #include <QWidget>
 #include <QGridLayout>
+#include <QLineEdit>
+#include <QPushButton>
 #include "src/sessionmanager.h"
-#include "src/portinfowidget.h"
-#include "src/portview.h"
-#include "src/sendwidget.h"
 
-class PortPage : public QWidget {
+class SendWidget : public QWidget
+{
   Q_OBJECT
-
  public:
-  explicit PortPage(SessionManager* session_manager,
-                    qint32 port_index,
-                    QWidget *parent = 0);
+  //! Default costructor
+  explicit SendWidget(SessionManager* session_manager,
+                      qint32 port_index, QWidget *parent = 0);
 
- private slots: //NOLINT
-  //! Executed when new view button is clicked
-  void OnNewViewClicked(void);
+ signals:
+  //! Emitted when data have to be sent
+  void sendData(QByteArray);
+
+ private slots:
+  //! Executed on click on send button
+  void OnSendButtonClicked(void);
 
  private:
-  //! Main grid layout of the page
+  //! Main grid layout of the widget
   QGridLayout* main_layout_ {NULL};
 
-  //! Pointer on session manager
+  //! Line edit of to send text
+  QLineEdit* send_line_edit_ {NULL};
+
+  //! Send button
+  QPushButton* send_button_ {NULL};
+
+  //! Session manager
   SessionManager* session_manager_ {NULL};
 
-  //! Port index in session
+  //! Port index
   qint32 port_index_ {-1};
-
-  //! Port info widget of the page
-  PortInfoWidget* port_info_ {NULL};
-
-  //! Send widget of the page
-  SendWidget* send_widget_ {NULL};
 };
 
-#endif  // SRC_PORTPAGE_H_
+#endif // SENDWIDGET_H

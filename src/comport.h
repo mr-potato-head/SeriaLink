@@ -52,6 +52,9 @@ class ComPort : public QObject {
   //! Executed to close port
   virtual void ClosePort(void) = 0;
 
+  //! Executed to send data
+  virtual void sendData(QByteArray data) = 0;
+
  signals:
   //! Emitted when new data are received
   void receivedData(QByteArray);
