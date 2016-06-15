@@ -41,6 +41,12 @@ class Session : public QObject {
   //! Get current port
   ComPort* GetCurrentPort(void);
 
+  //! Get page number
+  quint8 GetPageNumber(void);
+
+  //! Get current page index
+  quint8 GetCurrentPortIndex(void);
+
  public slots: //NOLINT
   //! Set current port index
   void SetCurrentPortIndex(qint32 index);

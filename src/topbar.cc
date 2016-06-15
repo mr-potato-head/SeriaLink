@@ -43,22 +43,46 @@ TopBar::TopBar(SessionManager* session_manager, QWidget *parent)
           this, SLOT(openAddOrModifyDialog()));
   connect(session_manager_->GetCurrentSession(), SIGNAL(PortAdded(qint32)),
           page_selector_, SLOT(AddButton(qint32)));
+
+  UpdateButtonStatus();
 }
 
 void TopBar::OnIncreaseCurrentPageIndex(void) {
-  if (page_number_ > 0) {
-    if (page_index_ < page_number_-1) {
-      page_index_++;
-      emit PageIndexUpdated(page_index_);
-    }
-  }
+  Session* session = session_manager_->GetCurrentSession();
+  quint8 current_page_index = session->GetCurrentPortIndex();
+  current_page_index++;
+  session->SetCurrentPortIndex(current_page_index);
+
+  UpdateButtonStatus();
 }
 
 void TopBar::OnDecreaseCurrentPageIndex(void) {
-  if (page_number_ > 0) {
-    if (page_index_ > 0) {
-      page_index_--;
-      emit PageIndexUpdated(page_index_);
+  Session* session = session_manager_->GetCurrentSession();
+  quint8 current_page_index = session->GetCurrentPortIndex();
+  current_page_index--;
+  session->SetCurrentPortIndex(current_page_index);
+
+  UpdateButtonStatus();
+}
+
+void TopBar::UpdateButtonStatus(void) {
+  Session* session = session_manager_->GetCurrentSession();
+  quint8 page_number = session->GetPageNumber();
+  quint8 current_page_index = session->GetCurrentPortIndex();
+
+  if (page_number <= 1) {
+    page_switcher_->DisableButton(PageSwitcher::ButtonType::kIncreaseButton);
+    page_switcher_->DisableButton(PageSwitcher::ButtonType::kDecreaseButton);
+  } else {
+    if (current_page_index >= (page_number-1)) {
+      page_switcher_->DisableButton(PageSwitcher::ButtonType::kIncreaseButton);
+      page_switcher_->EnableButton(PageSwitcher::ButtonType::kDecreaseButton);
+    } else if (current_page_index == 0) {
+      page_switcher_->DisableButton(PageSwitcher::ButtonType::kDecreaseButton);
+      page_switcher_->EnableButton(PageSwitcher::ButtonType::kIncreaseButton);
+    } else {
+      page_switcher_->EnableButton(PageSwitcher::ButtonType::kIncreaseButton);
+      page_switcher_->EnableButton(PageSwitcher::ButtonType::kDecreaseButton);
     }
   }
 }
@@ -77,6 +101,8 @@ void TopBar::openAddOrModifyDialog(void) {
     }
     case QDialog::Rejected:
     default:
-      break;
+    break;
   }
+
+  UpdateButtonStatus();
 }

@@ -38,6 +38,10 @@ PageSwitcher::PageSwitcher(QWidget *parent) :
 
   connect(add_button_, SIGNAL(clicked()),
           this, SIGNAL(AddPage()));
+  connect(left_button_, SIGNAL(clicked()),
+          this, SIGNAL(DecreaseCurrentPageIndex()));
+  connect(right_button_, SIGNAL(clicked()),
+          this, SIGNAL(IncreaseCurrentPageIndex()));
 }
 
 void PageSwitcher::EnableButton(ButtonType type) {

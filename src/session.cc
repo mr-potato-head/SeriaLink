@@ -63,3 +63,11 @@ void Session::ClosePort(qint32 index) {
           port, SLOT(ClosePort()));
   emit ClosePortSignal();
 }
+
+quint8 Session::GetPageNumber(void) {
+  return com_port_list_.size();
+}
+
+quint8 Session::GetCurrentPortIndex(void) {
+  return current_port_index_;
+}

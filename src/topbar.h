@@ -56,14 +56,11 @@ class TopBar : public QWidget {
   //! Page switcher widget
   PageSwitcher* page_switcher_ {NULL};
 
-  //! Current page index
-  qint8 page_index_ {-1};
-
-  //! Current page number
-  qint8 page_number_ {0};
-
   //! Pointer on session manager
   SessionManager* session_manager_ {NULL};
+
+  //! Update button status
+  void UpdateButtonStatus(void);
 };
 
 #endif  // SRC_TOPBAR_H_
