@@ -43,8 +43,12 @@ TopBar::TopBar(SessionManager* session_manager, QWidget *parent)
           this, SLOT(openAddOrModifyDialog()));
   connect(session_manager_->GetCurrentSession(), SIGNAL(PortAdded(qint32)),
           page_selector_, SLOT(AddButton(qint32)));
+  connect(session_manager_->GetCurrentSession(), SIGNAL(IndexChanged(qint32)),
+          this, SLOT(UpdateSelectorButtonStatus()));
+  connect(session_manager_->GetCurrentSession(), SIGNAL(IndexChanged(qint32)),
+          this, SLOT(UpdateSwitcherButtonStatus()));
 
-  UpdateButtonStatus();
+  UpdateSwitcherButtonStatus();
 }
 
 void TopBar::OnIncreaseCurrentPageIndex(void) {
@@ -53,7 +57,8 @@ void TopBar::OnIncreaseCurrentPageIndex(void) {
   current_page_index++;
   session->SetCurrentPortIndex(current_page_index);
 
-  UpdateButtonStatus();
+  UpdateSwitcherButtonStatus();
+  UpdateSelectorButtonStatus();
 }
 
 void TopBar::OnDecreaseCurrentPageIndex(void) {
@@ -62,10 +67,11 @@ void TopBar::OnDecreaseCurrentPageIndex(void) {
   current_page_index--;
   session->SetCurrentPortIndex(current_page_index);
 
-  UpdateButtonStatus();
+  UpdateSwitcherButtonStatus();
+  UpdateSelectorButtonStatus();
 }
 
-void TopBar::UpdateButtonStatus(void) {
+void TopBar::UpdateSwitcherButtonStatus(void) {
   Session* session = session_manager_->GetCurrentSession();
   quint8 page_number = session->GetPageNumber();
   quint8 current_page_index = session->GetCurrentPortIndex();
@@ -87,6 +93,12 @@ void TopBar::UpdateButtonStatus(void) {
   }
 }
 
+void TopBar::UpdateSelectorButtonStatus(void) {
+  Session* session = session_manager_->GetCurrentSession();
+  quint8 current_page_index = session->GetCurrentPortIndex();
+  page_selector_->SetCheckedState(current_page_index);
+}
+
 void TopBar::openAddOrModifyDialog(void) {
   ComPortSettings* port_settings = new ComPortSettings();
   AddOrModifyPortDialog addDialog(port_settings, this);
@@ -97,12 +109,13 @@ void TopBar::openAddOrModifyDialog(void) {
     {
       // Add port in session
       session_manager_->GetCurrentSession()->AddPort(port_settings);
+
+      UpdateSwitcherButtonStatus();
+      UpdateSelectorButtonStatus();
       break;
     }
     case QDialog::Rejected:
     default:
     break;
   }
-
-  UpdateButtonStatus();
 }

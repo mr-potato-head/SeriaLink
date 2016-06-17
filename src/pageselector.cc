@@ -39,8 +39,17 @@ void PageSelector::AddButton(qint32 port_index) {
 
   QPushButton* button = new QPushButton(portSettings->GetPortInfo().portName());
   button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  button->setCheckable(true);
+  button_list_.append(button);
   button_layout_->addWidget(button);
 
   connect(button, SIGNAL(clicked()), signal_mapper_, SLOT(map()));
   signal_mapper_->setMapping(button, port_index);
+}
+
+void PageSelector::SetCheckedState(qint32 port_index) {
+  foreach(QPushButton* button, button_list_) {
+    button->setChecked(false);
+  }
+  button_list_.at(port_index)->setChecked(true);
 }

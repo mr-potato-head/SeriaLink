@@ -46,6 +46,12 @@ class TopBar : public QWidget {
   //! Slots called when add button is clicked
   void openAddOrModifyDialog(void);
 
+  //! Update page switcher button status
+  void UpdateSwitcherButtonStatus(void);
+
+  //! Update page selector button status
+  void UpdateSelectorButtonStatus(void);
+
  private:
   //! Main layout of the widget
   QHBoxLayout* main_layout_ {NULL};
@@ -58,9 +64,6 @@ class TopBar : public QWidget {
 
   //! Pointer on session manager
   SessionManager* session_manager_ {NULL};
-
-  //! Update button status
-  void UpdateButtonStatus(void);
 };
 
 #endif  // SRC_TOPBAR_H_

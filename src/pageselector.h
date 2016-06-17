@@ -21,7 +21,9 @@
 
 #include <QWidget>
 #include <QHBoxLayout>
+#include <QList>
 #include <QSignalMapper>
+#include <QPushButton>
 #include "src/sessionmanager.h"
 
 class PageSelector : public QWidget {
@@ -32,11 +34,18 @@ class PageSelector : public QWidget {
   explicit PageSelector(SessionManager* session_manager,
                         QWidget *parent = 0);
 
+
+  //! Set checked state for a button
+  void SetCheckedState(qint32 port_index);
+
  public slots: // NOLINT
   //! Add button
   void AddButton(qint32 port_index);
 
  private:
+  //! Button list
+  QList<QPushButton*> button_list_;
+
   //! Button layout
   QHBoxLayout* button_layout_ {NULL};
 
