@@ -26,19 +26,24 @@ PortPage::PortPage(SessionManager* session_manager,
     port_index_{port_index} {
   port_info_ = new PortInfoWidget(session_manager_, port_index, this);
   send_widget_ = new SendWidget(session_manager_, port_index, this);
+  view_widget_ = new QWidget(this);
+  view_layout_ = new QHBoxLayout(view_widget_);
 
   connect(port_info_, SIGNAL(NewViewClicked()),
           this, SLOT(OnNewViewClicked()));
 
   main_layout_ = new QGridLayout(this);
   main_layout_->addWidget(port_info_, 0, 0);
+  main_layout_->addWidget(view_widget_, 0, 1);
   main_layout_->addWidget(send_widget_, 1, 0, 1, 2);
+
+  main_layout_->setColumnStretch(0, 20);
+  main_layout_->setColumnStretch(1, 80);
 }
 
 void PortPage::OnNewViewClicked(void) {
-  static int index = 1;
   PortView* view = new PortView(this);
-  main_layout_->addWidget(view, 0, index++);
+  view_layout_->addWidget(view);
 
   Session* session = session_manager_->GetCurrentSession();
   ComPort* port = session->GetPort(port_index_);

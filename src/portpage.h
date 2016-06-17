@@ -53,6 +53,12 @@ class PortPage : public QWidget {
 
   //! Send widget of the page
   SendWidget* send_widget_ {NULL};
+
+  //! Generic widget for views
+  QWidget* view_widget_ {NULL};
+
+  //! QHBoxLayout for views
+  QHBoxLayout* view_layout_ {NULL};
 };
 
 #endif  // SRC_PORTPAGE_H_

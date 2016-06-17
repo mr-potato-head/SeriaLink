@@ -139,6 +139,9 @@ PortInfoWidget::PortInfoWidget(SessionManager* session_manager,
   main_layout_->addWidget(open_button_);
   main_layout_->addWidget(close_button_);
   main_layout_->addWidget(new_view_button_);
+
+  this->setSizePolicy(QSizePolicy::Expanding,
+                      QSizePolicy::Expanding);
 }
 
 void PortInfoWidget::OnOpenPortClicked(void) {
