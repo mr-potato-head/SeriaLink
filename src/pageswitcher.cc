@@ -21,15 +21,21 @@
 
 PageSwitcher::PageSwitcher(QWidget *parent) :
   QWidget(parent) {
-  right_button_ = new QPushButton(tr(">"), this);
+  right_button_ = new QPushButton(this);
+  right_button_->setIcon(QIcon(":/icons/icons/chevron-right-8x.png"));
   right_button_->setSizePolicy(QSizePolicy::Expanding,
                                QSizePolicy::Expanding);
-  left_button_ = new QPushButton(tr("<"), this);
+  right_button_->setToolTip(tr("Switch to next port."));
+  left_button_ = new QPushButton(this);
+  left_button_->setIcon(QIcon(":/icons/icons/chevron-left-8x.png"));
   left_button_->setSizePolicy(QSizePolicy::Expanding,
                               QSizePolicy::Expanding);
-  add_button_ = new QPushButton(tr("+"), this);
+  left_button_->setToolTip(tr("Switch to previous port."));
+  add_button_ = new QPushButton(this);
+  add_button_->setIcon(QIcon(":/icons/icons/plus-8x.png"));
   add_button_->setSizePolicy(QSizePolicy::Expanding,
                              QSizePolicy::Expanding);
+  add_button_->setToolTip(tr("Add port."));
 
   main_layout_ = new QHBoxLayout(this);
   main_layout_->addWidget(left_button_);

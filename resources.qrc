@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/icons">
         <file>icons/loop-circular-8x.png</file>
+        <file>icons/media-stop-8x.png</file>
+        <file>icons/media-play-8x.png</file>
+        <file>icons/chevron-right-8x.png</file>
+        <file>icons/chevron-left-8x.png</file>
+        <file>icons/plus-8x.png</file>
     </qresource>
 </RCC>
