@@ -23,6 +23,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
+#include <QGroupBox>
 #include "src/comportsettings.h"
 #include "src/sessionmanager.h"
 
@@ -47,6 +48,12 @@ class PortInfoWidget : public QWidget {
   void OnClosePortClicked(void);
 
  private:
+  //! Group box of settings
+  QGroupBox* settings_group_box_ {NULL};
+
+  //! Group box vertical layout
+  QVBoxLayout* group_box_layout_ {NULL};
+
   //! Session manager
   SessionManager* session_manager_ {NULL};
 

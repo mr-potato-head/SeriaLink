@@ -135,22 +135,29 @@ PortInfoWidget::PortInfoWidget(SessionManager* session_manager,
   connect(new_view_button_, SIGNAL(clicked()),
           this, SIGNAL(NewViewClicked()));
 
+  settings_group_box_ = new QGroupBox(tr("Port settings"), this);
+  group_box_layout_ = new QVBoxLayout(settings_group_box_);
+  group_box_layout_->addWidget(port_name_label_);
+  group_box_layout_->addWidget(port_name_value_);
+  group_box_layout_->addWidget(port_baud_rate_label_);
+  group_box_layout_->addWidget(port_baud_rate_value_);
+  group_box_layout_->addWidget(port_parity_label_);
+  group_box_layout_->addWidget(port_parity_value_);
+  group_box_layout_->addWidget(port_data_bits_label_);
+  group_box_layout_->addWidget(port_data_bits_value_);
+  group_box_layout_->addWidget(port_stop_bits_label_);
+  group_box_layout_->addWidget(port_stop_bits_value_);
+  group_box_layout_->addWidget(port_flow_control_label_);
+  group_box_layout_->addWidget(port_flow_control_value_);
+
   main_layout_ = new QVBoxLayout(this);
-  main_layout_->addWidget(port_name_label_);
-  main_layout_->addWidget(port_name_value_);
-  main_layout_->addWidget(port_baud_rate_label_);
-  main_layout_->addWidget(port_baud_rate_value_);
-  main_layout_->addWidget(port_parity_label_);
-  main_layout_->addWidget(port_parity_value_);
-  main_layout_->addWidget(port_data_bits_label_);
-  main_layout_->addWidget(port_data_bits_value_);
-  main_layout_->addWidget(port_stop_bits_label_);
-  main_layout_->addWidget(port_stop_bits_value_);
-  main_layout_->addWidget(port_flow_control_label_);
-  main_layout_->addWidget(port_flow_control_value_);
+  main_layout_->addWidget(settings_group_box_);
   main_layout_->addWidget(open_button_);
   main_layout_->addWidget(close_button_);
   main_layout_->addWidget(new_view_button_);
+
+  settings_group_box_->setSizePolicy(QSizePolicy::Expanding,
+                                     QSizePolicy::Expanding);
 
   this->setSizePolicy(QSizePolicy::Expanding,
                       QSizePolicy::Expanding);
