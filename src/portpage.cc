@@ -42,6 +42,19 @@ PortPage::PortPage(SessionManager* session_manager,
 }
 
 void PortPage::OnNewViewClicked(void) {
+    ViewSettingDialog viewSettingDialog(this);
+    qint32 result = viewSettingDialog.exec();
+
+    switch (result) {
+      case QDialog::Accepted:
+        break;
+      case QDialog::Rejected:
+      default:
+      break;
+    }
+
+
+  /*
   PortView* view = new PortView(this);
   view_layout_->addWidget(view);
 
@@ -55,4 +68,5 @@ void PortPage::OnNewViewClicked(void) {
   // Connect to send data to port
   connect(send_widget_, SIGNAL(sendData(QByteArray)),
           port, SLOT(sendData(QByteArray)));
+          */
 }

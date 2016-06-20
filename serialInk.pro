@@ -29,7 +29,9 @@ SOURCES += src/main.cc\
     src/portinfowidget.cc \
     src/portpage.cc \
     src/sendwidget.cc \
-    src/portview.cc
+    src/portview.cc \
+    src/viewsettings.cc \
+    src/viewsettingdialog.cc
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \
@@ -46,7 +48,9 @@ HEADERS += src/mainwindow.h \
     src/portinfowidget.h \
     src/portpage.h \
     src/portview.h \
-    src/sendwidget.h
+    src/sendwidget.h \
+    src/viewsettings.h \
+    src/viewsettingdialog.h
 
 OTHER_FILES += \
     LICENSE.txt \

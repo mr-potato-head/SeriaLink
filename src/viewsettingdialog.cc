@@ -1,0 +1,37 @@
+/*
+ * Copyright (C) 2016 Guilhem GUYONNET
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#include "src/viewsettingdialog.h"
+
+static const quint16 kMinimumWidth = 400;
+
+ViewSettingDialog::ViewSettingDialog(QWidget *parent)
+  : QDialog(parent) {
+  this->setWindowTitle(tr("View settings"));
+
+  button_bar_ = new QDialogButtonBox(QDialogButtonBox::Ok |
+                                     QDialogButtonBox::Cancel);
+
+  connect(button_bar_, SIGNAL(rejected()), this, SLOT(reject()));
+
+  main_layout_ = new QGridLayout(this);
+  main_layout_->addWidget(button_bar_);
+
+  // Dialog minimum width
+  this->setMinimumWidth(kMinimumWidth);
+}
