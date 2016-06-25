@@ -23,20 +23,29 @@
 #include <QPushButton>
 #include <QDialogButtonBox>
 #include <QGridLayout>
+#include "src/viewsettings.h"
 
 class ViewSettingDialog : public QDialog {
   Q_OBJECT
 
  public:
   //! Default constructor
-  explicit ViewSettingDialog(QWidget *parent = 0);
+  explicit ViewSettingDialog(ViewSettings* view_settings,
+                             QWidget *parent = 0);
+
+ private slots: // NOLINT
+  //! Slot called when window is accepted
+  void FillViewSettings(void);
 
  private:
   //! Main grid layout
-  QGridLayout* main_layout_ {NULL};
+  QGridLayout* form_grid_layout_ {NULL};
 
   //! Button bar
   QDialogButtonBox* button_bar_ {NULL};
+
+  //! View settings
+  ViewSettings* view_settings_ {NULL};
 };
 
 #endif  // SRC_VIEWSETTINGDIALOG_H_

@@ -26,6 +26,7 @@
 #include "src/portview.h"
 #include "src/sendwidget.h"
 #include "src/viewsettingdialog.h"
+#include "src/viewsettings.h"
 
 class PortPage : public QWidget {
   Q_OBJECT

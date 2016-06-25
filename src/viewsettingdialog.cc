@@ -20,18 +20,25 @@
 
 static const quint16 kMinimumWidth = 400;
 
-ViewSettingDialog::ViewSettingDialog(QWidget *parent)
-  : QDialog(parent) {
+ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
+                                     QWidget *parent)
+  : QDialog(parent),
+    view_settings_{view_settings} {
   this->setWindowTitle(tr("View settings"));
 
   button_bar_ = new QDialogButtonBox(QDialogButtonBox::Ok |
                                      QDialogButtonBox::Cancel);
 
+  connect(button_bar_, SIGNAL(accepted()), this, SLOT(FillViewSettings()));
   connect(button_bar_, SIGNAL(rejected()), this, SLOT(reject()));
 
-  main_layout_ = new QGridLayout(this);
-  main_layout_->addWidget(button_bar_);
+  form_grid_layout_ = new QGridLayout(this);
+  form_grid_layout_->addWidget(button_bar_);
 
   // Dialog minimum width
   this->setMinimumWidth(kMinimumWidth);
+}
+
+void ViewSettingDialog::FillViewSettings(void) {
+  this->accept();
 }

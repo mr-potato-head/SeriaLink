@@ -42,31 +42,31 @@ PortPage::PortPage(SessionManager* session_manager,
 }
 
 void PortPage::OnNewViewClicked(void) {
-    ViewSettingDialog viewSettingDialog(this);
-    qint32 result = viewSettingDialog.exec();
+  ViewSettings* view_settings = new ViewSettings();
+  ViewSettingDialog view_setting_dialog(view_settings, this);
+  qint32 result = view_setting_dialog.exec();
 
-    switch (result) {
-      case QDialog::Accepted:
-        break;
-      case QDialog::Rejected:
-      default:
+  switch (result) {
+    case QDialog::Accepted:
+    {
+      PortView* view = new PortView(this);
+      view_layout_->addWidget(view);
+
+      Session* session = session_manager_->GetCurrentSession();
+      ComPort* port = session->GetPort(port_index_);
+
+      // Connect received data to port
+      connect(port, SIGNAL(receivedData(QByteArray)),
+              view, SLOT(OnReceivedData(QByteArray)));
+
+      // Connect to send data to port
+      connect(send_widget_, SIGNAL(sendData(QByteArray)),
+              port, SLOT(sendData(QByteArray)));
+
       break;
     }
-
-
-  /*
-  PortView* view = new PortView(this);
-  view_layout_->addWidget(view);
-
-  Session* session = session_manager_->GetCurrentSession();
-  ComPort* port = session->GetPort(port_index_);
-
-  // Connect received data to port
-  connect(port, SIGNAL(receivedData(QByteArray)),
-          view, SLOT(OnReceivedData(QByteArray)));
-
-  // Connect to send data to port
-  connect(send_widget_, SIGNAL(sendData(QByteArray)),
-          port, SLOT(sendData(QByteArray)));
-          */
+    case QDialog::Rejected:
+    default:
+    break;
+  }
 }

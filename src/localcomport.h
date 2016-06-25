@@ -21,6 +21,8 @@
 
 #include <QSerialPort>
 #include <QDebug>
+#include <QTimer>
+#include <QByteArray>
 #include <src/comport.h>
 
 class LocalComPort : public ComPort {
@@ -44,9 +46,14 @@ class LocalComPort : public ComPort {
   //! Executed when data are ready to read on port
   void OnReadyRead(void);
 
+  void OnTimeout(void);
+
  private:
   //! QSerialPort instance
   QSerialPort* serial_port_ {NULL};
+
+  //! Simulation timer
+  QTimer* simu_timer_ {NULL};
 };
 
 #endif  // SRC_LOCALCOMPORT_H_
