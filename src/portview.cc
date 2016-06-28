@@ -18,8 +18,10 @@
 
 #include "src/portview.h"
 
-PortView::PortView(QWidget *parent)
-  : QWidget(parent) {
+PortView::PortView(ViewSettings* view_settings,
+                   QWidget *parent)
+  : QWidget(parent),
+    view_settings_{view_settings} {
   main_layout_ = new QGridLayout(this);
   text_edit_ = new QTextEdit(this);
 

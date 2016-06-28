@@ -22,12 +22,14 @@
 #include <QWidget>
 #include <QGridLayout>
 #include <QTextEdit>
+#include "src/viewsettings.h"
 
 class PortView : public QWidget {
   Q_OBJECT
 
  public:
-  explicit PortView(QWidget *parent = 0);
+  explicit PortView(ViewSettings* view_settings,
+                    QWidget *parent = 0);
 
  public slots: //NOLINT
   //! Executed when new data are received
@@ -39,6 +41,9 @@ class PortView : public QWidget {
 
   //! Text edit of the view
   QTextEdit* text_edit_ {NULL};
+
+  //! Settings of the view
+  ViewSettings* view_settings_ {NULL};
 };
 
 #endif  // SRC_PORTVIEW_H_

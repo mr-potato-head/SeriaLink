@@ -49,7 +49,7 @@ void PortPage::OnNewViewClicked(void) {
   switch (result) {
     case QDialog::Accepted:
     {
-      PortView* view = new PortView(this);
+      PortView* view = new PortView(view_settings, this);
       view_layout_->addWidget(view);
 
       Session* session = session_manager_->GetCurrentSession();

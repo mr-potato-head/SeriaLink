@@ -23,6 +23,8 @@
 #include <QPushButton>
 #include <QDialogButtonBox>
 #include <QGridLayout>
+#include <QComboBox>
+#include <QLabel>
 #include "src/viewsettings.h"
 
 class ViewSettingDialog : public QDialog {
@@ -46,6 +48,33 @@ class ViewSettingDialog : public QDialog {
 
   //! View settings
   ViewSettings* view_settings_ {NULL};
+
+  //! Label "View type"
+  QLabel* view_type_label_ {NULL};
+
+  //! Combo box port choice
+  QComboBox* view_type_combobox_ {NULL};
+
+  //! Label "Display type"
+  QLabel* display_type_label_ {NULL};
+
+  //! Combo box display type choice
+  QComboBox* display_type_combobox_ {NULL};
+
+  //! Label "Data size"
+  QLabel* data_size_label_ {NULL};
+
+  //! Combo box data size
+  QComboBox* data_size_combobox_ {NULL};
+
+  //! Fill view type comboBox
+  void FillViewTypeList(void);
+
+  //! Fill display type comboBox
+  void FillDisplayTypeList(void);
+
+  //! Fill data size comboBox
+  void FillDataSizeList(void);
 };
 
 #endif  // SRC_VIEWSETTINGDIALOG_H_

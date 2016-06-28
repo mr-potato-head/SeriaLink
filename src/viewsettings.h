@@ -37,8 +37,8 @@ class ViewSettings {
     kDec
   };
 
-  //! Data block size
-  enum class BlockSize {
+  //! Data data size
+  enum class DataSize {
     kUnknown = 0,
     k1Byte,
     k2Bytes,
@@ -51,10 +51,10 @@ class ViewSettings {
 
   ViewType GetViewType(void) const;
   DisplayType GetDisplayType(void) const;
-  BlockSize GetBlockSize(void) const;
+  DataSize GetDataSize(void) const;
   void SetViewType(ViewSettings::ViewType view_type);
   void SetDisplayType(ViewSettings::DisplayType display_type);
-  void SetBlockSize(ViewSettings::BlockSize block_size);
+  void SetDataSize(ViewSettings::DataSize data_size);
 
  private:
   //! View type
@@ -64,7 +64,7 @@ class ViewSettings {
   DisplayType display_type_ {DisplayType::kUnknown};
 
   //! Data block size
-  BlockSize block_size_ {BlockSize::kUnknown};
+  DataSize data_size_ {DataSize::kUnknown};
 };
 
 #endif  // SRC_VIEWSETTINGS_H_

@@ -28,8 +28,8 @@ ViewSettings::DisplayType ViewSettings::GetDisplayType(void) const {
   return display_type_;
 }
 
-ViewSettings::BlockSize ViewSettings::GetBlockSize(void) const {
-  return block_size_;
+ViewSettings::DataSize ViewSettings::GetDataSize(void) const {
+  return data_size_;
 }
 
 void ViewSettings::SetViewType(ViewSettings::ViewType view_type) {
@@ -40,6 +40,6 @@ void ViewSettings::SetDisplayType(ViewSettings::DisplayType display_type) {
   display_type_ = display_type;
 }
 
-void ViewSettings::SetBlockSize(ViewSettings::BlockSize block_size) {
-  block_size_ = block_size;
+void ViewSettings::SetDataSize(DataSize data_size) {
+  data_size_ = data_size;
 }
