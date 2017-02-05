@@ -65,21 +65,14 @@ void LocalComPort::sendData(QByteArray data) {
 }
 
 void LocalComPort::OnTimeout(void) {
-  QByteArray data;
+  QByteArray data("$NMEA,12.345,987.65*2F\r\n");
+  emit receivedData(data);
+
+  data.clear();
   data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
-  data.append(0x01);
+  data.append(0x03);
+  data.append(0x05);
+  data.append(0x07);
+  data.append(0x09);
   emit receivedData(data);
 }

@@ -17,6 +17,7 @@
  */
 
 #include "src/portview.h"
+#include "src/dataformatter.h"
 
 PortView::PortView(ViewSettings* view_settings,
                    QWidget *parent)
@@ -29,5 +30,5 @@ PortView::PortView(ViewSettings* view_settings,
 }
 
 void PortView::OnReceivedData(QByteArray data) {
-    text_edit_->append(QString(data));
+    text_edit_->append(DataFormatter::formatData(*view_settings_, data));
 }

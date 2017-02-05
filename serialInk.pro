@@ -31,7 +31,8 @@ SOURCES += src/main.cc\
     src/sendwidget.cc \
     src/portview.cc \
     src/viewsettings.cc \
-    src/viewsettingdialog.cc
+    src/viewsettingdialog.cc \
+    src/dataformatter.cc
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \
@@ -50,7 +51,8 @@ HEADERS += src/mainwindow.h \
     src/portview.h \
     src/sendwidget.h \
     src/viewsettings.h \
-    src/viewsettingdialog.h
+    src/viewsettingdialog.h \
+    src/dataformatter.h
 
 OTHER_FILES += \
     LICENSE.txt \
