@@ -22,14 +22,31 @@ Session::Session(QObject *parent)
   : QObject(parent) {
 }
 
+Session::~Session() {
+    // Delete COM ports for this session
+    QList<ComPort*>::iterator itBeginPort = com_port_list_.begin();
+    QList<ComPort*>::iterator itEndPort = com_port_list_.end();
+    for(QList<ComPort*>::iterator it = itBeginPort ; it != itEndPort ; it++) {
+        delete *it;
+    }
+
+    // Delete threads for this session
+    QList<QThread*>::iterator itBeginTh = thread_list_.begin();
+    QList<QThread*>::iterator itEndTh = thread_list_.end();
+    for(QList<QThread*>::iterator it = itBeginTh ; it != itEndTh ; it++) {
+        delete *it;
+    }
+}
+
 void Session::AddPort(ComPortSettings* port_settings) {
   // Create new port
   LocalComPort* com_port = new LocalComPort();
-  com_port->SetPortSettings(port_settings);
   com_port_list_.append(com_port);
+  com_port->SetPortSettings(port_settings);
 
   // Create thread for this port
   QThread* thread = new QThread(this);
+  thread_list_.append(thread);
   com_port->moveToThread(thread);
   thread->start(QThread::TimeCriticalPriority);
 
@@ -59,9 +76,7 @@ void Session::OpenPort(qint32 index) {
 
 void Session::ClosePort(qint32 index) {
   ComPort* port = com_port_list_.at(index);
-  connect(this, SIGNAL(ClosePortSignal()),
-          port, SLOT(ClosePort()));
-  emit ClosePortSignal();
+  port->ClosePort();
 }
 
 quint8 Session::GetPageNumber(void) {

@@ -28,6 +28,14 @@ SessionManager::SessionManager(QObject *parent) :
   current_session_index_ = 0;
 }
 
+SessionManager::~SessionManager() {
+  QList<Session*>::iterator itBegin = session_list_.begin();
+  QList<Session*>::iterator itEnd = session_list_.end();
+  for(QList<Session*>::iterator it = itBegin ; it != itEnd ; it++) {
+      delete *it;
+  }
+}
+
 Session* SessionManager::GetCurrentSession(void) const {
   return session_list_.at(current_session_index_);
 }

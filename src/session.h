@@ -32,6 +32,9 @@ class Session : public QObject {
   //! Default constructor
   explicit Session(QObject *parent = 0);
 
+  //! Destructor
+  ~Session();
+
   //! Add port in this session
   void AddPort(ComPortSettings* port_settings);
 

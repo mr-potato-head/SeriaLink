@@ -30,6 +30,9 @@ class SessionManager : public QObject {
   //! Default constructor
   explicit SessionManager(QObject *parent = 0);
 
+  //! Destructor
+  ~SessionManager();
+
   //! Current session pointer getter
   Session* GetCurrentSession(void) const;
 
