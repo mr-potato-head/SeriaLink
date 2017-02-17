@@ -17,6 +17,7 @@
  */
 
 #include "src/sessionmanager.h"
+#include "src/datapacket.h"
 
 SessionManager::SessionManager(QObject *parent) :
   QObject(parent) {
@@ -26,6 +27,9 @@ SessionManager::SessionManager(QObject *parent) :
 
   // Initialize current session index
   current_session_index_ = 0;
+
+  // Register metatypes
+  qRegisterMetaType<DataPacket>("DataPacket");
 }
 
 SessionManager::~SessionManager() {

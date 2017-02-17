@@ -21,7 +21,7 @@ public:
 
  signals:
   //! Emitted when new data are received
-  void Receive(QByteArray);
+  void Receive(const DataPacket&);
 
 public slots:
     //! Open COM port

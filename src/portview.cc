@@ -29,6 +29,6 @@ PortView::PortView(ViewSettings* view_settings,
   main_layout_->addWidget(text_edit_);
 }
 
-void PortView::OnReceivedData(QByteArray data) {
-    text_edit_->append(DataFormatter::formatData(*view_settings_, data));
+void PortView::OnReceivedData(const DataPacket& packet) {
+    text_edit_->append(DataFormatter::formatData(*view_settings_, packet.GetData()));
 }

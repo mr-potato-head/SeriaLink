@@ -62,8 +62,8 @@ void PortPage::OnNewViewClicked(void) {
       ComPortManager* port_mgr = session->GetPortManager(port_index_);
 
       // Connect received data to port
-      connect(port_mgr, SIGNAL(Receive(QByteArray)),
-              view, SLOT(OnReceivedData(QByteArray)));
+      connect(port_mgr, SIGNAL(Receive(const DataPacket&)),
+              view, SLOT(OnReceivedData(const DataPacket&)));
 
       break;
     }

@@ -23,7 +23,8 @@
 #include <QDebug>
 #include <QTimer>
 #include <QByteArray>
-#include <src/comport.h>
+#include "src/comport.h"
+#include "src/datapacket.h"
 
 class LocalComPort : public ComPort {
   Q_OBJECT
@@ -37,7 +38,7 @@ class LocalComPort : public ComPort {
 
  signals:
   //! Emitted when data have been received
-  void Receive(QByteArray data);
+  void Receive(const DataPacket& data);
 
  public slots: //NOLINT
   //! Executed to open port
@@ -47,7 +48,7 @@ class LocalComPort : public ComPort {
   virtual void ClosePort(void);
 
   //! Executed to send data
-  virtual void Send(QByteArray data);
+  virtual void Send(DataPacket packet);
 
  private slots: //NOLINT
   //! Executed when data are ready to read on port

@@ -7,8 +7,8 @@ ComPortManager::ComPortManager(ComPortSettings *port_settings,
     com_port_ = new LocalComPort();
     com_port_->SetPortSettings(com_port_settings_);
 
-    connect(com_port_, SIGNAL(Receive(QByteArray)),
-            this, SIGNAL(Receive(QByteArray)));
+    connect(com_port_, SIGNAL(Receive(const DataPacket&)),
+            this, SIGNAL(Receive(const DataPacket&)));
 }
 
 ComPortManager::~ComPortManager() {

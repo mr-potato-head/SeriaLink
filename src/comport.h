@@ -21,6 +21,7 @@
 
 #include <QObject>
 #include "src/comportsettings.h"
+#include "src/datapacket.h"
 
 class ComPort : public QObject {
   Q_OBJECT
@@ -56,7 +57,7 @@ class ComPort : public QObject {
   virtual void ClosePort(void) = 0;
 
   //! Executed to send data
-  virtual void Send(QByteArray data) = 0;
+  virtual void Send(DataPacket packet) = 0;
 
  protected:
   //! COM port settings

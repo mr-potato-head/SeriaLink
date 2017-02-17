@@ -23,6 +23,7 @@
 #include <QGridLayout>
 #include <QTextEdit>
 #include "src/viewsettings.h"
+#include "src/datapacket.h"
 
 class PortView : public QWidget {
   Q_OBJECT
@@ -33,7 +34,7 @@ class PortView : public QWidget {
 
  public slots: //NOLINT
   //! Executed when new data are received
-  void OnReceivedData(QByteArray data);
+  void OnReceivedData(const DataPacket& packet);
 
  private:
   //! Main grid layout of the view
