@@ -23,7 +23,7 @@ ComPort::ComPort(QObject *parent) :
 }
 
 void ComPort::SetPortSettings(ComPortSettings* port_settings) {
-  com_port_settings_ =  port_settings;
+  com_port_settings_ = port_settings;
 }
 
 ComPortSettings* ComPort::GetPortSettings(void) {

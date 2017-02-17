@@ -53,9 +53,9 @@ TopBar::TopBar(SessionManager* session_manager, QWidget *parent)
 
 void TopBar::OnIncreaseCurrentPageIndex(void) {
   Session* session = session_manager_->GetCurrentSession();
-  quint8 current_page_index = session->GetCurrentPortIndex();
+  quint8 current_page_index = session->GetCurrentPortMgrIndex();
   current_page_index++;
-  session->SetCurrentPortIndex(current_page_index);
+  session->SetCurrentPortMgrIndex(current_page_index);
 
   UpdateSwitcherButtonStatus();
   UpdateSelectorButtonStatus();
@@ -63,9 +63,9 @@ void TopBar::OnIncreaseCurrentPageIndex(void) {
 
 void TopBar::OnDecreaseCurrentPageIndex(void) {
   Session* session = session_manager_->GetCurrentSession();
-  quint8 current_page_index = session->GetCurrentPortIndex();
+  quint8 current_page_index = session->GetCurrentPortMgrIndex();
   current_page_index--;
-  session->SetCurrentPortIndex(current_page_index);
+  session->SetCurrentPortMgrIndex(current_page_index);
 
   UpdateSwitcherButtonStatus();
   UpdateSelectorButtonStatus();
@@ -73,8 +73,8 @@ void TopBar::OnDecreaseCurrentPageIndex(void) {
 
 void TopBar::UpdateSwitcherButtonStatus(void) {
   Session* session = session_manager_->GetCurrentSession();
-  quint8 page_number = session->GetPageNumber();
-  quint8 current_page_index = session->GetCurrentPortIndex();
+  quint8 page_number = session->GetPortNumber();
+  quint8 current_page_index = session->GetCurrentPortMgrIndex();
 
   if (page_number <= 1) {
     page_switcher_->DisableButton(PageSwitcher::ButtonType::kIncreaseButton);
@@ -95,7 +95,7 @@ void TopBar::UpdateSwitcherButtonStatus(void) {
 
 void TopBar::UpdateSelectorButtonStatus(void) {
   Session* session = session_manager_->GetCurrentSession();
-  quint8 current_page_index = session->GetCurrentPortIndex();
+  quint8 current_page_index = session->GetCurrentPortMgrIndex();
   page_selector_->SetCheckedState(current_page_index);
 }
 

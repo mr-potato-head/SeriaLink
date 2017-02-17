@@ -45,6 +45,9 @@ class ComPort : public QObject {
   //! Getter of port type
   PortType GetPortType(void) const;
 
+  //! Getter of port status
+  virtual bool IsOpen(void) = 0;
+
  public slots: //NOLINT
   //! Executed to open port
   virtual void OpenPort(void) = 0;
@@ -53,11 +56,7 @@ class ComPort : public QObject {
   virtual void ClosePort(void) = 0;
 
   //! Executed to send data
-  virtual void sendData(QByteArray data) = 0;
-
- signals:
-  //! Emitted when new data are received
-  void receivedData(QByteArray);
+  virtual void Send(QByteArray data) = 0;
 
  protected:
   //! COM port settings

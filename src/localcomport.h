@@ -32,6 +32,13 @@ class LocalComPort : public ComPort {
   //! Default constructor
   explicit LocalComPort(QObject *parent = 0);
 
+  //! Getter of port status
+  virtual bool IsOpen(void);
+
+ signals:
+  //! Emitted when data have been received
+  void Receive(QByteArray data);
+
  public slots: //NOLINT
   //! Executed to open port
   virtual void OpenPort(void);
@@ -40,20 +47,15 @@ class LocalComPort : public ComPort {
   virtual void ClosePort(void);
 
   //! Executed to send data
-  virtual void sendData(QByteArray data);
+  virtual void Send(QByteArray data);
 
  private slots: //NOLINT
   //! Executed when data are ready to read on port
   void OnReadyRead(void);
 
-  void OnTimeout(void);
-
  private:
   //! QSerialPort instance
   QSerialPort* serial_port_ {NULL};
-
-  //! Simulation timer
-  QTimer* simu_timer_ {NULL};
 };
 
 #endif  // SRC_LOCALCOMPORT_H_

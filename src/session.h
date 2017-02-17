@@ -22,7 +22,7 @@
 #include <QObject>
 #include <QList>
 #include <QThread>
-#include "src/localcomport.h"
+#include "src/comportmanager.h"
 #include "src/comportsettings.h"
 
 class Session : public QObject {
@@ -38,21 +38,18 @@ class Session : public QObject {
   //! Add port in this session
   void AddPort(ComPortSettings* port_settings);
 
-  //! Get port by index
-  ComPort* GetPort(qint32 index);
-
-  //! Get current port
-  ComPort* GetCurrentPort(void);
-
-  //! Get page number
-  quint8 GetPageNumber(void);
+  //! Get port number
+  quint8 GetPortNumber(void);
 
   //! Get current page index
-  quint8 GetCurrentPortIndex(void);
+  quint8 GetCurrentPortMgrIndex(void);
+
+  //! Get a COM port manager
+  ComPortManager* GetPortManager(qint32 index);
 
  public slots: //NOLINT
   //! Set current port index
-  void SetCurrentPortIndex(qint32 index);
+  void SetCurrentPortMgrIndex(qint32 index);
 
   //! Open port
   void OpenPort(qint32 index);
@@ -75,13 +72,13 @@ class Session : public QObject {
 
  private:
   //! COM port list
-  QList<ComPort*> com_port_list_;
+  QList<ComPortManager*> com_port_mgr_list_;
 
   //! Thread list
   QList<QThread*> thread_list_;
 
-  //! Index of the current port;
-  qint8 current_port_index_ {-1};
+  //! Index of the current port manager;
+  qint32 current_port_mgr_index_ {-1};
 };
 
 #endif  // SRC_SESSION_H_

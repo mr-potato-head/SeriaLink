@@ -24,9 +24,9 @@ Session::Session(QObject *parent)
 
 Session::~Session() {
     // Delete COM ports for this session
-    QList<ComPort*>::iterator itBeginPort = com_port_list_.begin();
-    QList<ComPort*>::iterator itEndPort = com_port_list_.end();
-    for(QList<ComPort*>::iterator it = itBeginPort ; it != itEndPort ; it++) {
+    QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
+    QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
+    for(QList<ComPortManager*>::iterator it = itBeginPort ; it != itEndPort ; it++) {
         delete *it;
     }
 
@@ -34,55 +34,52 @@ Session::~Session() {
     QList<QThread*>::iterator itBeginTh = thread_list_.begin();
     QList<QThread*>::iterator itEndTh = thread_list_.end();
     for(QList<QThread*>::iterator it = itBeginTh ; it != itEndTh ; it++) {
+        (*it)->quit();
+        if(!(*it)->wait(1000)) {
+            qDebug() << "Timeout arret du thread.";
+        }
         delete *it;
     }
 }
 
 void Session::AddPort(ComPortSettings* port_settings) {
-  // Create new port
-  LocalComPort* com_port = new LocalComPort();
-  com_port_list_.append(com_port);
-  com_port->SetPortSettings(port_settings);
+  // Create new port manager
+  ComPortManager* com_port_mgr = new ComPortManager(port_settings);
+  com_port_mgr_list_.append(com_port_mgr);
 
-  // Create thread for this port
+  // Create thread for this port manager
   QThread* thread = new QThread(this);
   thread_list_.append(thread);
-  com_port->moveToThread(thread);
+  com_port_mgr->moveToThread(thread);
   thread->start(QThread::TimeCriticalPriority);
 
-  current_port_index_ = com_port_list_.size()-1;
-  emit PortAdded(current_port_index_);
+  current_port_mgr_index_ = com_port_mgr_list_.size()-1;
+  emit PortAdded(current_port_mgr_index_);
 }
 
-ComPort* Session::GetPort(qint32 index) {
-  return com_port_list_.at(index);
-}
-
-ComPort* Session::GetCurrentPort(void) {
-  return com_port_list_.at(current_port_index_);
-}
-
-void Session::SetCurrentPortIndex(qint32 index) {
-  current_port_index_ = index;
+void Session::SetCurrentPortMgrIndex(qint32 index) {
+  current_port_mgr_index_ = index;
   emit IndexChanged(index);
 }
 
 void Session::OpenPort(qint32 index) {
-  ComPort* port = com_port_list_.at(index);
-  connect(this, SIGNAL(OpenPortSignal()),
-          port, SLOT(OpenPort()));
-  emit OpenPortSignal();
+  ComPortManager* port_mgr = com_port_mgr_list_.at(index);
+  port_mgr->OpenPort();
 }
 
 void Session::ClosePort(qint32 index) {
-  ComPort* port = com_port_list_.at(index);
-  port->ClosePort();
+    ComPortManager* port_mgr = com_port_mgr_list_.at(index);
+    port_mgr->ClosePort();
 }
 
-quint8 Session::GetPageNumber(void) {
-  return com_port_list_.size();
+quint8 Session::GetPortNumber(void) {
+  return com_port_mgr_list_.size();
 }
 
-quint8 Session::GetCurrentPortIndex(void) {
-  return current_port_index_;
+quint8 Session::GetCurrentPortMgrIndex(void) {
+  return current_port_mgr_index_;
+}
+
+ComPortManager* Session::GetPortManager(qint32 index) {
+    return com_port_mgr_list_.at(index);
 }

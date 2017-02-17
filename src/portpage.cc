@@ -39,6 +39,12 @@ PortPage::PortPage(SessionManager* session_manager,
 
   main_layout_->setColumnStretch(0, 20);
   main_layout_->setColumnStretch(1, 80);
+
+  // Connect to send data to port
+//  Session* session = session_manager_->GetCurrentSession();
+//  ComPortManager* port_mgr = session->GetPortManager(port_index_);
+//  connect(send_widget_, SIGNAL(sendData(QByteArray)),
+//          port, SLOT(sendData(QByteArray)));
 }
 
 void PortPage::OnNewViewClicked(void) {
@@ -53,15 +59,11 @@ void PortPage::OnNewViewClicked(void) {
       view_layout_->addWidget(view);
 
       Session* session = session_manager_->GetCurrentSession();
-      ComPort* port = session->GetPort(port_index_);
+      ComPortManager* port_mgr = session->GetPortManager(port_index_);
 
       // Connect received data to port
-      connect(port, SIGNAL(receivedData(QByteArray)),
+      connect(port_mgr, SIGNAL(Receive(QByteArray)),
               view, SLOT(OnReceivedData(QByteArray)));
-
-      // Connect to send data to port
-      connect(send_widget_, SIGNAL(sendData(QByteArray)),
-              port, SLOT(sendData(QByteArray)));
 
       break;
     }

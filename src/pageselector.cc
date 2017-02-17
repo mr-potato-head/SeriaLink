@@ -29,13 +29,13 @@ PageSelector::PageSelector(SessionManager* session_manager,
   connect(signal_mapper_,
           SIGNAL(mapped(int)),
           session_manager_->GetCurrentSession(),
-          SLOT(SetCurrentPortIndex(qint32)));
+          SLOT(SetCurrentPortMgrIndex(qint32)));
 }
 
 void PageSelector::AddButton(qint32 port_index) {
   // Get port name
-  ComPort* port = session_manager_->GetCurrentSession()->GetPort(port_index);
-  ComPortSettings* portSettings = port->GetPortSettings();
+  ComPortManager* port_manager = session_manager_->GetCurrentSession()->GetPortManager(port_index);
+  ComPortSettings* portSettings = port_manager->GetPortSettings();
 
   QPushButton* button = new QPushButton(portSettings->GetPortInfo().portName());
   button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

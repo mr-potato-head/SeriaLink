@@ -21,14 +21,6 @@
 LocalComPort::LocalComPort(QObject *parent) :
   ComPort(parent) {
   port_type_ = PortType::kLocalPort;
-  simu_timer_ = new QTimer(this);
-  simu_timer_->setSingleShot(false);
-  simu_timer_->setInterval(5000);
-
-  connect(simu_timer_, SIGNAL(timeout()),
-          this, SLOT(OnTimeout()));
-
-  simu_timer_->start();
 }
 
 void LocalComPort::OpenPort(void) {
@@ -57,22 +49,14 @@ void LocalComPort::ClosePort(void) {
 
 void LocalComPort::OnReadyRead(void) {
   QByteArray data = serial_port_->readAll();
-  emit receivedData(data);
+  emit Receive(data);
 }
 
-void LocalComPort::sendData(QByteArray data) {
+void LocalComPort::Send(QByteArray data) {
   serial_port_->write(data.constData(), data.size());
 }
 
-void LocalComPort::OnTimeout(void) {
-  QByteArray data("$NMEA,12.345,987.65*2F\r\n");
-  emit receivedData(data);
-
-  data.clear();
-  data.append(0x01);
-  data.append(0x03);
-  data.append(0x05);
-  data.append(0x07);
-  data.append(0x09);
-  emit receivedData(data);
+//! Getter of port status
+bool LocalComPort::IsOpen(void) {
+  return serial_port_->isOpen();
 }

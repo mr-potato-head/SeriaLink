@@ -27,7 +27,7 @@ PortInfoWidget::PortInfoWidget(SessionManager* session_manager,
 {
   // Get port settings
   Session* session = session_manager_->GetCurrentSession();
-  ComPort* port = session->GetPort(port_index);
+  ComPortManager* port = session->GetPortManager(port_index);
   ComPortSettings* port_settings = port->GetPortSettings();
   port_settings_ = port_settings;
 
