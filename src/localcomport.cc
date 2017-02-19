@@ -35,7 +35,7 @@ void LocalComPort::OpenPort(void) {
     qDebug() << tr("Opening error.");
     qDebug() << serial_port_->errorString();
   } else {
-    qDebug() << com_port_settings_->GetPortInfo().portName() << tr(" opened.");
+    qDebug() << tr("Port ") + com_port_settings_->GetPortInfo().portName() + tr(" opened.");
   }
 
   connect(serial_port_, SIGNAL(readyRead()),
@@ -44,7 +44,7 @@ void LocalComPort::OpenPort(void) {
 
 void LocalComPort::ClosePort(void) {
   serial_port_->close();
-  qDebug() << tr("Port closed.");
+  qDebug() << tr("Port ") + com_port_settings_->GetPortInfo().portName() + tr(" closed.");
 }
 
 void LocalComPort::OnReadyRead(void) {
