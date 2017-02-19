@@ -25,10 +25,10 @@ PortView::PortView(ViewSettings* view_settings,
     view_settings_{view_settings} {
   main_layout_ = new QGridLayout(this);
   text_edit_ = new QTextEdit(this);
-
   main_layout_->addWidget(text_edit_);
 }
 
 void PortView::OnReceivedData(const DataPacket& packet) {
-    text_edit_->append(DataFormatter::formatData(*view_settings_, packet.GetData()));
+  QString str = DataFormatter::formatData(*view_settings_, packet.GetData());
+  text_edit_->append(str);
 }

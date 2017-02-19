@@ -26,16 +26,17 @@ Session::~Session() {
     // Delete COM ports for this session
     QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
     QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
-    for(QList<ComPortManager*>::iterator it = itBeginPort ; it != itEndPort ; it++) {
+    QList<ComPortManager*>::iterator it = itBeginPort;
+    for (; it != itEndPort ; it++) {
         delete *it;
     }
 
     // Delete threads for this session
     QList<QThread*>::iterator itBeginTh = thread_list_.begin();
     QList<QThread*>::iterator itEndTh = thread_list_.end();
-    for(QList<QThread*>::iterator it = itBeginTh ; it != itEndTh ; it++) {
+    for (QList<QThread*>::iterator it = itBeginTh ; it != itEndTh ; it++) {
         (*it)->quit();
-        if(!(*it)->wait(1000)) {
+        if (!(*it)->wait(1000)) {
             qDebug() << "Timeout arret du thread.";
         }
         delete *it;

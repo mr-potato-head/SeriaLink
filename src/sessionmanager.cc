@@ -35,7 +35,7 @@ SessionManager::SessionManager(QObject *parent) :
 SessionManager::~SessionManager() {
   QList<Session*>::iterator itBegin = session_list_.begin();
   QList<Session*>::iterator itEnd = session_list_.end();
-  for(QList<Session*>::iterator it = itBegin ; it != itEnd ; it++) {
+  for (QList<Session*>::iterator it = itBegin ; it != itEnd ; it++) {
       delete *it;
   }
 }

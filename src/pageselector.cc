@@ -34,7 +34,8 @@ PageSelector::PageSelector(SessionManager* session_manager,
 
 void PageSelector::AddButton(qint32 port_index) {
   // Get port name
-  ComPortManager* port_manager = session_manager_->GetCurrentSession()->GetPortManager(port_index);
+  ComPortManager* port_manager =
+    session_manager_->GetCurrentSession()->GetPortManager(port_index);
   ComPortSettings* portSettings = port_manager->GetPortSettings();
 
   QPushButton* button = new QPushButton(portSettings->GetPortInfo().portName());
