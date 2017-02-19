@@ -1,0 +1,1 @@
+python.exe cpplint.py --verbose=1 src/*
