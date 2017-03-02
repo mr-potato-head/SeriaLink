@@ -39,12 +39,7 @@ PortPage::PortPage(SessionManager* session_manager,
 
   main_layout_->setColumnStretch(0, 20);
   main_layout_->setColumnStretch(1, 80);
-
-  // Connect to send data to port
-//  Session* session = session_manager_->GetCurrentSession();
-//  ComPortManager* port_mgr = session->GetPortManager(port_index_);
-//  connect(send_widget_, SIGNAL(sendData(QByteArray)),
-//          port, SLOT(sendData(QByteArray)));
+  main_layout_->setRowStretch(0, 80);
 }
 
 void PortPage::OnNewViewClicked(void) {

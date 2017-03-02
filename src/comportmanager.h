@@ -29,9 +29,19 @@ class ComPortManager : public QObject {
   Q_OBJECT
 
  public:
+
+  //! Enum of modes
+  enum class MODES {
+    MANUAL,
+    DUMP,
+    AUTO
+  };
+
+  //! Constructor
   explicit ComPortManager(ComPortSettings* port_settings,
                           QObject* parent = 0);
 
+  //! Destructor
   ~ComPortManager();
 
   //! Get port settings

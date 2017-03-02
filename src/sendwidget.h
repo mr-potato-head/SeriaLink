@@ -21,41 +21,51 @@
 
 #include <QWidget>
 #include <QGridLayout>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QLineEdit>
+#include <QLabel>
 #include <QPushButton>
+#include <QComboBox>
+#include <QStackedWidget>
+#include <QGroupBox>
+#include <QWidget>
+#include <QRadioButton>
 #include "src/sessionmanager.h"
+#include "src/manualmodepage.h"
 
 class SendWidget : public QWidget {
   Q_OBJECT
 
  public:
-  //! Default costructor
+  //! Default constructor
   explicit SendWidget(SessionManager* session_manager,
                       qint32 port_index, QWidget *parent = 0);
-
- signals:
-  //! Emitted when data have to be sent
-  void sendData(QByteArray);
-
- private slots: //NOLINT
-  //! Executed on click on send button
-  void OnSendButtonClicked(void);
 
  private:
   //! Main grid layout of the widget
   QGridLayout* main_layout_ {NULL};
-
-  //! Line edit of to send text
-  QLineEdit* send_line_edit_ {NULL};
-
-  //! Send button
-  QPushButton* send_button_ {NULL};
 
   //! Session manager
   SessionManager* session_manager_ {NULL};
 
   //! Port index
   qint32 port_index_ {-1};
+
+  //! Mode label
+  QLabel* mode_label_ {nullptr};
+
+  //! Mode combo box
+  QComboBox* mode_combobox_ {nullptr};
+
+  //! Mode stacked widget
+  QStackedWidget* stacked_widget_ {nullptr};
+
+  //! QWidget of the manual mode page
+  ManualModePage* manual_mode_page_ {nullptr};
+
+  //! Vertical layout of the mode choice system
+  QVBoxLayout* mode_layout_ {nullptr};
 };
 
 #endif  // SRC_SENDWIDGET_H_

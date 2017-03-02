@@ -23,17 +23,27 @@ SendWidget::SendWidget(SessionManager* session_manager,
   : QWidget(parent),
     session_manager_{session_manager},
     port_index_{port_index} {
-  send_button_ = new QPushButton(tr("Send >"), this);
-  send_line_edit_ = new QLineEdit(this);
+  mode_label_ = new QLabel(tr("Mode"), this);
+  mode_label_->setAlignment(Qt::AlignCenter);
+  mode_combobox_ = new QComboBox(this);
+  mode_combobox_->addItem(tr("Manual"), (int)ComPortManager::MODES::MANUAL);
+  //mode_combobox_->addItem(tr("Dump"), (int)ComPortManager::MODES::DUMP);
+  //mode_combobox_->addItem(tr("Auto"), (int)ComPortManager::MODES::AUTO);
+  stacked_widget_ = new QStackedWidget(this);
+
+  Session* session = session_manager_->GetCurrentSession();
+  ComPortManager* port_mgr = session->GetPortManager(port_index_);
+  manual_mode_page_ = new ManualModePage(port_mgr, this);
+  stacked_widget_->addWidget(manual_mode_page_);
+
+  mode_layout_ = new QVBoxLayout();
+  mode_layout_->addWidget(mode_label_);
+  mode_layout_->addWidget(mode_combobox_);
+  mode_layout_->setStretch(0, 33);
+  mode_layout_->setStretch(1, 33);
+  mode_layout_->addStretch(33);
 
   main_layout_ = new QGridLayout(this);
-  main_layout_->addWidget(send_line_edit_, 0, 0);
-  main_layout_->addWidget(send_button_, 0, 1);
-
-  connect(send_button_, SIGNAL(clicked()),
-          this, SLOT(OnSendButtonClicked()));
-}
-
-void SendWidget::OnSendButtonClicked(void) {
-  emit sendData(send_line_edit_->text().toUtf8());
+  main_layout_->addLayout(mode_layout_, 0, 0);
+  main_layout_->addWidget(stacked_widget_, 0, 1);
 }

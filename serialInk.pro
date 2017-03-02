@@ -34,7 +34,9 @@ SOURCES += src/main.cc\
     src/viewsettingdialog.cc \
     src/dataformatter.cc \
     src/comportmanager.cpp \
-    src/datapacket.cpp
+    src/datapacket.cpp \
+    src/modepage.cpp \
+    src/manualmodepage.cpp
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \
@@ -56,7 +58,9 @@ HEADERS += src/mainwindow.h \
     src/viewsettingdialog.h \
     src/dataformatter.h \
     src/comportmanager.h \
-    src/datapacket.h
+    src/datapacket.h \
+    src/modepage.h \
+    src/manualmodepage.h
 
 OTHER_FILES += \
     LICENSE.txt \
