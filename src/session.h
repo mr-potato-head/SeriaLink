@@ -47,6 +47,8 @@ class Session : public QObject {
   //! Get a COM port manager
   ComPortManager* GetPortManager(qint32 index);
 
+  void Close(void);
+
  public slots: //NOLINT
   //! Set current port index
   void SetCurrentPortMgrIndex(qint32 index);

@@ -33,15 +33,19 @@ class ManualModePage : public ModePage
   //! Constructor
   ManualModePage(ComPortManager* port_mgr, QWidget *parent = 0);
 
+ private slots:
+  //! Click on send button reaction
+  void OnSendButtonClicked(void);
+
  private:
   //! Manual mode data line
-  QLineEdit* manual_data_line_ {nullptr};
+  QLineEdit* data_line_ {nullptr};
 
   //! Manual mode loop group box
-  QGroupBox* manual_loop_groupbox_ {nullptr};
+  QGroupBox* loop_groupbox_ {nullptr};
 
   //! Parser choice group box
-  QGroupBox* manual_parser_groupbox_ {nullptr};
+  QGroupBox* parser_groupbox_ {nullptr};
 
   //! Radio button "ASCII"
   QRadioButton* ascii_radio_ {nullptr};

@@ -38,6 +38,13 @@ class SendWidget : public QWidget {
   Q_OBJECT
 
  public:
+  //! Enum of modes
+  enum class MODES {
+    MANUAL,
+    DUMP,
+    AUTO
+  };
+
   //! Default constructor
   explicit SendWidget(SessionManager* session_manager,
                       qint32 port_index, QWidget *parent = 0);

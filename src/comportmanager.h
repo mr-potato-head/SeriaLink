@@ -20,6 +20,7 @@
 #define SRC_COMPORTMANAGER_H_
 
 #include <QObject>
+#include <QTimer>
 
 #include "src/comport.h"
 #include "src/localcomport.h"
@@ -29,13 +30,6 @@ class ComPortManager : public QObject {
   Q_OBJECT
 
  public:
-
-  //! Enum of modes
-  enum class MODES {
-    MANUAL,
-    DUMP,
-    AUTO
-  };
 
   //! Constructor
   explicit ComPortManager(ComPortSettings* port_settings,
@@ -51,6 +45,9 @@ class ComPortManager : public QObject {
   //! Emitted when new data are received
   void Receive(const DataPacket&);
 
+  //! Emitted to inform GUI on sequence progression
+  void SequenceProgress(int);
+
  public slots: //NOLINT
   //! Open COM port
   void OpenPort(void);
@@ -58,12 +55,39 @@ class ComPortManager : public QObject {
   //! Close COM port
   void ClosePort(void);
 
+  //! Start manual sequence
+  void OnStartManualSequence(QString data, int repeat, int delay);
+
+  //! Start dump sequence
+  void OnStartDumpSequence(QString path, int repeat, int delay);
+
+  //! Start auto sequence
+  void OnStartAutoSequence(QString path);
+
+  //! Stop sequence
+  void OnStopSequence(void);
+
  private:
   //! Associated COM port
   ComPort* com_port_ {NULL};
 
   //! COM port settings
   ComPortSettings* com_port_settings_ {NULL};
+
+  //! Manual mode data
+  QString sequence_data_;
+
+  //! Sequence timer
+  QTimer* sequence_timer_ {nullptr};
+
+  //! Sequence global repeat value
+  int sequence_repeat_ {0};
+
+  //! Current repeat value
+  int pending_repeat_ {0};
+
+  //! Sequence in progress indicator
+  bool sequence_in_progress_ {false};
 };
 
 #endif  // SRC_COMPORTMANAGER_H_

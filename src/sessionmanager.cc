@@ -36,7 +36,8 @@ SessionManager::~SessionManager() {
   QList<Session*>::iterator itBegin = session_list_.begin();
   QList<Session*>::iterator itEnd = session_list_.end();
   for (QList<Session*>::iterator it = itBegin ; it != itEnd ; it++) {
-      delete *it;
+    (*it)->Close();
+    delete *it;
   }
 }
 

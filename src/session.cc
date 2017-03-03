@@ -16,6 +16,7 @@
  *
  */
 
+#include <QTimer>
 #include "src/session.h"
 
 Session::Session(QObject *parent)
@@ -23,14 +24,6 @@ Session::Session(QObject *parent)
 }
 
 Session::~Session() {
-    // Delete COM ports for this session
-    QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
-    QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
-    QList<ComPortManager*>::iterator it = itBeginPort;
-    for (; it != itEndPort ; it++) {
-        delete *it;
-    }
-
     // Delete threads for this session
     QList<QThread*>::iterator itBeginTh = thread_list_.begin();
     QList<QThread*>::iterator itEndTh = thread_list_.end();
@@ -41,6 +34,24 @@ Session::~Session() {
         }
         delete *it;
     }
+
+    // Delete COM ports for this session
+    QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
+    QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
+    QList<ComPortManager*>::iterator it = itBeginPort;
+    for (; it != itEndPort ; it++) {
+      delete *it;
+    }
+}
+
+void Session::Close() {
+  // Delete COM ports for this session
+  QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
+  QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
+  QList<ComPortManager*>::iterator it = itBeginPort;
+  for (; it != itEndPort ; it++) {
+    QTimer::singleShot(0, *it, &ComPortManager::ClosePort);
+  }
 }
 
 void Session::AddPort(ComPortSettings* port_settings) {
@@ -65,12 +76,12 @@ void Session::SetCurrentPortMgrIndex(qint32 index) {
 
 void Session::OpenPort(qint32 index) {
   ComPortManager* port_mgr = com_port_mgr_list_.at(index);
-  port_mgr->OpenPort();
+  QTimer::singleShot(0, port_mgr, &ComPortManager::OpenPort);
 }
 
 void Session::ClosePort(qint32 index) {
     ComPortManager* port_mgr = com_port_mgr_list_.at(index);
-    port_mgr->ClosePort();
+    QTimer::singleShot(0, port_mgr, &ComPortManager::ClosePort);
 }
 
 quint8 Session::GetPortNumber(void) {

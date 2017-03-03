@@ -37,6 +37,19 @@ class ModePage : public QWidget
   //! Destructor
   ~ModePage();
 
+ signals:
+  //! Emitted for starting manual sequence
+  void StartManualSequence(QString data, int repeat, int delay);
+
+  //! Emitted for starting manual sequence
+  void StartDumpSequence(QString path, int repeat, int delay);
+
+  //! Emitted for starting manual sequence
+  void StartAutoSequence(QString path);
+
+  //! Emitted for stopping sequence
+  void StopSequence(void);
+
  protected:
   //! Port manager
   ComPortManager* port_manager_ {nullptr};
