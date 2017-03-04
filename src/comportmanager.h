@@ -48,6 +48,9 @@ class ComPortManager : public QObject {
   //! Emitted to inform GUI on sequence progression
   void SequenceProgress(int);
 
+  //! Emitted when sequence is over
+  void SequenceOver(void);
+
  public slots: //NOLINT
   //! Open COM port
   void OpenPort(void);

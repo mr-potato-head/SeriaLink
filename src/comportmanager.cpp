@@ -89,6 +89,7 @@ void ComPortManager::OnStartManualSequence(QString data, int repeat,
         sequence_timer_->stop();
         delete sequence_timer_;
         sequence_timer_ = nullptr;
+        emit SequenceOver();
       }
     });
     sequence_timer_->start();

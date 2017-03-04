@@ -21,6 +21,7 @@
 
 #include <QWidget>
 #include <QGridLayout>
+#include <QVBoxLayout>
 #include <QPushButton>
 #include <QProgressBar>
 #include <QLabel>
@@ -47,9 +48,6 @@ class ModePage : public QWidget
   //! Emitted for starting manual sequence
   void StartAutoSequence(QString path);
 
-  //! Emitted for stopping sequence
-  void StopSequence(void);
-
  protected:
   //! Port manager
   ComPortManager* port_manager_ {nullptr};
@@ -58,7 +56,10 @@ class ModePage : public QWidget
   QGridLayout* main_layout_ {nullptr};
 
   //! Send button
-  QPushButton* send_button_ {nullptr};
+  QPushButton* start_button_ {nullptr};
+
+  //! Stop button
+  QPushButton* stop_button_ {nullptr};
 
   //! Progress bar layout
   QHBoxLayout* progress_bar_layout_ {nullptr};
@@ -68,6 +69,9 @@ class ModePage : public QWidget
 
   //! Progression time label
   QLabel* progress_label_ {nullptr};
+
+  //! Button layout
+  QVBoxLayout* button_layout_ {nullptr};
 };
 
 #endif // SRC_MODEPAGE_H_

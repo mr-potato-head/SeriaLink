@@ -53,7 +53,7 @@ ManualModePage::ManualModePage(ComPortManager* port_mgr, QWidget *parent)
   main_layout_->addWidget(parser_groupbox_, 0, 1, 2, 1);
 
   // Button connection
-  connect(send_button_, &QPushButton::clicked,
+  connect(start_button_, &QPushButton::clicked,
           this, &ManualModePage::OnSendButtonClicked);
 }
 
