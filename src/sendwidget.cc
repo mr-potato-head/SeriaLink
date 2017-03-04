@@ -26,8 +26,9 @@ SendWidget::SendWidget(SessionManager* session_manager,
   mode_label_ = new QLabel(tr("Mode"), this);
   mode_label_->setAlignment(Qt::AlignCenter);
   mode_combobox_ = new QComboBox(this);
+  mode_combobox_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
   mode_combobox_->addItem(tr("Manual"), (int)MODES::MANUAL);
-  //mode_combobox_->addItem(tr("Dump"), (int)MODES::DUMP);
+  mode_combobox_->addItem(tr("Dump"), (int)MODES::DUMP);
   //mode_combobox_->addItem(tr("Auto"), (int)MODES::AUTO);
   stacked_widget_ = new QStackedWidget(this);
 
@@ -35,6 +36,8 @@ SendWidget::SendWidget(SessionManager* session_manager,
   ComPortManager* port_mgr = session->GetPortManager(port_index_);
   manual_mode_page_ = new ManualModePage(port_mgr, this);
   stacked_widget_->addWidget(manual_mode_page_);
+  dump_mode_page_ = new DumpModePage(port_mgr, this);
+  stacked_widget_->addWidget(dump_mode_page_);
 
   mode_layout_ = new QVBoxLayout();
   mode_layout_->addWidget(mode_label_);
@@ -46,4 +49,8 @@ SendWidget::SendWidget(SessionManager* session_manager,
   main_layout_ = new QGridLayout(this);
   main_layout_->addLayout(mode_layout_, 0, 0);
   main_layout_->addWidget(stacked_widget_, 0, 1);
+
+  // Connexion des signaux
+  connect(mode_combobox_, SIGNAL(currentIndexChanged(int)),
+          stacked_widget_, SLOT(setCurrentIndex(int)));
 }

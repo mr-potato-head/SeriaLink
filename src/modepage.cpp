@@ -13,12 +13,13 @@ ModePage::ModePage(ComPortManager* port_mgr, QWidget *parent)
   progress_label_->setSizePolicy(QSizePolicy::Expanding,
                                  QSizePolicy::Expanding);
   button_layout_ = new QVBoxLayout();
-  start_button_ = new QPushButton(tr("Send !"));
+  start_button_ = new QPushButton(tr("Start !"));
   start_button_->setSizePolicy(QSizePolicy::Expanding,
                               QSizePolicy::Expanding);
   stop_button_ = new QPushButton(tr("Stop"));
   stop_button_->setSizePolicy(QSizePolicy::Expanding,
                               QSizePolicy::Expanding);
+  start_button_->setEnabled(false);
   stop_button_->setEnabled(false);
   button_layout_->addWidget(start_button_);
   button_layout_->addWidget(stop_button_);

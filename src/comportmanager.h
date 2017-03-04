@@ -21,6 +21,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QList>
 
 #include "src/comport.h"
 #include "src/localcomport.h"
@@ -89,8 +90,23 @@ class ComPortManager : public QObject {
   //! Current repeat value
   int pending_repeat_ {0};
 
+  //! File path
+  QString sequence_file_;
+
   //! Sequence in progress indicator
   bool sequence_in_progress_ {false};
+
+  //! Frame list
+  QList<QString> frame_list_;
+
+  //! List index
+  int list_idx_ {0};
+
+  //! Global frame number
+  int global_frame_nbr_ {0};
+
+  //! Pending frame number
+  int pending_frame_nbr_ {0};
 };
 
 #endif  // SRC_COMPORTMANAGER_H_

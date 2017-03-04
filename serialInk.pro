@@ -36,7 +36,8 @@ SOURCES += src/main.cc\
     src/comportmanager.cpp \
     src/datapacket.cpp \
     src/modepage.cpp \
-    src/manualmodepage.cpp
+    src/manualmodepage.cpp \
+    src/dumpmodepage.cpp
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \
@@ -60,7 +61,8 @@ HEADERS += src/mainwindow.h \
     src/comportmanager.h \
     src/datapacket.h \
     src/modepage.h \
-    src/manualmodepage.h
+    src/manualmodepage.h \
+    src/dumpmodepage.h
 
 OTHER_FILES += \
     LICENSE.txt \

@@ -16,13 +16,21 @@
  *
  */
 
-#include "manualmodepage.h"
+#include <QFileDialog>
+#include "dumpmodepage.h"
 
-ManualModePage::ManualModePage(ComPortManager* port_mgr, QWidget *parent)
+DumpModePage::DumpModePage(ComPortManager* port_mgr, QWidget *parent)
   : ModePage(port_mgr, parent)
 {
-  data_line_ = new QLineEdit(this);
-  data_line_->setPlaceholderText(tr("Enter data here..."));
+  path_line_ = new QLineEdit(this);
+  path_line_->setPlaceholderText(tr("Enter dump file path here..."));
+  path_line_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  browse_button_ = new QPushButton(tr("Browse..."));
+  path_layout_ = new QHBoxLayout();
+  path_layout_->addWidget(path_line_);
+  path_layout_->addWidget(browse_button_);
+  path_layout_->setStretch(0, 80);
+  path_layout_->setStretch(1, 20);
   loop_groupbox_ = new QGroupBox(tr("Loop"), this);
   parser_groupbox_ = new QGroupBox(tr("Parser"), this);
   ascii_radio_ = new QRadioButton(tr("Ascii"), this);
@@ -47,7 +55,7 @@ ManualModePage::ManualModePage(ComPortManager* port_mgr, QWidget *parent)
 
   repeat_label_ = new QLabel(tr("Repeat"), this);
   repeat_label_->setAlignment(Qt::AlignCenter);
-  frames_label_ = new QLabel(tr("frames"), this);
+  frames_label_ = new QLabel(tr("times"), this);
   frames_label_->setAlignment(Qt::AlignCenter);
 
   delay_spinbox_ = new QSpinBox(this);
@@ -66,24 +74,29 @@ ManualModePage::ManualModePage(ComPortManager* port_mgr, QWidget *parent)
   loop_layout_->addWidget(ms_label_, 0, 6);
   loop_layout_->addLayout(progress_bar_layout_, 1, 0, 1, 7);
 
-  main_layout_->addWidget(data_line_, 0, 0);
+  main_layout_->addLayout(path_layout_, 0, 0);
   main_layout_->addWidget(loop_groupbox_, 1, 0);
   main_layout_->addWidget(parser_groupbox_, 0, 1, 2, 1);
 
+  start_button_->setEnabled(false);
+  stop_button_->setEnabled(false);
+
   // Button connection
   connect(start_button_, &QPushButton::clicked,
-          this, &ManualModePage::OnStartButtonClicked);
-  connect(data_line_, &QLineEdit::textChanged, [=](void) {
-    if(data_line_->text().isEmpty()) {
-      start_button_->setEnabled(false);
-    } else {
+          this, &DumpModePage::OnStartButtonClicked);
+  connect(browse_button_, &QPushButton::clicked, [=](void) {
+    QString fileName = QFileDialog::getOpenFileName(this,
+          tr("Open data file"), ".", tr("Text files (*.txt)"));
+    if(!fileName.isEmpty()) {
+      path_line_->setText(fileName);
       start_button_->setEnabled(true);
+      stop_button_->setEnabled(false);
     }
   });
 }
 
-void ManualModePage::OnStartButtonClicked(void) {
-  emit StartManualSequence(data_line_->text(),
-                           repeat_spinbox_->value(),
-                           delay_spinbox_->value());
+void DumpModePage::OnStartButtonClicked(void) {
+  emit StartDumpSequence(path_line_->text(),
+                         repeat_spinbox_->value(),
+                         delay_spinbox_->value());
 }

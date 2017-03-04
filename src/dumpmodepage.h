@@ -16,8 +16,8 @@
  *
  */
 
-#ifndef SRC_MANUALMODEPAGE_H_
-#define SRC_MANUALMODEPAGE_H_
+#ifndef SRC_DUMPMODEPAGE_H_
+#define SRC_DUMPMODEPAGE_H_
 
 #include <QGroupBox>
 #include <QRadioButton>
@@ -27,11 +27,11 @@
 #include <QSpinBox>
 #include "modepage.h"
 
-class ManualModePage : public ModePage
+class DumpModePage : public ModePage
 {
  public:
   //! Constructor
-  ManualModePage(ComPortManager* port_mgr, QWidget *parent = 0);
+  DumpModePage(ComPortManager* port_mgr, QWidget *parent = 0);
 
  private slots:
   //! Click on send button reaction
@@ -39,7 +39,13 @@ class ManualModePage : public ModePage
 
  private:
   //! Manual mode data line
-  QLineEdit* data_line_ {nullptr};
+  QLineEdit* path_line_ {nullptr};
+
+  //! Browse button
+  QPushButton* browse_button_ {nullptr};
+
+  //! Path layout
+  QHBoxLayout* path_layout_ {nullptr};
 
   //! Manual mode loop group box
   QGroupBox* loop_groupbox_ {nullptr};
@@ -65,8 +71,8 @@ class ManualModePage : public ModePage
   //! Label "Delay"
   QLabel* delay_label_ {nullptr};
 
-  //! Label "ms"
-  QLabel* ms_label_ {nullptr};
+   //! Label "ms"
+   QLabel* ms_label_ {nullptr};
 
   //! Label "Repeat"
   QLabel* repeat_label_ {nullptr};
@@ -84,4 +90,4 @@ class ManualModePage : public ModePage
   QWidget* vertical_line_ {nullptr};
 };
 
-#endif // SRC_MANUALMODEPAGE_H_
+#endif // SRC_DUMPMODEPAGE_H_

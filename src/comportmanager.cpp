@@ -16,6 +16,7 @@
  *
  */
 
+#include <QFile>
 #include "src/comportmanager.h"
 
 ComPortManager::ComPortManager(ComPortSettings *port_settings,
@@ -98,7 +99,65 @@ void ComPortManager::OnStartManualSequence(QString data, int repeat,
 
 void ComPortManager::OnStartDumpSequence(QString path, int repeat,
                                          int delay) {
+  // Load file
+  frame_list_.clear();
+  sequence_file_ = path;
+  QFile file(sequence_file_);
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    emit SequenceOver();
+    return;
+  }
 
+  QTextStream in(&file);
+  while (!in.atEnd()) {
+    frame_list_.append(in.readLine());
+  }
+
+  // Init frame number
+  global_frame_nbr_ = frame_list_.size() * repeat;
+  pending_frame_nbr_ = global_frame_nbr_;
+
+  sequence_in_progress_ = true;
+
+  // Send first frame
+  DataPacket packet(frame_list_.at(list_idx_).toUtf8());
+  com_port_->Send(packet);
+  pending_frame_nbr_--;
+  list_idx_++;
+
+  double progress = (double)(global_frame_nbr_ - pending_frame_nbr_)/
+                    (double)(global_frame_nbr_);
+  emit SequenceProgress(static_cast<int>(progress*100.0));
+
+  if(pending_frame_nbr_ > 0) {
+    sequence_in_progress_ = true;
+    sequence_timer_ = new QTimer(this);
+    sequence_timer_->setSingleShot(false);
+    sequence_timer_->setInterval(delay);
+    connect(sequence_timer_, &QTimer::timeout, [=](void) {
+      DataPacket packet(frame_list_.at(list_idx_).toUtf8());
+      com_port_->Send(packet);
+      pending_frame_nbr_--;
+      list_idx_++;
+
+      if(list_idx_ == frame_list_.size()) {
+        list_idx_ = 0;
+      }
+
+      double progress = (double)(global_frame_nbr_ - pending_frame_nbr_)/
+                        (double)(global_frame_nbr_);
+      emit SequenceProgress(static_cast<int>(progress*100.0));
+
+      if(pending_frame_nbr_ == 0) {
+        sequence_in_progress_ = false;
+        sequence_timer_->stop();
+        delete sequence_timer_;
+        sequence_timer_ = nullptr;
+        emit SequenceOver();
+      }
+    });
+    sequence_timer_->start();
+  }
 }
 
 void ComPortManager::OnStartAutoSequence(QString path) {
@@ -106,6 +165,7 @@ void ComPortManager::OnStartAutoSequence(QString path) {
 }
 
 void ComPortManager::OnStopSequence(void) {
+  frame_list_.clear();
   sequence_in_progress_ = false;
   sequence_timer_->stop();
   delete sequence_timer_;

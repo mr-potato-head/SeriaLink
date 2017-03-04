@@ -33,6 +33,7 @@
 #include <QRadioButton>
 #include "src/sessionmanager.h"
 #include "src/manualmodepage.h"
+#include "src/dumpmodepage.h"
 
 class SendWidget : public QWidget {
   Q_OBJECT
@@ -70,6 +71,9 @@ class SendWidget : public QWidget {
 
   //! QWidget of the manual mode page
   ManualModePage* manual_mode_page_ {nullptr};
+
+  //! QWidget of the dump mode page
+  DumpModePage* dump_mode_page_ {nullptr};
 
   //! Vertical layout of the mode choice system
   QVBoxLayout* mode_layout_ {nullptr};
