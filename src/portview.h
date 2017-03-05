@@ -20,8 +20,14 @@
 #define SRC_PORTVIEW_H_
 
 #include <QWidget>
+#include <QHBoxLayout>
 #include <QGridLayout>
-#include <QTextEdit>
+#include <QPlainTextEdit>
+#include <QPushButton>
+#include <QSpacerItem>
+#include <QGroupBox>
+#include <QRadioButton>
+#include <QLineEdit>
 #include "src/viewsettings.h"
 #include "src/datapacket.h"
 
@@ -40,11 +46,59 @@ class PortView : public QWidget {
   //! Main grid layout of the view
   QGridLayout* main_layout_ {NULL};
 
+  //! Horizontal layout of up buttons
+  QHBoxLayout* button_layout_ {nullptr};
+
+  //! Delete button
+  QPushButton* delete_button_ {nullptr};
+
+  //! Edit button
+  QPushButton* edit_button_ {nullptr};
+
+  //! Clear button
+  QPushButton* clear_button_ {nullptr};
+
+  //! Spacer item
+  QSpacerItem* spacer_item_ {nullptr};
+
   //! Text edit of the view
-  QTextEdit* text_edit_ {NULL};
+  QPlainTextEdit* text_edit_ {nullptr};
+
+  //! Capture group box
+  QGroupBox* capture_groupbox_ {nullptr};
+
+  //! Capture groupbox grid layout
+  QGridLayout* capture_layout_ {nullptr};
+
+  //! Spacer item of the capture groupbox
+  QSpacerItem* cap_spacer_item_ {nullptr};
+
+  //! Open button
+  QPushButton* open_button_ {nullptr};
+
+  //! Browse button
+  QPushButton* browse_button_ {nullptr};
+
+  //! Record start button
+  QPushButton* start_rec_button_ {nullptr};
+
+  //! Record stop button
+  QPushButton* stop_rec_button_ {nullptr};
+
+  //! Append radiobutton
+  QRadioButton* append_button_ {nullptr};
+
+  //! Overwrite radiobutton
+  QRadioButton* overwrite_button_ {nullptr};
+
+  //! Radio button layout
+  QHBoxLayout* file_mode_layout_ {nullptr};
+
+  //! File path
+  QLineEdit* file_path_ {nullptr};
 
   //! Settings of the view
-  ViewSettings* view_settings_ {NULL};
+  ViewSettings* view_settings_ {nullptr};
 };
 
 #endif  // SRC_PORTVIEW_H_

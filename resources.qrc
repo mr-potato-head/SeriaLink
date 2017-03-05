@@ -6,5 +6,11 @@
         <file>icons/chevron-right-8x.png</file>
         <file>icons/chevron-left-8x.png</file>
         <file>icons/plus-8x.png</file>
+        <file>icons/circle-x-8x.png</file>
+        <file>icons/pencil-8x.png</file>
+        <file>icons/trash-8x.png</file>
+        <file>icons/magnifying-glass-8x.png</file>
+        <file>icons/external-link-8x.png</file>
+        <file>icons/media-record-8x.png</file>
     </qresource>
 </RCC>
