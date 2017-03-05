@@ -16,6 +16,8 @@
  *
  */
 
+#include <QFileDialog>
+#include <QDesktopServices>
 #include "src/portview.h"
 #include "src/dataformatter.h"
 
@@ -54,13 +56,16 @@ PortView::PortView(ViewSettings* view_settings,
   browse_button_->setIcon(QIcon(":/icons/icons/magnifying-glass-8x.png"));
   start_rec_button_ = new QPushButton(this);
   start_rec_button_->setIcon(QIcon(":/icons/icons/media-record-8x.png"));
+  start_rec_button_->setEnabled(false);
   stop_rec_button_ = new QPushButton(this);
   stop_rec_button_->setIcon(QIcon(":/icons/icons/media-stop-8x.png"));
-  append_button_ = new QRadioButton(tr("Append"), this);
+  stop_rec_button_->setEnabled(false);
   overwrite_button_ = new QRadioButton(tr("Overwrite"), this);
+  overwrite_button_->setChecked(true);
+  append_button_ = new QRadioButton(tr("Append"), this);
   file_mode_layout_ = new QHBoxLayout();
-  file_mode_layout_->addWidget(append_button_);
   file_mode_layout_->addWidget(overwrite_button_);
+  file_mode_layout_->addWidget(append_button_);
   file_mode_layout_->addSpacerItem(cap_spacer_item_);
   file_path_ = new QLineEdit(this);
   file_path_->setPlaceholderText(tr("Enter file path here..."));
@@ -80,6 +85,28 @@ PortView::PortView(ViewSettings* view_settings,
   main_layout_->setRowStretch(0, 5);
   main_layout_->setRowStretch(1, 75);
   main_layout_->setRowStretch(2, 20);
+
+  // Signal connections
+  connect(clear_button_, &QPushButton::clicked, [=](void) {
+    text_edit_->clear();
+  });
+  connect(delete_button_, &QPushButton::clicked, [=](void) {
+    delete this;
+  });
+  connect(browse_button_, &QPushButton::clicked, [=](void) {
+    QString fileName =
+        QFileDialog::getOpenFileName(this, tr("Choose capture file"),
+                                     ".", tr("Text files (*.txt)"));
+    if(!fileName.isEmpty()) {
+      file_path_->setText(fileName);
+      start_rec_button_->setEnabled(true);
+      stop_rec_button_->setEnabled(false);
+    }
+  });
+
+  connect(open_button_, &QPushButton::clicked, [=](void) {
+    QDesktopServices::openUrl(QUrl("file:" + file_path_->text()));
+  });
 }
 
 void PortView::OnReceivedData(const DataPacket& packet) {
