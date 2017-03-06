@@ -28,6 +28,8 @@
 #include <QGroupBox>
 #include <QRadioButton>
 #include <QLineEdit>
+#include <QFile>
+#include <QTextStream>
 #include "src/viewsettings.h"
 #include "src/datapacket.h"
 
@@ -99,6 +101,15 @@ class PortView : public QWidget {
 
   //! Settings of the view
   ViewSettings* view_settings_ {nullptr};
+
+  //! Pointer on capture file
+  QFile* capture_file_ {nullptr};
+
+  //! Text stream of capture file
+  QTextStream* capture_stream_ {nullptr};
+
+  //! Is capture in progress
+  bool capture_in_progress_ {false};
 };
 
 #endif  // SRC_PORTVIEW_H_

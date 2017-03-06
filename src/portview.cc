@@ -18,6 +18,7 @@
 
 #include <QFileDialog>
 #include <QDesktopServices>
+#include <QMessageBox>
 #include "src/portview.h"
 #include "src/dataformatter.h"
 
@@ -25,6 +26,7 @@ PortView::PortView(ViewSettings* view_settings,
                    QWidget *parent)
   : QWidget(parent),
     view_settings_{view_settings} {
+  capture_in_progress_ = false;
   button_layout_ = new QHBoxLayout();
   spacer_item_ = new QSpacerItem(0, 0, QSizePolicy::Expanding);
   button_layout_->addSpacerItem(spacer_item_);
@@ -107,9 +109,40 @@ PortView::PortView(ViewSettings* view_settings,
   connect(open_button_, &QPushButton::clicked, [=](void) {
     QDesktopServices::openUrl(QUrl("file:" + file_path_->text()));
   });
+
+  connect(start_rec_button_, &QPushButton::clicked, [=](void) {
+    capture_file_ = new QFile(file_path_->text());
+    if (!capture_file_->open(QIODevice::WriteOnly | QIODevice::Text)) {
+      QMessageBox::critical(this, tr("File error"),
+                            tr("Can't open ") + file_path_->text());
+    } else {
+      capture_stream_ = new QTextStream(capture_file_);
+      start_rec_button_->setEnabled(false);
+      stop_rec_button_->setEnabled(true);
+      capture_in_progress_ = true;
+    }
+  });
+
+  connect(stop_rec_button_, &QPushButton::clicked, [=](void) {
+    capture_file_->close();
+    start_rec_button_->setEnabled(true);
+    stop_rec_button_->setEnabled(false);
+    capture_in_progress_ = false;
+  });
+
+  connect(file_path_, &QLineEdit::textChanged, [=](void) {
+    if(!file_path_->text().isEmpty()) {
+      start_rec_button_->setEnabled(true);
+    } else {
+      start_rec_button_->setEnabled(false);
+    }
+  });
 }
 
 void PortView::OnReceivedData(const DataPacket& packet) {
   QString str = DataFormatter::formatData(*view_settings_, packet.GetData());
   text_edit_->appendPlainText(str);
+  if(capture_in_progress_) {
+    *capture_stream_ << str << "\r";
+  }
 }
