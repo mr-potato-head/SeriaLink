@@ -17,6 +17,9 @@
  */
 
 #include "src/portpage.h"
+#include "src/terminalportview.h"
+#include "src/dumpportview.h"
+#include "src/tableportview.h"
 
 PortPage::PortPage(SessionManager* session_manager,
                    qint32 port_index,
@@ -50,7 +53,20 @@ void PortPage::OnNewViewClicked(void) {
   switch (result) {
     case QDialog::Accepted:
     {
-      PortView* view = new PortView(view_settings, this);
+    PortView* view;
+      switch (view_settings->GetViewType()) {
+        case ViewSettings::ViewType::kDump:
+          view = new DumpPortView(view_settings, this);
+          break;
+        case ViewSettings::ViewType::kTerminal:
+          view = new TerminalPortView(view_settings, this);
+          break;
+        case ViewSettings::ViewType::kTable:
+          view = new TablePortView(view_settings, this);
+          break;
+        default:
+          break;
+      }
       view_layout_->addWidget(view);
 
       Session* session = session_manager_->GetCurrentSession();

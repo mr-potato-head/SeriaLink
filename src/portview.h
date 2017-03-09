@@ -22,7 +22,6 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QGridLayout>
-#include <QPlainTextEdit>
 #include <QPushButton>
 #include <QSpacerItem>
 #include <QGroupBox>
@@ -37,17 +36,30 @@ class PortView : public QWidget {
   Q_OBJECT
 
  public:
-  explicit PortView(ViewSettings* view_settings,
-                    QWidget *parent = 0);
+  PortView(ViewSettings* view_settings,
+           QWidget *parent = 0);
 
  public slots: //NOLINT
   //! Executed when new data are received
-  void OnReceivedData(const DataPacket& packet);
+  virtual void OnReceivedData(const DataPacket& packet) = 0;
 
- private:
+ protected:
   //! Main grid layout of the view
   QGridLayout* main_layout_ {NULL};
 
+  //! Clear button
+  QPushButton* clear_button_ {nullptr};
+
+  //! Settings of the view
+  ViewSettings* view_settings_ {nullptr};
+
+  //! Is capture in progress
+  bool capture_in_progress_ {false};
+
+  //! Text stream of capture file
+  QTextStream* capture_stream_ {nullptr};
+
+ private:
   //! Horizontal layout of up buttons
   QHBoxLayout* button_layout_ {nullptr};
 
@@ -57,14 +69,8 @@ class PortView : public QWidget {
   //! Edit button
   QPushButton* edit_button_ {nullptr};
 
-  //! Clear button
-  QPushButton* clear_button_ {nullptr};
-
   //! Spacer item
   QSpacerItem* spacer_item_ {nullptr};
-
-  //! Text edit of the view
-  QPlainTextEdit* text_edit_ {nullptr};
 
   //! Capture group box
   QGroupBox* capture_groupbox_ {nullptr};
@@ -99,17 +105,8 @@ class PortView : public QWidget {
   //! File path
   QLineEdit* file_path_ {nullptr};
 
-  //! Settings of the view
-  ViewSettings* view_settings_ {nullptr};
-
   //! Pointer on capture file
   QFile* capture_file_ {nullptr};
-
-  //! Text stream of capture file
-  QTextStream* capture_stream_ {nullptr};
-
-  //! Is capture in progress
-  bool capture_in_progress_ {false};
 };
 
 #endif  // SRC_PORTVIEW_H_

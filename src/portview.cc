@@ -80,18 +80,12 @@ PortView::PortView(ViewSettings* view_settings,
   capture_layout_->addWidget(stop_rec_button_, 1, 2);
 
   main_layout_ = new QGridLayout(this);
-  text_edit_ = new QPlainTextEdit(this);
   main_layout_->addLayout(button_layout_, 0, 0);
-  main_layout_->addWidget(text_edit_, 1, 0);
   main_layout_->addWidget(capture_groupbox_, 2, 0);
   main_layout_->setRowStretch(0, 5);
   main_layout_->setRowStretch(1, 75);
   main_layout_->setRowStretch(2, 20);
 
-  // Signal connections
-  connect(clear_button_, &QPushButton::clicked, [=](void) {
-    text_edit_->clear();
-  });
   connect(delete_button_, &QPushButton::clicked, [=](void) {
     delete this;
   });
@@ -137,12 +131,4 @@ PortView::PortView(ViewSettings* view_settings,
       start_rec_button_->setEnabled(false);
     }
   });
-}
-
-void PortView::OnReceivedData(const DataPacket& packet) {
-  QString str = DataFormatter::formatData(*view_settings_, packet.GetData());
-  text_edit_->appendPlainText(str);
-  if(capture_in_progress_) {
-    *capture_stream_ << str << "\r";
-  }
 }

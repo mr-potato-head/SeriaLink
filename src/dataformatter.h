@@ -22,13 +22,14 @@
 #include <QString>
 #include <QByteArray>
 #include "src/viewsettings.h"
+#include "src/datapacket.h"
 
 class DataFormatter {
  public:
   DataFormatter();
 
   static QString formatData(const ViewSettings& settings,
-                            const QByteArray& data);
+                            const DataPacket& packet);
 };
 
 #endif  // SRC_DATAFORMATTER_H_

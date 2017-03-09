@@ -86,6 +86,8 @@ void ViewSettingDialog::FillViewTypeList(void) {
                                (qint32)ViewSettings::ViewType::kTerminal);
   view_type_combobox_->addItem(QStringLiteral("Dump"),
                                (qint32)ViewSettings::ViewType::kDump);
+  view_type_combobox_->addItem(QStringLiteral("Table"),
+                               (qint32)ViewSettings::ViewType::kTable);
   view_type_combobox_->setCurrentIndex(0);
 }
 

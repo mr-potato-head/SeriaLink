@@ -21,7 +21,7 @@
 DataFormatter::DataFormatter() {}
 
 QString DataFormatter::formatData(const ViewSettings &settings,
-                                  const QByteArray& data) {
+                                  const DataPacket& packet) {
     ViewSettings::DataSize eDataSize = settings.GetDataSize();
     ViewSettings::DisplayType eDisplayType = settings.GetDisplayType();
 
@@ -46,9 +46,9 @@ QString DataFormatter::formatData(const ViewSettings &settings,
 
     QString out;
     quint32 quint32_index = 0;
-    quint32 quint32_datasize = data.size();
+    quint32 quint32_datasize = packet.GetData().size();
     for (; quint32_index < quint32_datasize ; quint32_index+=quint8_size) {
-        QByteArray dataBlock = data.mid(quint32_index, quint8_size);
+        QByteArray dataBlock = packet.GetData().mid(quint32_index, quint8_size);
         switch (eDisplayType) {
         case ViewSettings::DisplayType::kAscii:
             dataBlock = dataBlock.replace("\r", "\\r");

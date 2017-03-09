@@ -28,3 +28,7 @@ DataPacket::DataPacket(const QByteArray &data)
 const QByteArray& DataPacket::GetData(void) const {
     return data_;
 }
+
+const QDateTime& DataPacket::GetDateTime(void) const {
+    return datetime_;
+}
