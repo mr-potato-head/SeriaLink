@@ -96,7 +96,18 @@ DumpModePage::DumpModePage(ComPortManager* port_mgr, QWidget *parent)
 }
 
 void DumpModePage::OnStartButtonClicked(void) {
-  emit StartDumpSequence(path_line_->text(),
+  DataParser::ParserType eType = DataParser::ParserType::kUnknown;
+  if(ascii_radio_->isChecked()) {
+    eType = DataParser::ParserType::kAscii;
+  } else if (hex_radio_->isChecked()) {
+    eType = DataParser::ParserType::kHex;
+  } else if (dec_radio_->isChecked()) {
+    eType = DataParser::ParserType::kDec;
+  } else {
+    // Should not be here
+    eType = DataParser::ParserType::kUnknown;
+  }
+  emit StartDumpSequence(eType, path_line_->text(),
                          repeat_spinbox_->value(),
                          delay_spinbox_->value());
 }

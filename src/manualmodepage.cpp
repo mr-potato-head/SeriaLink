@@ -16,7 +16,8 @@
  *
  */
 
-#include "manualmodepage.h"
+#include "src/manualmodepage.h"
+#include "src/dataparser.h"
 
 ManualModePage::ManualModePage(ComPortManager* port_mgr, QWidget *parent)
   : ModePage(port_mgr, parent)
@@ -70,20 +71,48 @@ ManualModePage::ManualModePage(ComPortManager* port_mgr, QWidget *parent)
   main_layout_->addWidget(loop_groupbox_, 1, 0);
   main_layout_->addWidget(parser_groupbox_, 0, 1, 2, 1);
 
+  // Radio button connections
+  connect(ascii_radio_, &QRadioButton::toggled, [=](bool state) {
+    if(state) {
+      parser_type_ = DataParser::ParserType::kAscii;
+      UpdateButtonEnabledState();
+    }
+  });
+  connect(hex_radio_, &QRadioButton::toggled, [=](bool state) {
+    if(state) {
+      parser_type_ = DataParser::ParserType::kHex;
+      UpdateButtonEnabledState();
+    }
+  });
+  connect(dec_radio_, &QRadioButton::toggled, [=](bool state) {
+    if(state) {
+      parser_type_ = DataParser::ParserType::kDec;
+      UpdateButtonEnabledState();
+    }
+  });
+
   // Button connection
   connect(start_button_, &QPushButton::clicked,
           this, &ManualModePage::OnStartButtonClicked);
   connect(data_line_, &QLineEdit::textChanged, [=](void) {
-    if(data_line_->text().isEmpty()) {
-      start_button_->setEnabled(false);
-    } else {
-      start_button_->setEnabled(true);
-    }
+    UpdateButtonEnabledState();
   });
 }
 
 void ManualModePage::OnStartButtonClicked(void) {
-  emit StartManualSequence(data_line_->text(),
+  emit StartManualSequence(parser_type_, data_line_->text(),
                            repeat_spinbox_->value(),
                            delay_spinbox_->value());
+}
+
+void ManualModePage::UpdateButtonEnabledState(void) {
+  if(data_line_->text().isEmpty()) {
+    start_button_->setEnabled(false);
+  } else {
+    if(DataParser::CheckString(parser_type_, data_line_->text())) {
+      start_button_->setEnabled(true);
+    } else {
+      start_button_->setEnabled(false);
+    }
+  }
 }

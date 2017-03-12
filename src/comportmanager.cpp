@@ -18,6 +18,7 @@
 
 #include <QFile>
 #include "src/comportmanager.h"
+#include "src/dataparser.h"
 
 ComPortManager::ComPortManager(ComPortSettings *port_settings,
                                QObject *parent)
@@ -54,15 +55,19 @@ void ComPortManager::ClosePort(void) {
   com_port_ = NULL;
 }
 
-void ComPortManager::OnStartManualSequence(QString data, int repeat,
+void ComPortManager::OnStartManualSequence(DataParser::ParserType eParser,
+                                           QString str, int repeat,
                                            int delay) {
   // Save data
-  sequence_data_ = data;
+  sequence_str_ = str;
   sequence_repeat_ = repeat;
   pending_repeat_ = repeat;
 
   // Send first frame
-  DataPacket packet(data.toUtf8());
+  QByteArray data;
+  // TODO: check result
+  DataParser::ParseString(eParser, str, data);
+  DataPacket packet(data);
   com_port_->Send(packet);
   pending_repeat_--;
 
@@ -77,7 +82,10 @@ void ComPortManager::OnStartManualSequence(QString data, int repeat,
     sequence_timer_->setSingleShot(false);
     sequence_timer_->setInterval(delay);
     connect(sequence_timer_, &QTimer::timeout, [=](void) {
-      DataPacket packet(data.toUtf8());
+      QByteArray data;
+      // TODO: check result
+      DataParser::ParseString(eParser, str, data);
+      DataPacket packet(data);
       com_port_->Send(packet);
       pending_repeat_--;
 
@@ -97,7 +105,8 @@ void ComPortManager::OnStartManualSequence(QString data, int repeat,
   }
 }
 
-void ComPortManager::OnStartDumpSequence(QString path, int repeat,
+void ComPortManager::OnStartDumpSequence(DataParser::ParserType eParser,
+                                         QString path, int repeat,
                                          int delay) {
   // Load file
   frame_list_.clear();
@@ -120,7 +129,10 @@ void ComPortManager::OnStartDumpSequence(QString path, int repeat,
   sequence_in_progress_ = true;
 
   // Send first frame
-  DataPacket packet(frame_list_.at(list_idx_).toUtf8());
+  QByteArray data;
+  // TODO: check result
+  DataParser::ParseString(eParser, frame_list_.at(list_idx_), data);
+  DataPacket packet(data);
   com_port_->Send(packet);
   pending_frame_nbr_--;
   list_idx_++;
@@ -135,7 +147,10 @@ void ComPortManager::OnStartDumpSequence(QString path, int repeat,
     sequence_timer_->setSingleShot(false);
     sequence_timer_->setInterval(delay);
     connect(sequence_timer_, &QTimer::timeout, [=](void) {
-      DataPacket packet(frame_list_.at(list_idx_).toUtf8());
+      QByteArray data;
+      // TODO: check result
+      DataParser::ParseString(eParser, frame_list_.at(list_idx_), data);
+      DataPacket packet(data);
       com_port_->Send(packet);
       pending_frame_nbr_--;
       list_idx_++;

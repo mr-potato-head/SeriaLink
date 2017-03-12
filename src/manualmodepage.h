@@ -25,7 +25,8 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QSpinBox>
-#include "modepage.h"
+#include "src/modepage.h"
+#include "src/dataparser.h"
 
 class ManualModePage : public ModePage
 {
@@ -82,6 +83,12 @@ class ManualModePage : public ModePage
 
   //! Vertical line
   QWidget* vertical_line_ {nullptr};
+
+  //! Current selected data parser
+  DataParser::ParserType parser_type_ {DataParser::ParserType::kAscii};
+
+  //!Update Start/Stop button enabled state
+  void UpdateButtonEnabledState(void);
 };
 
 #endif // SRC_MANUALMODEPAGE_H_

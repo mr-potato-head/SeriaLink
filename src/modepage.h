@@ -25,6 +25,7 @@
 #include <QPushButton>
 #include <QProgressBar>
 #include <QLabel>
+#include <QRegularExpression>
 #include "comportmanager.h"
 
 class ModePage : public QWidget
@@ -32,6 +33,7 @@ class ModePage : public QWidget
   Q_OBJECT
 
  public:
+
   //! Constructor
   ModePage(ComPortManager* port_mgr, QWidget *parent = 0);
 
@@ -40,10 +42,12 @@ class ModePage : public QWidget
 
  signals:
   //! Emitted for starting manual sequence
-  void StartManualSequence(QString data, int repeat, int delay);
+  void StartManualSequence(DataParser::ParserType eParser, QString data,
+                           int repeat, int delay);
 
   //! Emitted for starting manual sequence
-  void StartDumpSequence(QString path, int repeat, int delay);
+  void StartDumpSequence(DataParser::ParserType eParser, QString path,
+                         int repeat, int delay);
 
   //! Emitted for starting manual sequence
   void StartAutoSequence(QString path);

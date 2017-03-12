@@ -22,51 +22,59 @@ DataFormatter::DataFormatter() {}
 
 QString DataFormatter::formatData(const ViewSettings &settings,
                                   const DataPacket& packet) {
-    ViewSettings::DataSize eDataSize = settings.GetDataSize();
-    ViewSettings::DisplayType eDisplayType = settings.GetDisplayType();
+  ViewSettings::DataSize eDataSize = settings.GetDataSize();
+  ViewSettings::DisplayType eDisplayType = settings.GetDisplayType();
 
-    quint8 quint8_size = 0;
-    switch (eDataSize) {
-    case ViewSettings::DataSize::k1Byte:
-        quint8_size = 1;
-        break;
-    case ViewSettings::DataSize::k2Bytes:
-        quint8_size = 2;
-        break;
-    case ViewSettings::DataSize::k4Bytes:
-        quint8_size = 4;
-        break;
-    case ViewSettings::DataSize::k8Bytes:
-        quint8_size = 8;
-        break;
+  qint8 qint8_size = 0;
+  switch (eDataSize) {
+  case ViewSettings::DataSize::k1Byte:
+    qint8_size = 1;
+    break;
+  case ViewSettings::DataSize::k2Bytes:
+    qint8_size = 2;
+    break;
+  case ViewSettings::DataSize::k4Bytes:
+    qint8_size = 4;
+    break;
+  case ViewSettings::DataSize::k8Bytes:
+    qint8_size = 8;
+    break;
+  case ViewSettings::DataSize::kNoSize:
+  case ViewSettings::DataSize::kUnknown:
+  default:
+    qint8_size = -1;
+    break;
+  }
+
+  QString out;
+  if(qint8_size != -1) {
+    out += "|";
+  }
+  quint32 quint32_index = 0;
+  quint32 quint32_datasize = packet.GetData().size();
+  for (; quint32_index < quint32_datasize ; quint32_index+=qint8_size) {
+    QByteArray dataBlock = packet.GetData().mid(quint32_index, qint8_size);
+    switch (eDisplayType) {
+    case ViewSettings::DisplayType::kAscii:
+      dataBlock = dataBlock.replace("\r", "\\r");
+      dataBlock = dataBlock.replace("\n", "\\n");
+      out += QString(dataBlock);
+      break;
+    case ViewSettings::DisplayType::kHexa:
+      out += QString(dataBlock.toHex().toUpper());
+      break;
+    case ViewSettings::DisplayType::kDec:
+    {
+      bool coucou = false;
+      out += QString::number(dataBlock.toHex().toUInt(&coucou, 16));
+      break;
+    }
     default:
-        quint8_size = 4;
-        break;
+      break;
     }
-
-    QString out;
-    quint32 quint32_index = 0;
-    quint32 quint32_datasize = packet.GetData().size();
-    for (; quint32_index < quint32_datasize ; quint32_index+=quint8_size) {
-        QByteArray dataBlock = packet.GetData().mid(quint32_index, quint8_size);
-        switch (eDisplayType) {
-        case ViewSettings::DisplayType::kAscii:
-            dataBlock = dataBlock.replace("\r", "\\r");
-            dataBlock = dataBlock.replace("\n", "\\n");
-            out += "|" + QString(dataBlock);
-            break;
-        case ViewSettings::DisplayType::kHexa:
-            out += "|" + QString(dataBlock.toHex());
-            break;
-        case ViewSettings::DisplayType::kDec:
-        {
-            bool coucou = false;
-            out += "|" + QString::number(dataBlock.toHex().toUInt(&coucou, 16));
-            break;
-        }
-        default:
-            break;
-        }
+    if(qint8_size != -1) {
+      out += "|";
     }
-    return out;
+  }
+  return out;
 }

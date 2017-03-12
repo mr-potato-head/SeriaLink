@@ -40,6 +40,7 @@ class ViewSettings {
   //! Data data size
   enum class DataSize {
     kUnknown = 0,
+    kNoSize,
     k1Byte,
     k2Bytes,
     k4Bytes,

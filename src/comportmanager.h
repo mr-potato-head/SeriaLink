@@ -26,6 +26,7 @@
 #include "src/comport.h"
 #include "src/localcomport.h"
 #include "src/comportsettings.h"
+#include "src/dataparser.h"
 
 class ComPortManager : public QObject {
   Q_OBJECT
@@ -60,10 +61,12 @@ class ComPortManager : public QObject {
   void ClosePort(void);
 
   //! Start manual sequence
-  void OnStartManualSequence(QString data, int repeat, int delay);
+  void OnStartManualSequence(DataParser::ParserType eParser, QString str,
+                             int repeat, int delay);
 
   //! Start dump sequence
-  void OnStartDumpSequence(QString path, int repeat, int delay);
+  void OnStartDumpSequence(DataParser::ParserType eParser, QString path,
+                           int repeat, int delay);
 
   //! Start auto sequence
   void OnStartAutoSequence(QString path);
@@ -78,8 +81,8 @@ class ComPortManager : public QObject {
   //! COM port settings
   ComPortSettings* com_port_settings_ {NULL};
 
-  //! Manual mode data
-  QString sequence_data_;
+  //! Manual mode str
+  QString sequence_str_;
 
   //! Sequence timer
   QTimer* sequence_timer_ {nullptr};

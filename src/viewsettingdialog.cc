@@ -102,6 +102,8 @@ void ViewSettingDialog::FillDisplayTypeList(void) {
 }
 
 void ViewSettingDialog::FillDataSizeList(void) {
+  data_size_combobox_->addItem(QStringLiteral("No size"),
+                               (qint32)ViewSettings::DataSize::kNoSize);
   data_size_combobox_->addItem(QStringLiteral("1 Byte"),
                                (qint32)ViewSettings::DataSize::k1Byte);
   data_size_combobox_->addItem(QStringLiteral("2 Bytes"),
