@@ -24,6 +24,7 @@ ComPortManager::ComPortManager(ComPortSettings *port_settings,
                                QObject *parent)
   : QObject(parent),
     com_port_settings_{port_settings} {
+  qRegisterMetaType<DataParser::ParserType>("DataParser::ParserType");
 }
 
 ComPortManager::~ComPortManager() {
@@ -76,7 +77,7 @@ void ComPortManager::OnStartManualSequence(DataParser::ParserType eParser,
   emit SequenceProgress(static_cast<int>(progress*100.0));
 
   // Check if a sequence has been requested
-  if((repeat > 0) && (delay > 0)) {
+  if(pending_repeat_ > 0) {
     sequence_in_progress_ = true;
     sequence_timer_ = new QTimer(this);
     sequence_timer_->setSingleShot(false);
@@ -102,6 +103,9 @@ void ComPortManager::OnStartManualSequence(DataParser::ParserType eParser,
       }
     });
     sequence_timer_->start();
+  } else {
+    sequence_in_progress_ = false;
+    emit SequenceOver();
   }
 }
 
