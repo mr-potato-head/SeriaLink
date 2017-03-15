@@ -30,10 +30,16 @@ class DataParser
   static const QString kAsciiPattern;
 
   //! RegExp for Hex strings
-  static const QString kHexPattern;
+  static const QString kHexParsePattern;
+
+  //! RegExp for Hex strings
+  static const QString kHexCheckPattern;
 
   //! RegExp for Dec strings
-  static const QString kDecPattern;
+  static const QString kDecParsePattern;
+
+  //! RegExp for Dec strings
+  static const QString kDecCheckPattern;
 
   //! Check if string follow ascii
   static bool CheckAsciiString(const QString& str);

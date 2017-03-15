@@ -1,9 +1,12 @@
 #include <QRegularExpression>
+#include <QDebug>
 #include "src/dataparser.h"
 
 const QString DataParser::kAsciiPattern = "^[\\x00-\\x7F]+$";
-const QString DataParser::kHexPattern = "^(?:(0[xX][0-9a-fA-F]+)[-,;|]?)+$";
-const QString DataParser::kDecPattern = "^(?:([0-9]+)[-,;|]?)+$";
+const QString DataParser::kHexCheckPattern = "^(?:0[xX][0-9a-fA-F]+[-,;|]?)+$";
+const QString DataParser::kHexParsePattern = "0[xX]([0-9a-fA-F]+)[-,;|]?";
+const QString DataParser::kDecCheckPattern = "^(?:([0-9]+)[-,;|]?)+$";
+const QString DataParser::kDecParsePattern = "([0-9]+)[-,;|]?";
 
 DataParser::DataParser() {
 }
@@ -57,22 +60,40 @@ bool DataParser::CheckAsciiString(const QString& str) {
 }
 
 bool DataParser::ParseAsciiString(const QString& str, QByteArray& data) {
+  data = str.toUtf8();
+  return true;
 }
 
 bool DataParser::CheckHexString(const QString& str) {
-  QRegularExpression reg_exp(kHexPattern);
+  QRegularExpression reg_exp(kHexCheckPattern);
   QRegularExpressionMatch match = reg_exp.match(str);
   return match.hasMatch();
 }
 
 bool DataParser::ParseHexString(const QString& str, QByteArray& data) {
+  QRegularExpression reg_exp(kHexParsePattern);
+  QRegularExpressionMatchIterator i = reg_exp.globalMatch(str);
+  while (i.hasNext()) {
+    QRegularExpressionMatch match = i.next();
+    bool error = false;
+    data.append(match.captured(1).toUInt(&error, 16));
+  }
+  return true;
 }
 
 bool DataParser::CheckDecString(const QString& str) {
-  QRegularExpression reg_exp(kDecPattern);
+  QRegularExpression reg_exp(kDecCheckPattern);
   QRegularExpressionMatch match = reg_exp.match(str);
   return match.hasMatch();
 }
 
 bool DataParser::ParseDecString(const QString& str, QByteArray& data) {
+  QRegularExpression reg_exp(kDecParsePattern);
+  QRegularExpressionMatchIterator i = reg_exp.globalMatch(str);
+  while (i.hasNext()) {
+    QRegularExpressionMatch match = i.next();
+    bool error = false;
+    data.append(match.captured(1).toUInt(&error, 10));
+  }
+  return true;
 }
