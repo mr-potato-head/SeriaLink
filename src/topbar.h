@@ -36,6 +36,9 @@ class TopBar : public QWidget {
   //! Signal emitted when index is updated
   void PageIndexUpdated(qint8);
 
+  //! Open menu signal
+  void OpenMenu(void);
+
  private slots:  // NOLINT
   //! Slots called when page index should be increased
   void OnIncreaseCurrentPageIndex(void);

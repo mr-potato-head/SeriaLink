@@ -53,6 +53,9 @@ class PageSwitcher : public QWidget {
   //! Signal emitted when add button is clicked
   void AddPage(void);
 
+  //! Open menu signal
+  void OpenMenu(void);
+
  private:
   //! Main horizontal layout of the widget
   QHBoxLayout* main_layout_ {NULL};

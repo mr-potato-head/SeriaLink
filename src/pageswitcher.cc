@@ -55,6 +55,8 @@ PageSwitcher::PageSwitcher(QWidget *parent) :
 
   connect(add_button_, SIGNAL(clicked()),
           this, SIGNAL(AddPage()));
+  connect(menu_button_, SIGNAL(clicked()),
+          this, SIGNAL(OpenMenu()));
   connect(left_button_, SIGNAL(clicked()),
           this, SIGNAL(DecreaseCurrentPageIndex()));
   connect(right_button_, SIGNAL(clicked()),

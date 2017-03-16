@@ -16,7 +16,9 @@
  *
  */
 
+#include <QDebug>
 #include "src/centralwidget.h"
+#include "src/menuwidget.h"
 
 CentralWidget::CentralWidget(QWidget *parent) :
   QWidget(parent) {
@@ -35,4 +37,18 @@ CentralWidget::CentralWidget(QWidget *parent) :
 
   main_layout_->setMargin(0);
   main_layout_->setSpacing(0);
+
+  connect(top_bar_, &TopBar::OpenMenu, [=](void) {
+    MenuWidget* menu = new MenuWidget(this);
+    QRect menu_geometry = menu->geometry();
+    QRect top_bar_geometry = top_bar_->geometry();
+    QPoint relative_bottom_right = top_bar_geometry.bottomRight();
+    QPoint absolute_bottom_right = QWidget::mapToGlobal(relative_bottom_right);
+    QPoint move_point(absolute_bottom_right.x()-menu_geometry.width(),
+                      absolute_bottom_right.y());
+    menu->move(move_point);
+    menu->show();
+    menu->setFocus();
+  });
 }
+

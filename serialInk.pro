@@ -41,7 +41,8 @@ SOURCES += src/main.cc\
     src/tableportview.cc \
     src/dumpportview.cc \
     src/terminalportview.cpp \
-    src/dataparser.cpp
+    src/dataparser.cpp \
+    src/menuwidget.cpp
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \
@@ -70,7 +71,8 @@ HEADERS += src/mainwindow.h \
     src/tableportview.h \
     src/dumpportview.h \
     src/terminalportview.h \
-    src/dataparser.h
+    src/dataparser.h \
+    src/menuwidget.h
 
 OTHER_FILES += \
     LICENSE.txt \

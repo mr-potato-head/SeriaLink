@@ -47,6 +47,8 @@ TopBar::TopBar(SessionManager* session_manager, QWidget *parent)
           this, SLOT(UpdateSelectorButtonStatus()));
   connect(session_manager_->GetCurrentSession(), SIGNAL(IndexChanged(qint32)),
           this, SLOT(UpdateSwitcherButtonStatus()));
+  connect(page_switcher_, SIGNAL(OpenMenu()),
+          this, SIGNAL(OpenMenu()));
 
   UpdateSwitcherButtonStatus();
 }

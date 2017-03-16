@@ -13,5 +13,7 @@
         <file>icons/external-link-8x.png</file>
         <file>icons/media-record-8x.png</file>
         <file>icons/grid-three-up-8x.png</file>
+        <file>icons/power-standby-8x.png</file>
+        <file>icons/question-mark-8x.png</file>
     </qresource>
 </RCC>
