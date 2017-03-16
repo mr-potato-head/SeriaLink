@@ -36,11 +36,22 @@ PageSwitcher::PageSwitcher(QWidget *parent) :
   add_button_->setSizePolicy(QSizePolicy::Expanding,
                              QSizePolicy::Expanding);
   add_button_->setToolTip(tr("Add port."));
+  menu_button_ = new QPushButton(this);
+  menu_button_->setIcon(QIcon(":/icons/icons/grid-three-up-8x.png"));
+  menu_button_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  menu_button_->setToolTip(tr("Open menu."));
+
+  vertical_line_ = new QWidget;
+  vertical_line_->setFixedWidth(2);
+  vertical_line_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+  vertical_line_->setStyleSheet(QString("background-color: #c0c0c0;"));
 
   main_layout_ = new QHBoxLayout(this);
   main_layout_->addWidget(left_button_);
   main_layout_->addWidget(add_button_);
   main_layout_->addWidget(right_button_);
+  main_layout_->addWidget(vertical_line_);
+  main_layout_->addWidget(menu_button_);
 
   connect(add_button_, SIGNAL(clicked()),
           this, SIGNAL(AddPage()));

@@ -65,6 +65,12 @@ class PageSwitcher : public QWidget {
 
   //! Button to add new page
   QPushButton* add_button_ {NULL};
+
+  //! Menu button
+  QPushButton* menu_button_ {NULL};
+
+  //! Vertical line
+  QWidget* vertical_line_ {NULL};
 };
 
 #endif  // SRC_PAGESWITCHER_H_
