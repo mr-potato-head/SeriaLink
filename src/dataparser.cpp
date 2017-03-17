@@ -78,7 +78,7 @@ bool DataParser::CheckAsciiString(const QString& str) {
 }
 
 bool DataParser::ParseAsciiString(const QString& str, QByteArray* data) {
-  data = str.toUtf8();
+  *data = str.toUtf8();
   return true;
 }
 
@@ -94,7 +94,7 @@ bool DataParser::ParseHexString(const QString& str, QByteArray* data) {
   while (i.hasNext()) {
     QRegularExpressionMatch match = i.next();
     bool error = false;
-    data.append(match.captured(1).toUInt(&error, 16));
+    data->append(match.captured(1).toUInt(&error, 16));
   }
   return true;
 }
@@ -111,7 +111,7 @@ bool DataParser::ParseDecString(const QString& str, QByteArray* data) {
   while (i.hasNext()) {
     QRegularExpressionMatch match = i.next();
     bool error = false;
-    data.append(match.captured(1).toUInt(&error, 10));
+    data->append(match.captured(1).toUInt(&error, 10));
   }
   return true;
 }

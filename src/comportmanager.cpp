@@ -67,7 +67,7 @@ void ComPortManager::OnStartManualSequence(DataParser::ParserType eParser,
   // Send first frame
   QByteArray data;
   // TODO(Guilhem): check result
-  DataParser::ParseString(eParser, str, data);
+  DataParser::ParseString(eParser, str, &data);
   DataPacket packet(data);
   com_port_->Send(packet);
   pending_repeat_--;
@@ -85,7 +85,7 @@ void ComPortManager::OnStartManualSequence(DataParser::ParserType eParser,
     connect(sequence_timer_, &QTimer::timeout, [=](void) {
       QByteArray data;
       // TODO(Guilhem): check result
-      DataParser::ParseString(eParser, str, data);
+      DataParser::ParseString(eParser, str, &data);
       DataPacket packet(data);
       com_port_->Send(packet);
       pending_repeat_--;
@@ -135,7 +135,7 @@ void ComPortManager::OnStartDumpSequence(DataParser::ParserType eParser,
   // Send first frame
   QByteArray data;
   // TODO(Guilhem): check result
-  DataParser::ParseString(eParser, frame_list_.at(list_idx_), data);
+  DataParser::ParseString(eParser, frame_list_.at(list_idx_), &data);
   DataPacket packet(data);
   com_port_->Send(packet);
   pending_frame_nbr_--;
@@ -153,7 +153,7 @@ void ComPortManager::OnStartDumpSequence(DataParser::ParserType eParser,
     connect(sequence_timer_, &QTimer::timeout, [=](void) {
       QByteArray data;
       // TODO(Guilhem): check result
-      DataParser::ParseString(eParser, frame_list_.at(list_idx_), data);
+      DataParser::ParseString(eParser, frame_list_.at(list_idx_), &data);
       DataPacket packet(data);
       com_port_->Send(packet);
       pending_frame_nbr_--;
