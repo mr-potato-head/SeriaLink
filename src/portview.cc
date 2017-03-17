@@ -93,7 +93,7 @@ PortView::PortView(ViewSettings* view_settings,
     QString fileName =
         QFileDialog::getOpenFileName(this, tr("Choose capture file"),
                                      ".", tr("Text files (*.txt)"));
-    if(!fileName.isEmpty()) {
+    if (!fileName.isEmpty()) {
       file_path_->setText(fileName);
       start_rec_button_->setEnabled(true);
       stop_rec_button_->setEnabled(false);
@@ -125,7 +125,7 @@ PortView::PortView(ViewSettings* view_settings,
   });
 
   connect(file_path_, &QLineEdit::textChanged, [=](void) {
-    if(!file_path_->text().isEmpty()) {
+    if (!file_path_->text().isEmpty()) {
       start_rec_button_->setEnabled(true);
     } else {
       start_rec_button_->setEnabled(false);

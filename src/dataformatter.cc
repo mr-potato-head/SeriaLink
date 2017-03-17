@@ -47,7 +47,7 @@ QString DataFormatter::formatData(const ViewSettings &settings,
   }
 
   QString out;
-  if(qint8_size != -1) {
+  if (qint8_size != -1) {
     out += "|";
   }
   quint32 quint32_index = 0;
@@ -72,7 +72,7 @@ QString DataFormatter::formatData(const ViewSettings &settings,
     default:
       break;
     }
-    if(qint8_size != -1) {
+    if (qint8_size != -1) {
       out += "|";
     }
   }

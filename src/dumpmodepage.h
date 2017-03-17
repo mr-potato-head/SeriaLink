@@ -25,15 +25,14 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QSpinBox>
-#include "modepage.h"
+#include "src/modepage.h"
 
-class DumpModePage : public ModePage
-{
+class DumpModePage : public ModePage {
  public:
   //! Constructor
-  DumpModePage(ComPortManager* port_mgr, QWidget *parent = 0);
+  explicit DumpModePage(ComPortManager* port_mgr, QWidget *parent = 0);
 
- private slots:
+ private slots: //NOLINT
   //! Click on send button reaction
   void OnStartButtonClicked(void);
 
@@ -71,8 +70,8 @@ class DumpModePage : public ModePage
   //! Label "Delay"
   QLabel* delay_label_ {nullptr};
 
-   //! Label "ms"
-   QLabel* ms_label_ {nullptr};
+  //! Label "ms"
+  QLabel* ms_label_ {nullptr};
 
   //! Label "Repeat"
   QLabel* repeat_label_ {nullptr};
@@ -90,4 +89,4 @@ class DumpModePage : public ModePage
   QWidget* vertical_line_ {nullptr};
 };
 
-#endif // SRC_DUMPMODEPAGE_H_
+#endif  // SRC_DUMPMODEPAGE_H_

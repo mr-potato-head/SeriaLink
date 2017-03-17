@@ -27,9 +27,9 @@ SendWidget::SendWidget(SessionManager* session_manager,
   mode_label_->setAlignment(Qt::AlignCenter);
   mode_combobox_ = new QComboBox(this);
   mode_combobox_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-  mode_combobox_->addItem(tr("Manual"), (int)MODES::MANUAL);
-  mode_combobox_->addItem(tr("Dump"), (int)MODES::DUMP);
-  //mode_combobox_->addItem(tr("Auto"), (int)MODES::AUTO);
+  mode_combobox_->addItem(tr("Manual"), static_cast<int>(MODES::MANUAL));
+  mode_combobox_->addItem(tr("Dump"), static_cast<int>(MODES::DUMP));
+  //  mode_combobox_->addItem(tr("Auto"), static_cast<int>(MODES::AUTO));
   stacked_widget_ = new QStackedWidget(this);
 
   Session* session = session_manager_->GetCurrentSession();

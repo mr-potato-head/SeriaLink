@@ -17,11 +17,10 @@
  */
 
 #include <QFileDialog>
-#include "dumpmodepage.h"
+#include "src/dumpmodepage.h"
 
 DumpModePage::DumpModePage(ComPortManager* port_mgr, QWidget *parent)
-  : ModePage(port_mgr, parent)
-{
+  : ModePage(port_mgr, parent) {
   path_line_ = new QLineEdit(this);
   path_line_->setPlaceholderText(tr("Enter dump file path here..."));
   path_line_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -87,7 +86,7 @@ DumpModePage::DumpModePage(ComPortManager* port_mgr, QWidget *parent)
   connect(browse_button_, &QPushButton::clicked, [=](void) {
     QString fileName = QFileDialog::getOpenFileName(this,
           tr("Open data file"), ".", tr("Text files (*.txt)"));
-    if(!fileName.isEmpty()) {
+    if (!fileName.isEmpty()) {
       path_line_->setText(fileName);
       start_button_->setEnabled(true);
       stop_button_->setEnabled(false);
@@ -97,7 +96,7 @@ DumpModePage::DumpModePage(ComPortManager* port_mgr, QWidget *parent)
 
 void DumpModePage::OnStartButtonClicked(void) {
   DataParser::ParserType eType = DataParser::ParserType::kUnknown;
-  if(ascii_radio_->isChecked()) {
+  if (ascii_radio_->isChecked()) {
     eType = DataParser::ParserType::kAscii;
   } else if (hex_radio_->isChecked()) {
     eType = DataParser::ParserType::kHex;

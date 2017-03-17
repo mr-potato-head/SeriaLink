@@ -28,13 +28,12 @@
 #include "src/modepage.h"
 #include "src/dataparser.h"
 
-class ManualModePage : public ModePage
-{
+class ManualModePage : public ModePage {
  public:
   //! Constructor
-  ManualModePage(ComPortManager* port_mgr, QWidget *parent = 0);
+  explicit ManualModePage(ComPortManager* port_mgr, QWidget *parent = 0);
 
- private slots:
+ private slots: //NOLINT
   //! Click on send button reaction
   void OnStartButtonClicked(void);
 
@@ -87,8 +86,8 @@ class ManualModePage : public ModePage
   //! Current selected data parser
   DataParser::ParserType parser_type_ {DataParser::ParserType::kAscii};
 
-  //!Update Start/Stop button enabled state
+  //! Update Start/Stop button enabled state
   void UpdateButtonEnabledState(void);
 };
 
-#endif // SRC_MANUALMODEPAGE_H_
+#endif  // SRC_MANUALMODEPAGE_H_

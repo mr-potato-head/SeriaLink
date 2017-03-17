@@ -46,7 +46,7 @@ void ComPortManager::OpenPort(void) {
 
 void ComPortManager::ClosePort(void) {
   // Stop current sequence
-  if(sequence_in_progress_) {
+  if (sequence_in_progress_) {
     this->OnStopSequence();
   }
 
@@ -66,35 +66,35 @@ void ComPortManager::OnStartManualSequence(DataParser::ParserType eParser,
 
   // Send first frame
   QByteArray data;
-  // TODO: check result
+  // TODO(Guilhem): check result
   DataParser::ParseString(eParser, str, data);
   DataPacket packet(data);
   com_port_->Send(packet);
   pending_repeat_--;
 
-  double progress = (double)(sequence_repeat_ - pending_repeat_)/
-                    (double)(sequence_repeat_);
+  double progress = static_cast<double>(sequence_repeat_ - pending_repeat_)/
+                    static_cast<double>(sequence_repeat_);
   emit SequenceProgress(static_cast<int>(progress*100.0));
 
   // Check if a sequence has been requested
-  if(pending_repeat_ > 0) {
+  if (pending_repeat_ > 0) {
     sequence_in_progress_ = true;
     sequence_timer_ = new QTimer(this);
     sequence_timer_->setSingleShot(false);
     sequence_timer_->setInterval(delay);
     connect(sequence_timer_, &QTimer::timeout, [=](void) {
       QByteArray data;
-      // TODO: check result
+      // TODO(Guilhem): check result
       DataParser::ParseString(eParser, str, data);
       DataPacket packet(data);
       com_port_->Send(packet);
       pending_repeat_--;
 
-      double progress = (double)(sequence_repeat_ - pending_repeat_)/
-                        (double)(sequence_repeat_);
+      double progress = static_cast<double>(sequence_repeat_ - pending_repeat_)/
+                        static_cast<double>(sequence_repeat_);
       emit SequenceProgress(static_cast<int>(progress*100.0));
 
-      if(pending_repeat_ == 0) {
+      if (pending_repeat_ == 0) {
         sequence_in_progress_ = false;
         sequence_timer_->stop();
         delete sequence_timer_;
@@ -134,40 +134,41 @@ void ComPortManager::OnStartDumpSequence(DataParser::ParserType eParser,
 
   // Send first frame
   QByteArray data;
-  // TODO: check result
+  // TODO(Guilhem): check result
   DataParser::ParseString(eParser, frame_list_.at(list_idx_), data);
   DataPacket packet(data);
   com_port_->Send(packet);
   pending_frame_nbr_--;
   list_idx_++;
 
-  double progress = (double)(global_frame_nbr_ - pending_frame_nbr_)/
-                    (double)(global_frame_nbr_);
+  double progress = static_cast<double>(global_frame_nbr_ - pending_frame_nbr_)/
+                    static_cast<double>(global_frame_nbr_);
   emit SequenceProgress(static_cast<int>(progress*100.0));
 
-  if(pending_frame_nbr_ > 0) {
+  if (pending_frame_nbr_ > 0) {
     sequence_in_progress_ = true;
     sequence_timer_ = new QTimer(this);
     sequence_timer_->setSingleShot(false);
     sequence_timer_->setInterval(delay);
     connect(sequence_timer_, &QTimer::timeout, [=](void) {
       QByteArray data;
-      // TODO: check result
+      // TODO(Guilhem): check result
       DataParser::ParseString(eParser, frame_list_.at(list_idx_), data);
       DataPacket packet(data);
       com_port_->Send(packet);
       pending_frame_nbr_--;
       list_idx_++;
 
-      if(list_idx_ == frame_list_.size()) {
+      if (list_idx_ == frame_list_.size()) {
         list_idx_ = 0;
       }
 
-      double progress = (double)(global_frame_nbr_ - pending_frame_nbr_)/
-                        (double)(global_frame_nbr_);
+      double progress = static_cast<double>(global_frame_nbr_ -
+                                            pending_frame_nbr_)/
+                        static_cast<double>(global_frame_nbr_);
       emit SequenceProgress(static_cast<int>(progress*100.0));
 
-      if(pending_frame_nbr_ == 0) {
+      if (pending_frame_nbr_ == 0) {
         sequence_in_progress_ = false;
         sequence_timer_->stop();
         delete sequence_timer_;
@@ -179,9 +180,7 @@ void ComPortManager::OnStartDumpSequence(DataParser::ParserType eParser,
   }
 }
 
-void ComPortManager::OnStartAutoSequence(QString path) {
-
-}
+void ComPortManager::OnStartAutoSequence(QString path) {}
 
 void ComPortManager::OnStopSequence(void) {
   frame_list_.clear();

@@ -29,7 +29,6 @@
 #include <QComboBox>
 #include <QStackedWidget>
 #include <QGroupBox>
-#include <QWidget>
 #include <QRadioButton>
 #include "src/sessionmanager.h"
 #include "src/manualmodepage.h"

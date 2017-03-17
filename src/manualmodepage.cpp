@@ -20,8 +20,7 @@
 #include "src/dataparser.h"
 
 ManualModePage::ManualModePage(ComPortManager* port_mgr, QWidget *parent)
-  : ModePage(port_mgr, parent)
-{
+  : ModePage(port_mgr, parent) {
   data_line_ = new QLineEdit(this);
   data_line_->setPlaceholderText(tr("Enter data here..."));
   loop_groupbox_ = new QGroupBox(tr("Loop"), this);
@@ -73,19 +72,19 @@ ManualModePage::ManualModePage(ComPortManager* port_mgr, QWidget *parent)
 
   // Radio button connections
   connect(ascii_radio_, &QRadioButton::toggled, [=](bool state) {
-    if(state) {
+    if (state) {
       parser_type_ = DataParser::ParserType::kAscii;
       UpdateButtonEnabledState();
     }
   });
   connect(hex_radio_, &QRadioButton::toggled, [=](bool state) {
-    if(state) {
+    if (state) {
       parser_type_ = DataParser::ParserType::kHex;
       UpdateButtonEnabledState();
     }
   });
   connect(dec_radio_, &QRadioButton::toggled, [=](bool state) {
-    if(state) {
+    if (state) {
       parser_type_ = DataParser::ParserType::kDec;
       UpdateButtonEnabledState();
     }
@@ -106,10 +105,10 @@ void ManualModePage::OnStartButtonClicked(void) {
 }
 
 void ManualModePage::UpdateButtonEnabledState(void) {
-  if(data_line_->text().isEmpty()) {
+  if (data_line_->text().isEmpty()) {
     start_button_->setEnabled(false);
   } else {
-    if(DataParser::CheckString(parser_type_, data_line_->text())) {
+    if (DataParser::CheckString(parser_type_, data_line_->text())) {
       start_button_->setEnabled(true);
     } else {
       start_button_->setEnabled(false);

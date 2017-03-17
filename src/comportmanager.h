@@ -32,7 +32,6 @@ class ComPortManager : public QObject {
   Q_OBJECT
 
  public:
-
   //! Constructor
   explicit ComPortManager(ComPortSettings* port_settings,
                           QObject* parent = 0);

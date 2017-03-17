@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2016 Guilhem GUYONNET
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 #include <QRegularExpression>
 #include <QDebug>
 #include "src/dataparser.h"
@@ -13,7 +31,7 @@ DataParser::DataParser() {
 
 bool DataParser::CheckString(ParserType eType, const QString& str) {
   bool ret = false;
-  switch(eType) {
+  switch (eType) {
   case ParserType::kAscii:
     ret = CheckAsciiString(str);
     break;
@@ -33,9 +51,9 @@ bool DataParser::CheckString(ParserType eType, const QString& str) {
 
 bool DataParser::ParseString(ParserType eType,
                              const QString& str,
-                             QByteArray& array) {
+                             QByteArray* array) {
   bool ret = false;
-  switch(eType) {
+  switch (eType) {
   case ParserType::kAscii:
     ret = ParseAsciiString(str, array);
     break;
@@ -59,7 +77,7 @@ bool DataParser::CheckAsciiString(const QString& str) {
   return match.hasMatch();
 }
 
-bool DataParser::ParseAsciiString(const QString& str, QByteArray& data) {
+bool DataParser::ParseAsciiString(const QString& str, QByteArray* data) {
   data = str.toUtf8();
   return true;
 }
@@ -70,7 +88,7 @@ bool DataParser::CheckHexString(const QString& str) {
   return match.hasMatch();
 }
 
-bool DataParser::ParseHexString(const QString& str, QByteArray& data) {
+bool DataParser::ParseHexString(const QString& str, QByteArray* data) {
   QRegularExpression reg_exp(kHexParsePattern);
   QRegularExpressionMatchIterator i = reg_exp.globalMatch(str);
   while (i.hasNext()) {
@@ -87,7 +105,7 @@ bool DataParser::CheckDecString(const QString& str) {
   return match.hasMatch();
 }
 
-bool DataParser::ParseDecString(const QString& str, QByteArray& data) {
+bool DataParser::ParseDecString(const QString& str, QByteArray* data) {
   QRegularExpression reg_exp(kDecParsePattern);
   QRegularExpressionMatchIterator i = reg_exp.globalMatch(str);
   while (i.hasNext()) {

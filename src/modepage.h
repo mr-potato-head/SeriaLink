@@ -26,16 +26,14 @@
 #include <QProgressBar>
 #include <QLabel>
 #include <QRegularExpression>
-#include "comportmanager.h"
+#include "src/comportmanager.h"
 
-class ModePage : public QWidget
-{
+class ModePage : public QWidget {
   Q_OBJECT
 
  public:
-
   //! Constructor
-  ModePage(ComPortManager* port_mgr, QWidget *parent = 0);
+  explicit ModePage(ComPortManager* port_mgr, QWidget *parent = 0);
 
   //! Destructor
   ~ModePage();
@@ -78,4 +76,4 @@ class ModePage : public QWidget
   QVBoxLayout* button_layout_ {nullptr};
 };
 
-#endif // SRC_MODEPAGE_H_
+#endif  // SRC_MODEPAGE_H_
