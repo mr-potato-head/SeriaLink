@@ -30,10 +30,6 @@ class MenuWidget : public QWidget {
   //! Constructor
   explicit MenuWidget(QWidget *parent = 0);
 
- protected:
-  //! Executed when focus is lost on menu
-  void focusOutEvent(QFocusEvent *);
-
  private:
   //! Maing grid layout
   QGridLayout* main_layout_ {nullptr};

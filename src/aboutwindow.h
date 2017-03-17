@@ -16,24 +16,30 @@
  *
  */
 
-#include "src/menuwidget.h"
-#include "src/aboutwindow.h"
+#ifndef SRC_ABOUTWINDOW_H_
+#define SRC_ABOUTWINDOW_H_
 
-MenuWidget::MenuWidget(QWidget *parent)
-  : QWidget(parent) {
-  this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QGridLayout>
+#include <QLabel>
 
-  about_button_ = new QPushButton(this);
-  about_button_->setIcon(QIcon(":/icons/icons/question-mark-8x.png"));
-  about_button_->setFixedSize(60, 60);
+class AboutWindow : public QDialog {
+  Q_OBJECT
 
-  main_layout_ = new QGridLayout(this);
-  main_layout_->addWidget(about_button_);
+ public:
+  //! Constructor
+  explicit AboutWindow(QWidget* parent = nullptr);
 
-  connect(about_button_, &QPushButton::clicked, [=](void) {
-    AboutWindow* about = new AboutWindow();
-    about->setAttribute(Qt::WA_DeleteOnClose);
-    about->exec();
-    this->close();
-  });
-}
+ private:
+  //! Version label
+  QLabel* version_label_ {nullptr};
+
+  //! Main grid layout
+  QGridLayout* main_layout_ {nullptr};
+
+  //! Button box
+  QDialogButtonBox* button_box_ {nullptr};
+};
+
+#endif  // SRC_ABOUTWINDOW_H_
