@@ -22,6 +22,7 @@
 #include <QObject>
 #include <QList>
 #include <QThread>
+#include <QJsonObject>
 #include "src/comportmanager.h"
 #include "src/comportsettings.h"
 
@@ -38,6 +39,9 @@ class Session : public QObject {
   //! Add port in this session
   void AddPort(ComPortSettings* port_settings);
 
+  //! Add port from JSON array
+  void AddPort(const QJsonObject& port_object);
+
   //! Get port number
   quint8 GetPortNumber(void);
 
@@ -48,6 +52,9 @@ class Session : public QObject {
   ComPortManager* GetPortManager(qint32 index);
 
   void Close(void);
+
+  //! Load ports for the session from JSON array
+  void LoadPortsFromJson(const QJsonArray& session_pages);
 
  public slots: //NOLINT
   //! Set current port index

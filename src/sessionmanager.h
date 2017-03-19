@@ -36,12 +36,18 @@ class SessionManager : public QObject {
   //! Current session pointer getter
   Session* GetCurrentSession(void) const;
 
+  //! Load session file
+  void LoadSessionFile(QString filepath);
+
  private:
   //! Session list
   QList<Session*> session_list_;
 
   //! Index of the current session;
   qint8 current_session_index_ {-1};
+
+  //! Default session
+  Session* default_session_ {nullptr};
 };
 
 #endif  // SRC_SESSIONMANAGER_H_

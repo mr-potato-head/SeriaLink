@@ -15,5 +15,8 @@
         <file>icons/grid-three-up-8x.png</file>
         <file>icons/power-standby-8x.png</file>
         <file>icons/question-mark-8x.png</file>
+        <file>icons/file-8x.png</file>
+        <file>icons/folder-8x.png</file>
+        <file>icons/print-8x.png</file>
     </qresource>
 </RCC>

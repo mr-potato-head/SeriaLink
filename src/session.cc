@@ -69,6 +69,30 @@ void Session::AddPort(ComPortSettings* port_settings) {
   emit PortAdded(current_port_mgr_index_);
 }
 
+void Session::AddPort(const QJsonObject& port_object) {
+  ComPortSettings port_settings;
+  port_settings.SetBaudRate(
+        static_cast<QSerialPort::BaudRate>(
+          port_object["port_baudrate"].toInt()));
+  port_settings.SetDataBits(
+        static_cast<QSerialPort::DataBits>(
+          port_object["port_data_bits"].toInt()));
+  port_settings.SetFlowControl(
+        static_cast<QSerialPort::FlowControl>(
+          port_object["port_flow_ctrl"].toInt()));
+  port_settings.SetParity(
+        static_cast<QSerialPort::Parity>(
+          port_object["port_parity"].toInt()));
+  QSerialPortInfo port_info(port_object["port_name"].toString());
+  port_settings.SetPortInfo(port_info);
+  port_settings.SetStopBits(
+        static_cast<QSerialPort::StopBits>(
+          port_object["port_stop_bits"].toInt()));
+
+  // Call overloaded AddPort function
+  this->AddPort(&port_settings);
+}
+
 void Session::SetCurrentPortMgrIndex(qint32 index) {
   current_port_mgr_index_ = index;
   emit IndexChanged(index);
@@ -94,4 +118,8 @@ quint8 Session::GetCurrentPortMgrIndex(void) {
 
 ComPortManager* Session::GetPortManager(qint32 index) {
     return com_port_mgr_list_.at(index);
+}
+
+void Session::LoadPortsFromJson(const QJsonArray& session_pages) {
+
 }

@@ -39,7 +39,7 @@ CentralWidget::CentralWidget(QWidget *parent) :
   main_layout_->setSpacing(0);
 
   connect(top_bar_, &TopBar::OpenMenu, [=](void) {
-    MenuWidget* menu = new MenuWidget(this);
+    MenuWidget* menu = new MenuWidget(session_manager_, this);
     QRect menu_geometry = menu->geometry();
     QRect top_bar_geometry = top_bar_->geometry();
     QPoint relative_bottom_right = top_bar_geometry.bottomRight();

@@ -16,19 +16,43 @@
  *
  */
 
+#include <QDir>
+#include <QFileDialog>
 #include "src/menuwidget.h"
 #include "src/aboutwindow.h"
 
-MenuWidget::MenuWidget(QWidget *parent)
-  : QWidget(parent) {
+MenuWidget::MenuWidget(SessionManager* session_mgr,
+                       QWidget *parent)
+  : QWidget(parent),
+    session_mgr_(session_mgr) {
   this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+
+  open_session_button_ = new QPushButton(this);
+  open_session_button_->setIcon(QIcon(":/icons/icons/folder-8x.png"));
+  open_session_button_->setFixedSize(200, 60);
 
   about_button_ = new QPushButton(this);
   about_button_->setIcon(QIcon(":/icons/icons/question-mark-8x.png"));
-  about_button_->setFixedSize(60, 60);
+  about_button_->setFixedSize(200, 60);
 
   main_layout_ = new QGridLayout(this);
+  main_layout_->addWidget(open_session_button_);
   main_layout_->addWidget(about_button_);
+
+  connect(open_session_button_, &QPushButton::clicked, [=](void) {
+    // Choose session file
+    QString fileName =
+        QFileDialog::getOpenFileName(this,
+                                     tr("Open session file"),
+                                     QDir::homePath(),
+                                     tr("Session files (*.json)"));
+
+    // Close menu
+    this->close();
+
+    // Load session
+    session_mgr_->LoadSessionFile(fileName);
+  });
 
   connect(about_button_, &QPushButton::clicked, [=](void) {
     AboutWindow* about = new AboutWindow();

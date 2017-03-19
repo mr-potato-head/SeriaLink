@@ -51,35 +51,38 @@ void PortPage::OnNewViewClicked(void) {
   qint32 result = view_setting_dialog.exec();
 
   switch (result) {
-    case QDialog::Accepted:
-    {
-    PortView* view;
-      switch (view_settings->GetViewType()) {
-        case ViewSettings::ViewType::kDump:
-          view = new DumpPortView(view_settings, this);
-          break;
-        case ViewSettings::ViewType::kTerminal:
-          view = new TerminalPortView(view_settings, this);
-          break;
-        case ViewSettings::ViewType::kTable:
-          view = new TablePortView(view_settings, this);
-          break;
-        default:
-          break;
-      }
-      view_layout_->addWidget(view);
-
-      Session* session = session_manager_->GetCurrentSession();
-      ComPortManager* port_mgr = session->GetPortManager(port_index_);
-
-      // Connect received data to port
-      connect(port_mgr, SIGNAL(Receive(const DataPacket&)),
-              view, SLOT(OnReceivedData(const DataPacket&)));
-
-      break;
-    }
-    case QDialog::Rejected:
-    default:
+  case QDialog::Accepted:
+  {
+    AddView(view_settings);
     break;
   }
+  case QDialog::Rejected:
+  default:
+    break;
+  }
+}
+
+void PortPage::AddView(ViewSettings* view_settings) {
+  PortView* view;
+  switch (view_settings->GetViewType()) {
+  case ViewSettings::ViewType::kDump:
+    view = new DumpPortView(view_settings, this);
+    break;
+  case ViewSettings::ViewType::kTerminal:
+    view = new TerminalPortView(view_settings, this);
+    break;
+  case ViewSettings::ViewType::kTable:
+    view = new TablePortView(view_settings, this);
+    break;
+  default:
+    break;
+  }
+  view_layout_->addWidget(view);
+
+  Session* session = session_manager_->GetCurrentSession();
+  ComPortManager* port_mgr = session->GetPortManager(port_index_);
+
+  // Connect received data to port
+  connect(port_mgr, SIGNAL(Receive(const DataPacket&)),
+          view, SLOT(OnReceivedData(const DataPacket&)));
 }
