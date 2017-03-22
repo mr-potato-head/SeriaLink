@@ -26,10 +26,18 @@ PageContainer::PageContainer(SessionManager* session_manager,
           this, SLOT(AddPage(qint32)));
   connect(session_manager_->GetCurrentSession(), SIGNAL(IndexChanged(qint32)),
           this, SLOT(setCurrentIndex(int)));
+  connect(session_manager_, SIGNAL(AddView(qint8, QJsonObject)),
+          this, SLOT(AddView(qint8, QJsonObject)));
 }
 
 void PageContainer::AddPage(qint32 port_index) {
   PortPage* page = new PortPage(session_manager_, port_index, this);
+  page_list_.append(page);
+
   this->insertWidget(port_index, page);
   this->setCurrentIndex(port_index);
+}
+
+void PageContainer::AddView(qint8 page_idx, QJsonObject view_object) {
+  page_list_.at(page_idx)->AddView(view_object);
 }

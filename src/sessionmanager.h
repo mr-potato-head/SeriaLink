@@ -22,6 +22,7 @@
 #include <QObject>
 #include <QList>
 #include "src/session.h"
+#include "src/viewsettings.h"
 
 class SessionManager : public QObject {
   Q_OBJECT
@@ -38,6 +39,10 @@ class SessionManager : public QObject {
 
   //! Load session file
   void LoadSessionFile(QString filepath);
+
+ signals:
+  //! Emitted for adding view for a port
+  void AddView(qint8, QJsonObject);
 
  private:
   //! Session list

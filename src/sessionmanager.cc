@@ -82,7 +82,7 @@ void SessionManager::LoadSessionFile(QString filepath) {
           QJsonArray view_array = page_object["page_views"].toArray();
           for (int view_idx = 0; view_idx < view_array.size(); ++view_idx) {
             QJsonObject view_object = view_array[view_idx].toObject();
-
+            emit AddView(page_idx, view_object);
           }
         }
       } else {

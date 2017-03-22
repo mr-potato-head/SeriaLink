@@ -20,6 +20,7 @@
 #define SRC_PAGECONTAINER_H_
 
 #include <QStackedWidget>
+#include <QList>
 #include "src/sessionmanager.h"
 #include "src/portpage.h"
 
@@ -34,9 +35,15 @@ class PageContainer : public QStackedWidget {
   //! Add page in page container
   void AddPage(qint32 port_index);
 
+  //! Add view in page
+  void AddView(qint8 page_idx, QJsonObject view_object);
+
  private:
   //! Session manager
   SessionManager* session_manager_ {NULL};
+
+  //! Page list
+  QList<PortPage*> page_list_;
 };
 
 #endif  // SRC_PAGECONTAINER_H_
