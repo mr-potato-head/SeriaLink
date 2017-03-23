@@ -36,7 +36,7 @@ class PageContainer : public QStackedWidget {
   void AddPage(qint32 port_index);
 
   //! Add view in page
-  void AddView(qint8 page_idx, QJsonObject view_object);
+  void AddView(qint8 page_idx, ViewSettings* view_settings);
 
  private:
   //! Session manager

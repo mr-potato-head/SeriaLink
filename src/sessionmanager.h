@@ -42,7 +42,7 @@ class SessionManager : public QObject {
 
  signals:
   //! Emitted for adding view for a port
-  void AddView(qint8, QJsonObject);
+  void AddView(qint8, ViewSettings*);
 
  private:
   //! Session list

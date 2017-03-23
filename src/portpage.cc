@@ -21,29 +21,6 @@
 #include "src/dumpportview.h"
 #include "src/tableportview.h"
 
-const QMap<QString, ViewSettings::ViewType> PortPage::kViewTypeMap
-{
-  {"dump", ViewSettings::ViewType::kDump},
-  {"table", ViewSettings::ViewType::kTable},
-  {"terminal", ViewSettings::ViewType::kTerminal}
-};
-
-const QMap<QString, ViewSettings::DisplayType> PortPage::kDisplayTypeMap
-{
-  {"ascii", ViewSettings::DisplayType::kAscii},
-  {"hex", ViewSettings::DisplayType::kHexa},
-  {"dec", ViewSettings::DisplayType::kDec}
-};
-
-const QMap<QString, ViewSettings::DataSize> PortPage::kDataSizeMap
-{
-  {"no_size", ViewSettings::DataSize::kNoSize},
-  {"1_byte", ViewSettings::DataSize::k1Byte},
-  {"2_bytes", ViewSettings::DataSize::k2Bytes},
-  {"4_bytes", ViewSettings::DataSize::k4Bytes},
-  {"8_bytes", ViewSettings::DataSize::k8Bytes},
-};
-
 PortPage::PortPage(SessionManager* session_manager,
                    qint32 port_index,
                    QWidget *parent)
@@ -108,15 +85,4 @@ void PortPage::AddView(ViewSettings* view_settings) {
   // Connect received data to port
   connect(port_mgr, SIGNAL(Receive(const DataPacket&)),
           view, SLOT(OnReceivedData(const DataPacket&)));
-}
-
-void PortPage::AddView(QJsonObject view_object) {
-  ViewSettings settings;
-  settings.SetViewType(
-        kViewTypeMap.value(view_object["view_type"].toString()));
-  settings.SetDisplayType(
-        kDisplayTypeMap.value(view_object["view_display"].toString()));
-  settings.SetDataSize(
-        kDataSizeMap.value(view_object["view_size"].toString()));
-  this->AddView(&settings);
 }

@@ -22,12 +22,15 @@ PageContainer::PageContainer(SessionManager* session_manager,
                              QWidget *parent)
   : QStackedWidget(parent),
     session_manager_{session_manager} {
+  // Register metatypes
+  qRegisterMetaType<ViewSettings>("ViewSettings");
+
   connect(session_manager_->GetCurrentSession(), SIGNAL(PortAdded(qint32)),
           this, SLOT(AddPage(qint32)));
   connect(session_manager_->GetCurrentSession(), SIGNAL(IndexChanged(qint32)),
           this, SLOT(setCurrentIndex(int)));
-  connect(session_manager_, SIGNAL(AddView(qint8, QJsonObject)),
-          this, SLOT(AddView(qint8, QJsonObject)));
+  connect(session_manager_, SIGNAL(AddView(qint8, ViewSettings*)),
+          this, SLOT(AddView(qint8, ViewSettings*)));
 }
 
 void PageContainer::AddPage(qint32 port_index) {
@@ -38,6 +41,6 @@ void PageContainer::AddPage(qint32 port_index) {
   this->setCurrentIndex(port_index);
 }
 
-void PageContainer::AddView(qint8 page_idx, QJsonObject view_object) {
-  page_list_.at(page_idx)->AddView(view_object);
+void PageContainer::AddView(qint8 page_idx, ViewSettings* view_settings) {
+  page_list_.at(page_idx)->AddView(view_settings);
 }

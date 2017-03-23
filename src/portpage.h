@@ -40,23 +40,11 @@ class PortPage : public QWidget {
   //! Add view
   void AddView(ViewSettings* view_settings);
 
-  //! Executed when a view has to be created for a port from JSON
-  void AddView(QJsonObject view_object);
-
  private slots: //NOLINT
   //! Executed when new view button is clicked
   void OnNewViewClicked(void);
 
  private:
-  //! Map ViewType<>JsonStrViewType
-  static const QMap<QString, ViewSettings::ViewType> kViewTypeMap;
-
-  //! Map ViewType<>JsonStrDisplayType
-  static const QMap<QString, ViewSettings::DisplayType> kDisplayTypeMap;
-
-  //! Map ViewType<>JsonStrSize
-  static const QMap<QString, ViewSettings::DataSize> kDataSizeMap;
-
   //! Main grid layout of the page
   QGridLayout* main_layout_ {NULL};
 

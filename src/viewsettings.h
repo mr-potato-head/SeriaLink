@@ -19,6 +19,9 @@
 #ifndef SRC_VIEWSETTINGS_H_
 #define SRC_VIEWSETTINGS_H_
 
+#include <QMap>
+#include <QJsonObject>
+
 class ViewSettings {
  public:
   //! Type of the view
@@ -50,6 +53,9 @@ class ViewSettings {
   //! Default constructor
   ViewSettings();
 
+  //! Constructor with json object
+  ViewSettings(QJsonObject view_object);
+
   ViewType GetViewType(void) const;
   DisplayType GetDisplayType(void) const;
   DataSize GetDataSize(void) const;
@@ -58,6 +64,15 @@ class ViewSettings {
   void SetDataSize(ViewSettings::DataSize data_size);
 
  private:
+  //! Map ViewType<>JsonStrViewType
+  static const QMap<QString, ViewSettings::ViewType> kViewTypeMap;
+
+  //! Map ViewType<>JsonStrDisplayType
+  static const QMap<QString, ViewSettings::DisplayType> kDisplayTypeMap;
+
+  //! Map ViewType<>JsonStrSize
+  static const QMap<QString, ViewSettings::DataSize> kDataSizeMap;
+
   //! View type
   ViewType view_type_ {ViewType::kUnknown};
 

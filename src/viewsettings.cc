@@ -18,7 +18,36 @@
 
 #include "src/viewsettings.h"
 
+const QMap<QString, ViewSettings::ViewType> ViewSettings::kViewTypeMap
+{
+  {"dump", ViewSettings::ViewType::kDump},
+  {"table", ViewSettings::ViewType::kTable},
+  {"terminal", ViewSettings::ViewType::kTerminal}
+};
+
+const QMap<QString, ViewSettings::DisplayType> ViewSettings::kDisplayTypeMap
+{
+  {"ascii", ViewSettings::DisplayType::kAscii},
+  {"hex", ViewSettings::DisplayType::kHexa},
+  {"dec", ViewSettings::DisplayType::kDec}
+};
+
+const QMap<QString, ViewSettings::DataSize> ViewSettings::kDataSizeMap
+{
+  {"no_size", ViewSettings::DataSize::kNoSize},
+  {"1_byte", ViewSettings::DataSize::k1Byte},
+  {"2_bytes", ViewSettings::DataSize::k2Bytes},
+  {"4_bytes", ViewSettings::DataSize::k4Bytes},
+  {"8_bytes", ViewSettings::DataSize::k8Bytes},
+};
+
 ViewSettings::ViewSettings() {}
+
+ViewSettings::ViewSettings(QJsonObject view_object) {
+  view_type_ = kViewTypeMap.value(view_object["view_type"].toString());
+  display_type_ = kDisplayTypeMap.value(view_object["view_display"].toString());
+  data_size_ = kDataSizeMap.value(view_object["view_size"].toString());
+}
 
 ViewSettings::ViewType ViewSettings::GetViewType(void) const {
   return view_type_;

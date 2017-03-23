@@ -62,9 +62,6 @@ void SessionManager::LoadSessionFile(QString filepath) {
 
   if (!load_doc.isNull()) {
     if (load_doc.isObject()) {
-      // Create session
-      session_list_.append(default_session_);
-
       // Pass JSON data session
       QJsonObject global_object = load_doc.object();
       if (global_object["session_pages"].isArray()) {
@@ -82,7 +79,8 @@ void SessionManager::LoadSessionFile(QString filepath) {
           QJsonArray view_array = page_object["page_views"].toArray();
           for (int view_idx = 0; view_idx < view_array.size(); ++view_idx) {
             QJsonObject view_object = view_array[view_idx].toObject();
-            emit AddView(page_idx, view_object);
+            ViewSettings* settings = new ViewSettings(view_object);
+            emit AddView(page_idx, settings);
           }
         }
       } else {
