@@ -23,10 +23,10 @@
 CentralWidget::CentralWidget(QWidget *parent) :
   QWidget(parent) {
   // Instanciate session manager
-  session_manager_ = new SessionManager(this);
+  session_ = new Session(this);
 
-  top_bar_ = new TopBar(session_manager_, this);
-  page_container_ = new PageContainer(session_manager_, this);
+  top_bar_ = new TopBar(session_, this);
+  page_container_ = new PageContainer(session_, this);
 
   main_layout_ = new QVBoxLayout(this);
   main_layout_->addWidget(top_bar_);
@@ -38,8 +38,11 @@ CentralWidget::CentralWidget(QWidget *parent) :
   main_layout_->setMargin(0);
   main_layout_->setSpacing(0);
 
+  // Register metatypes
+  qRegisterMetaType<DataPacket>("DataPacket");
+
   connect(top_bar_, &TopBar::OpenMenu, [=](void) {
-    MenuWidget* menu = new MenuWidget(session_manager_, this);
+    MenuWidget* menu = new MenuWidget(session_, this);
     QRect menu_geometry = menu->geometry();
     QRect top_bar_geometry = top_bar_->geometry();
     QPoint relative_bottom_right = top_bar_geometry.bottomRight();
@@ -50,5 +53,9 @@ CentralWidget::CentralWidget(QWidget *parent) :
     menu->show();
     menu->setFocus();
   });
+}
+
+CentralWidget::~CentralWidget() {
+  session_->Close();
 }
 

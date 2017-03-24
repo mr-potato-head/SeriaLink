@@ -20,7 +20,6 @@ SOURCES += src/main.cc\
     src/centralwidget.cc \
     src/pagecontainer.cc \
     src/pageselector.cc \
-    src/sessionmanager.cc \
     src/session.cc \
     src/comportsettings.cc \
     src/localcomport.cc \
@@ -51,7 +50,6 @@ HEADERS += src/mainwindow.h \
     src/centralwidget.h \
     src/pagecontainer.h \
     src/pageselector.h \
-    src/sessionmanager.h \
     src/session.h \
     src/comportsettings.h \
     src/comport.h \

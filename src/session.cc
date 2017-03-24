@@ -17,6 +17,10 @@
  */
 
 #include <QTimer>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
 #include "src/session.h"
 
 Session::Session(QObject *parent)
@@ -55,9 +59,16 @@ void Session::Close() {
 }
 
 void Session::AddPort(ComPortSettings* port_settings) {
+  this->AddPort(current_port_mgr_index_, port_settings);
+}
+
+void Session::AddPort(qint8 page_idx, ComPortSettings* port_settings) {
   // Create new port manager
   ComPortManager* com_port_mgr = new ComPortManager(port_settings);
   com_port_mgr_list_.append(com_port_mgr);
+  Page* page = new Page();
+  page->port_setting_list_.append(port_settings);
+  page_list_.append(page);
 
   // Create thread for this port manager
   QThread* thread = new QThread(this);
@@ -69,7 +80,7 @@ void Session::AddPort(ComPortSettings* port_settings) {
   emit PortAdded(current_port_mgr_index_);
 }
 
-void Session::AddPort(const QJsonObject& port_object) {
+void Session::AddPort(qint8 page_idx, const QJsonObject& port_object) {
   ComPortSettings port_settings;
   port_settings.SetBaudRate(
         static_cast<QSerialPort::BaudRate>(
@@ -90,7 +101,15 @@ void Session::AddPort(const QJsonObject& port_object) {
           port_object["port_stop_bits"].toInt()));
 
   // Call overloaded AddPort function
-  this->AddPort(&port_settings);
+  this->AddPort(page_idx, &port_settings);
+}
+
+void AddView(qint8 page_idx, ViewSettings* view_settings) {
+
+}
+
+void AddView(qint8 page_idx, const QJsonObject& view_object) {
+
 }
 
 void Session::SetCurrentPortMgrIndex(qint32 index) {
@@ -120,6 +139,53 @@ ComPortManager* Session::GetPortManager(qint32 index) {
     return com_port_mgr_list_.at(index);
 }
 
-void Session::LoadPortsFromJson(const QJsonArray& session_pages) {
+void Session::LoadFromFile(QString filepath) {
+  QFile session_file(filepath);
+
+  if (!session_file.open(QIODevice::ReadOnly)) {
+    qWarning("Couldn't open save file.");
+    return;
+  }
+
+  QByteArray json_data = session_file.readAll();
+  QJsonDocument load_doc(QJsonDocument::fromJson(json_data));
+
+  if (!load_doc.isNull()) {
+    if (load_doc.isObject()) {
+      // Pass JSON data session
+      QJsonObject global_object = load_doc.object();
+      if (global_object["session_pages"].isArray()) {
+        QJsonArray session_pages = global_object["session_pages"].toArray();
+        for (int page_idx = 0; page_idx < session_pages.size(); ++page_idx) {
+          QJsonObject page_object = session_pages[page_idx].toObject();
+          // Add ports in session
+          QJsonArray port_array = page_object["page_ports"].toArray();
+          for (int port_idx = 0; port_idx < port_array.size(); ++port_idx) {
+            QJsonObject port_object = port_array[port_idx].toObject();
+            this->AddPort(page_idx, port_object);
+          }
+
+          // Add ports in session
+          QJsonArray view_array = page_object["page_views"].toArray();
+          for (int view_idx = 0; view_idx < view_array.size(); ++view_idx) {
+            QJsonObject view_object = view_array[view_idx].toObject();
+            ViewSettings* settings = new ViewSettings(view_object);
+            page_list_.at(page_idx)->view_setting_list_.append(settings);
+            emit ViewAdded(page_idx, settings);
+          }
+        }
+      } else {
+        qWarning("session_pages is not and array.");
+      }
+    } else {
+      qWarning("Can't find JSON object in file.");
+    }
+  } else {
+    qWarning("Can't parse session file.");
+  }
+}
+
+void Session::SaveInFile(QString filepath) {
 
 }
+

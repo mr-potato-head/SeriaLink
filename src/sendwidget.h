@@ -30,9 +30,9 @@
 #include <QStackedWidget>
 #include <QGroupBox>
 #include <QRadioButton>
-#include "src/sessionmanager.h"
 #include "src/manualmodepage.h"
 #include "src/dumpmodepage.h"
+#include "src/session.h"
 
 class SendWidget : public QWidget {
   Q_OBJECT
@@ -46,15 +46,15 @@ class SendWidget : public QWidget {
   };
 
   //! Default constructor
-  explicit SendWidget(SessionManager* session_manager,
+  explicit SendWidget(Session* session,
                       qint32 port_index, QWidget *parent = 0);
 
  private:
   //! Main grid layout of the widget
   QGridLayout* main_layout_ {NULL};
 
-  //! Session manager
-  SessionManager* session_manager_ {NULL};
+  //! Session
+  Session* session_ {NULL};
 
   //! Port index
   qint32 port_index_ {-1};

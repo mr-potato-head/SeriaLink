@@ -18,10 +18,10 @@
 
 #include "src/sendwidget.h"
 
-SendWidget::SendWidget(SessionManager* session_manager,
+SendWidget::SendWidget(Session* session,
                        qint32 port_index, QWidget *parent)
   : QWidget(parent),
-    session_manager_{session_manager},
+    session_{session},
     port_index_{port_index} {
   mode_label_ = new QLabel(tr("Mode"), this);
   mode_label_->setAlignment(Qt::AlignCenter);
@@ -32,7 +32,6 @@ SendWidget::SendWidget(SessionManager* session_manager,
   //  mode_combobox_->addItem(tr("Auto"), static_cast<int>(MODES::AUTO));
   stacked_widget_ = new QStackedWidget(this);
 
-  Session* session = session_manager_->GetCurrentSession();
   ComPortManager* port_mgr = session->GetPortManager(port_index_);
   manual_mode_page_ = new ManualModePage(port_mgr, this);
   stacked_widget_->addWidget(manual_mode_page_);

@@ -23,14 +23,13 @@
 #include <QHBoxLayout>
 #include "src/pageswitcher.h"
 #include "src/pageselector.h"
-#include "src/sessionmanager.h"
 
 class TopBar : public QWidget {
   Q_OBJECT
 
  public:
   //! Default constructor
-  explicit TopBar(SessionManager* session_manager, QWidget *parent = 0);
+  explicit TopBar(Session* session, QWidget *parent = 0);
 
  signals:
   //! Signal emitted when index is updated
@@ -65,8 +64,8 @@ class TopBar : public QWidget {
   //! Page switcher widget
   PageSwitcher* page_switcher_ {NULL};
 
-  //! Pointer on session manager
-  SessionManager* session_manager_ {NULL};
+  //! Pointer on session
+  Session* session_ {NULL};
 };
 
 #endif  // SRC_TOPBAR_H_

@@ -20,8 +20,8 @@
 
 DataFormatter::DataFormatter() {}
 
-QString DataFormatter::formatData(const ViewSettings &settings,
-                                  const DataPacket& packet) {
+QString DataFormatter::formatData(ViewSettings &settings,
+                                  DataPacket& packet) {
   ViewSettings::DataSize eDataSize = settings.GetDataSize();
   ViewSettings::DisplayType eDisplayType = settings.GetDisplayType();
 

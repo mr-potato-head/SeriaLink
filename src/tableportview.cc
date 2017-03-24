@@ -38,7 +38,7 @@ TablePortView::TablePortView(ViewSettings* view_settings, QWidget* parent)
   });
 }
 
-void TablePortView::OnReceivedData(const DataPacket& packet) {
+void TablePortView::OnReceivedData(DataPacket& packet) {
   table_widget_->insertRow(current_row_idx_);
 
   QString dt = packet.GetDateTime().toString("dd/MM/yy - hh:mm:ss");

@@ -22,7 +22,7 @@
 #include <QWidget>
 #include <QGridLayout>
 #include <QMap>
-#include "src/sessionmanager.h"
+#include "src/session.h"
 #include "src/portinfowidget.h"
 #include "src/portview.h"
 #include "src/sendwidget.h"
@@ -33,7 +33,7 @@ class PortPage : public QWidget {
   Q_OBJECT
 
  public:
-  explicit PortPage(SessionManager* session_manager,
+  explicit PortPage(Session* session,
                     qint32 port_index,
                     QWidget *parent = 0);
 
@@ -48,8 +48,8 @@ class PortPage : public QWidget {
   //! Main grid layout of the page
   QGridLayout* main_layout_ {NULL};
 
-  //! Pointer on session manager
-  SessionManager* session_manager_ {NULL};
+  //! Pointer on session
+  Session* session_ {NULL};
 
   //! Port index in session
   qint32 port_index_ {-1};

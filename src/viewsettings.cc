@@ -49,15 +49,15 @@ ViewSettings::ViewSettings(QJsonObject view_object) {
   data_size_ = kDataSizeMap.value(view_object["view_size"].toString());
 }
 
-ViewSettings::ViewType ViewSettings::GetViewType(void) const {
+ViewSettings::ViewType ViewSettings::GetViewType(void) {
   return view_type_;
 }
 
-ViewSettings::DisplayType ViewSettings::GetDisplayType(void) const {
+ViewSettings::DisplayType ViewSettings::GetDisplayType(void) {
   return display_type_;
 }
 
-ViewSettings::DataSize ViewSettings::GetDataSize(void) const {
+ViewSettings::DataSize ViewSettings::GetDataSize(void) {
   return data_size_;
 }
 

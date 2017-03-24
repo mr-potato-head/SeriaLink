@@ -24,14 +24,14 @@
 #include <QList>
 #include <QSignalMapper>
 #include <QPushButton>
-#include "src/sessionmanager.h"
+#include "src/session.h"
 
 class PageSelector : public QWidget {
   Q_OBJECT
 
  public:
   //! Default constructor
-  explicit PageSelector(SessionManager* session_manager,
+  explicit PageSelector(Session* session,
                         QWidget *parent = 0);
 
 
@@ -49,8 +49,8 @@ class PageSelector : public QWidget {
   //! Button layout
   QHBoxLayout* button_layout_ {NULL};
 
-  //! Pointer on session manager
-  SessionManager* session_manager_ {NULL};
+  //! Pointer on session
+  Session* session_ {NULL};
 
   //! Signal mapper for buttons
   QSignalMapper* signal_mapper_ {NULL};

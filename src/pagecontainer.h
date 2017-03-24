@@ -21,7 +21,7 @@
 
 #include <QStackedWidget>
 #include <QList>
-#include "src/sessionmanager.h"
+#include "src/session.h"
 #include "src/portpage.h"
 
 class PageContainer : public QStackedWidget {
@@ -29,18 +29,18 @@ class PageContainer : public QStackedWidget {
 
  public:
   //! Default constructor
-  explicit PageContainer(SessionManager* session_manager, QWidget *parent = 0);
+  explicit PageContainer(Session* session_, QWidget *parent = 0);
 
  private slots: //NOLINT
   //! Add page in page container
-  void AddPage(qint32 port_index);
+  void AddPage(qint32 page_idx);
 
   //! Add view in page
-  void AddView(qint8 page_idx, ViewSettings* view_settings);
+  void OnViewAdded(qint8 page_idx, ViewSettings* view_settings);
 
  private:
-  //! Session manager
-  SessionManager* session_manager_ {NULL};
+  //! Session
+  Session* session_ {NULL};
 
   //! Page list
   QList<PortPage*> page_list_;

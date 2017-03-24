@@ -18,15 +18,14 @@
 
 #include "src/portinfowidget.h"
 
-PortInfoWidget::PortInfoWidget(SessionManager* session_manager,
+PortInfoWidget::PortInfoWidget(Session* session,
                                qint32 port_index,
                                QWidget *parent)
   : QWidget(parent),
-    session_manager_{session_manager},
+    session_{session},
     port_index_{port_index}
 {
   // Get port settings
-  Session* session = session_manager_->GetCurrentSession();
   ComPortManager* port = session->GetPortManager(port_index);
   ComPortSettings* port_settings = port->GetPortSettings();
   port_settings_ = port_settings;
@@ -164,11 +163,9 @@ PortInfoWidget::PortInfoWidget(SessionManager* session_manager,
 }
 
 void PortInfoWidget::OnOpenPortClicked(void) {
-  Session* session = session_manager_->GetCurrentSession();
-  session->OpenPort(port_index_);
+  session_->OpenPort(port_index_);
 }
 
 void PortInfoWidget::OnClosePortClicked(void) {
-  Session* session = session_manager_->GetCurrentSession();
-  session->ClosePort(port_index_);
+  session_->ClosePort(port_index_);
 }

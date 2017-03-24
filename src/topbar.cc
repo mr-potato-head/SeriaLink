@@ -20,10 +20,10 @@
 #include "src/addormodifyportdialog.h"
 #include "src/comport.h"
 
-TopBar::TopBar(SessionManager* session_manager, QWidget *parent)
+TopBar::TopBar(Session* session, QWidget *parent)
   : QWidget(parent),
-    session_manager_{session_manager} {
-  page_selector_ = new PageSelector(session_manager, this);
+    session_{session} {
+  page_selector_ = new PageSelector(session, this);
   page_switcher_ = new PageSwitcher(this);
   main_layout_ = new QHBoxLayout(this);
   main_layout_->addWidget(page_selector_);
@@ -41,11 +41,11 @@ TopBar::TopBar(SessionManager* session_manager, QWidget *parent)
           this, SLOT(OnDecreaseCurrentPageIndex()));
   connect(page_switcher_, SIGNAL(AddPage()),
           this, SLOT(openAddOrModifyDialog()));
-  connect(session_manager_->GetCurrentSession(), SIGNAL(PortAdded(qint32)),
+  connect(session_, SIGNAL(PortAdded(qint32)),
           page_selector_, SLOT(AddButton(qint32)));
-  connect(session_manager_->GetCurrentSession(), SIGNAL(IndexChanged(qint32)),
+  connect(session_, SIGNAL(IndexChanged(qint32)),
           this, SLOT(UpdateSelectorButtonStatus()));
-  connect(session_manager_->GetCurrentSession(), SIGNAL(IndexChanged(qint32)),
+  connect(session_, SIGNAL(IndexChanged(qint32)),
           this, SLOT(UpdateSwitcherButtonStatus()));
   connect(page_switcher_, SIGNAL(OpenMenu()),
           this, SIGNAL(OpenMenu()));
@@ -54,29 +54,26 @@ TopBar::TopBar(SessionManager* session_manager, QWidget *parent)
 }
 
 void TopBar::OnIncreaseCurrentPageIndex(void) {
-  Session* session = session_manager_->GetCurrentSession();
-  quint8 current_page_index = session->GetCurrentPortMgrIndex();
+  quint8 current_page_index = session_->GetCurrentPortMgrIndex();
   current_page_index++;
-  session->SetCurrentPortMgrIndex(current_page_index);
+  session_->SetCurrentPortMgrIndex(current_page_index);
 
   UpdateSwitcherButtonStatus();
   UpdateSelectorButtonStatus();
 }
 
 void TopBar::OnDecreaseCurrentPageIndex(void) {
-  Session* session = session_manager_->GetCurrentSession();
-  quint8 current_page_index = session->GetCurrentPortMgrIndex();
+  quint8 current_page_index = session_->GetCurrentPortMgrIndex();
   current_page_index--;
-  session->SetCurrentPortMgrIndex(current_page_index);
+  session_->SetCurrentPortMgrIndex(current_page_index);
 
   UpdateSwitcherButtonStatus();
   UpdateSelectorButtonStatus();
 }
 
 void TopBar::UpdateSwitcherButtonStatus(void) {
-  Session* session = session_manager_->GetCurrentSession();
-  quint8 page_number = session->GetPortNumber();
-  quint8 current_page_index = session->GetCurrentPortMgrIndex();
+  quint8 page_number = session_->GetPortNumber();
+  quint8 current_page_index = session_->GetCurrentPortMgrIndex();
 
   if (page_number <= 1) {
     page_switcher_->DisableButton(PageSwitcher::ButtonType::kIncreaseButton);
@@ -96,8 +93,7 @@ void TopBar::UpdateSwitcherButtonStatus(void) {
 }
 
 void TopBar::UpdateSelectorButtonStatus(void) {
-  Session* session = session_manager_->GetCurrentSession();
-  quint8 current_page_index = session->GetCurrentPortMgrIndex();
+  quint8 current_page_index = session_->GetCurrentPortMgrIndex();
   page_selector_->SetCheckedState(current_page_index);
 }
 
@@ -110,7 +106,7 @@ void TopBar::openAddOrModifyDialog(void) {
     case QDialog::Accepted:
     {
       // Add port in session
-      session_manager_->GetCurrentSession()->AddPort(port_settings);
+      session_->AddPort(port_settings);
 
       UpdateSwitcherButtonStatus();
       UpdateSelectorButtonStatus();

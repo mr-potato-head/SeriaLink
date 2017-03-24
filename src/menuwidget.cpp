@@ -21,10 +21,10 @@
 #include "src/menuwidget.h"
 #include "src/aboutwindow.h"
 
-MenuWidget::MenuWidget(SessionManager* session_mgr,
+MenuWidget::MenuWidget(Session* session,
                        QWidget *parent)
   : QWidget(parent),
-    session_mgr_(session_mgr) {
+    session_(session) {
   this->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
 
   open_session_button_ = new QPushButton(this);
@@ -51,7 +51,7 @@ MenuWidget::MenuWidget(SessionManager* session_mgr,
     this->close();
 
     // Load session
-    session_mgr_->LoadSessionFile(fileName);
+    session_->LoadFromFile(fileName);
   });
 
   connect(about_button_, &QPushButton::clicked, [=](void) {

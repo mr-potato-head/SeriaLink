@@ -32,7 +32,7 @@ class TablePortView : public PortView {
 
  public slots: //NOLINT
   //! Executed when new data are received
-  virtual void OnReceivedData(const DataPacket& packet);
+  virtual void OnReceivedData(DataPacket& packet);
 
  private:
   //! Text edit of the view

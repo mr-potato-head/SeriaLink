@@ -21,14 +21,14 @@
 #include "src/dumpportview.h"
 #include "src/tableportview.h"
 
-PortPage::PortPage(SessionManager* session_manager,
+PortPage::PortPage(Session* session,
                    qint32 port_index,
                    QWidget *parent)
   : QWidget(parent),
-    session_manager_{session_manager},
+    session_{session},
     port_index_{port_index} {
-  port_info_ = new PortInfoWidget(session_manager_, port_index, this);
-  send_widget_ = new SendWidget(session_manager_, port_index, this);
+  port_info_ = new PortInfoWidget(session, port_index, this);
+  send_widget_ = new SendWidget(session, port_index, this);
   view_widget_ = new QWidget(this);
   view_layout_ = new QHBoxLayout(view_widget_);
 
@@ -79,8 +79,7 @@ void PortPage::AddView(ViewSettings* view_settings) {
   }
   view_layout_->addWidget(view);
 
-  Session* session = session_manager_->GetCurrentSession();
-  ComPortManager* port_mgr = session->GetPortManager(port_index_);
+  ComPortManager* port_mgr = session_->GetPortManager(port_index_);
 
   // Connect received data to port
   connect(port_mgr, SIGNAL(Receive(const DataPacket&)),

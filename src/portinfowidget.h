@@ -25,14 +25,14 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include "src/comportsettings.h"
-#include "src/sessionmanager.h"
+#include "src/session.h"
 
 class PortInfoWidget : public QWidget {
   Q_OBJECT
 
  public:
   //! Default constructor
-  explicit PortInfoWidget(SessionManager* session_manager,
+  explicit PortInfoWidget(Session* session,
                           qint32 port_index,
                           QWidget *parent = 0);
 
@@ -54,8 +54,8 @@ class PortInfoWidget : public QWidget {
   //! Group box vertical layout
   QVBoxLayout* group_box_layout_ {NULL};
 
-  //! Session manager
-  SessionManager* session_manager_ {NULL};
+  //! Session
+  Session* session_ {NULL};
 
   //! Port index
   qint32 port_index_ {-1};

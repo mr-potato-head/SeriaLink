@@ -23,12 +23,16 @@
 #include <QVBoxLayout>
 #include "src/topbar.h"
 #include "src/pagecontainer.h"
-#include "src/sessionmanager.h"
+#include "src/session.h"
 
 class CentralWidget : public QWidget {
   Q_OBJECT
  public:
+  //! Constructor
   explicit CentralWidget(QWidget *parent = 0);
+
+  //! Destructor
+  ~CentralWidget(void);
 
  private:
   //! Main layout of the window
@@ -40,8 +44,8 @@ class CentralWidget : public QWidget {
   //! Page container
   PageContainer* page_container_ {NULL};
 
-  //! Session manager
-  SessionManager* session_manager_ {NULL};
+  //! Session
+  Session* session_ {NULL};
 };
 
 #endif  // SRC_CENTRALWIDGET_H_

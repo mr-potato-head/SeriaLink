@@ -19,23 +19,22 @@
 #include <QPushButton>
 #include "src/pageselector.h"
 
-PageSelector::PageSelector(SessionManager* session_manager,
+PageSelector::PageSelector(Session* session,
                            QWidget *parent)
   : QWidget(parent),
-    session_manager_{session_manager} {
+    session_{session} {
   button_layout_ = new QHBoxLayout(this);
   signal_mapper_ = new QSignalMapper(this);
 
   connect(signal_mapper_,
           SIGNAL(mapped(int)),
-          session_manager_->GetCurrentSession(),
+          session,
           SLOT(SetCurrentPortMgrIndex(qint32)));
 }
 
 void PageSelector::AddButton(qint32 port_index) {
   // Get port name
-  ComPortManager* port_manager =
-    session_manager_->GetCurrentSession()->GetPortManager(port_index);
+  ComPortManager* port_manager = session_->GetPortManager(port_index);
   ComPortSettings* portSettings = port_manager->GetPortSettings();
 
   QPushButton* button = new QPushButton(portSettings->GetPortInfo().portName());

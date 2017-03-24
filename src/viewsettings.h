@@ -56,9 +56,9 @@ class ViewSettings {
   //! Constructor with json object
   ViewSettings(QJsonObject view_object);
 
-  ViewType GetViewType(void) const;
-  DisplayType GetDisplayType(void) const;
-  DataSize GetDataSize(void) const;
+  ViewType GetViewType(void);
+  DisplayType GetDisplayType(void);
+  DataSize GetDataSize(void);
   void SetViewType(ViewSettings::ViewType view_type);
   void SetDisplayType(ViewSettings::DisplayType display_type);
   void SetDataSize(ViewSettings::DataSize data_size);

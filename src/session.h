@@ -25,22 +25,39 @@
 #include <QJsonObject>
 #include "src/comportmanager.h"
 #include "src/comportsettings.h"
+#include "src/viewsettings.h"
 
 class Session : public QObject {
   Q_OBJECT
 
  public:
+
+  class Page {
+    public :
+     QList<ComPortSettings*> port_setting_list_;
+     QList<ViewSettings*> view_setting_list_;
+  };
+
   //! Default constructor
   explicit Session(QObject *parent = 0);
 
   //! Destructor
   ~Session();
 
-  //! Add port in this session
+  //! Add port in page in this session
   void AddPort(ComPortSettings* port_settings);
 
-  //! Add port from JSON array
-  void AddPort(const QJsonObject& port_object);
+  //! Add port in page in this session
+  void AddPort(qint8 page_idx, ComPortSettings* port_settings);
+
+  //! Add port in page from JSON array
+  void AddPort(qint8 page_idx, const QJsonObject& port_object);
+
+  //! Add view in page from view settings
+  void AddView(qint8 page_idx, ViewSettings* view_settings);
+
+  //! Add view in page from JSON array
+  void AddView(qint8 page_idx, const QJsonObject& view_object);
 
   //! Get port number
   quint8 GetPortNumber(void);
@@ -53,9 +70,6 @@ class Session : public QObject {
 
   void Close(void);
 
-  //! Load ports for the session from JSON array
-  void LoadPortsFromJson(const QJsonArray& session_pages);
-
  public slots: //NOLINT
   //! Set current port index
   void SetCurrentPortMgrIndex(qint32 index);
@@ -65,6 +79,12 @@ class Session : public QObject {
 
   //! Close port
   void ClosePort(qint32 index);
+
+  //! Load session from file
+  void LoadFromFile(QString filepath);
+
+  //! Save session in file
+  void SaveInFile(QString filepath);
 
  signals:
   //! Emitted when a new port is added in session
@@ -79,6 +99,9 @@ class Session : public QObject {
   //! Emitted for closing the port
   void ClosePortSignal(void);
 
+  //! Emmitted for adding view
+  void ViewAdded(qint8, ViewSettings*);
+
  private:
   //! COM port list
   QList<ComPortManager*> com_port_mgr_list_;
@@ -88,6 +111,9 @@ class Session : public QObject {
 
   //! Index of the current port manager;
   qint32 current_port_mgr_index_ {-1};
+
+  //! Global list for load/save session
+  QList<Page*> page_list_;
 };
 
 #endif  // SRC_SESSION_H_

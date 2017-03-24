@@ -22,14 +22,14 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QGridLayout>
-#include "src/sessionmanager.h"
+#include "src/session.h"
 
 class MenuWidget : public QWidget {
   Q_OBJECT
 
  public:
   //! Constructor
-  explicit MenuWidget(SessionManager* session_mgr,
+  explicit MenuWidget(Session* session,
                       QWidget *parent = 0);
 
  private:
@@ -43,7 +43,7 @@ class MenuWidget : public QWidget {
   QPushButton* open_session_button_ {nullptr};
 
   //! Session manager pointer
-  SessionManager* session_mgr_ {nullptr};
+  Session* session_ {nullptr};
 };
 
 #endif  // SRC_MENUWIDGET_H_
