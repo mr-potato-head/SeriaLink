@@ -18,21 +18,21 @@
 
 #include "src/viewsettings.h"
 
-const QMap<QString, ViewSettings::ViewType> ViewSettings::kViewTypeMap
+const QMap<QString, ViewSettings::ViewType> ViewSettings::kViewTypeFromString
 {
   {"dump", ViewSettings::ViewType::kDump},
   {"table", ViewSettings::ViewType::kTable},
   {"terminal", ViewSettings::ViewType::kTerminal}
 };
 
-const QMap<QString, ViewSettings::DisplayType> ViewSettings::kDisplayTypeMap
+const QMap<QString, ViewSettings::DisplayType> ViewSettings::kDisplayTypeFromString
 {
   {"ascii", ViewSettings::DisplayType::kAscii},
   {"hex", ViewSettings::DisplayType::kHexa},
   {"dec", ViewSettings::DisplayType::kDec}
 };
 
-const QMap<QString, ViewSettings::DataSize> ViewSettings::kDataSizeMap
+const QMap<QString, ViewSettings::DataSize> ViewSettings::kDataSizeFromString
 {
   {"no_size", ViewSettings::DataSize::kNoSize},
   {"1_byte", ViewSettings::DataSize::k1Byte},
@@ -41,12 +41,35 @@ const QMap<QString, ViewSettings::DataSize> ViewSettings::kDataSizeMap
   {"8_bytes", ViewSettings::DataSize::k8Bytes},
 };
 
+const QMap<ViewSettings::ViewType, QString> ViewSettings::kStringFromViewType
+{
+  {ViewSettings::ViewType::kDump, "dump"},
+  {ViewSettings::ViewType::kTable, "table"},
+  {ViewSettings::ViewType::kTerminal, "terminal"}
+};
+
+const QMap<ViewSettings::DisplayType, QString> ViewSettings::kStringFromDisplayType
+{
+  {ViewSettings::DisplayType::kAscii, "ascii"},
+  {ViewSettings::DisplayType::kHexa, "hex"},
+  {ViewSettings::DisplayType::kDec, "dec"}
+};
+
+const QMap<ViewSettings::DataSize, QString> ViewSettings::kStringFromDataSize
+{
+  {ViewSettings::DataSize::kNoSize, "no_size"},
+  {ViewSettings::DataSize::k1Byte, "1_byte"},
+  {ViewSettings::DataSize::k2Bytes, "2_bytes"},
+  {ViewSettings::DataSize::k4Bytes, "4_bytes"},
+  {ViewSettings::DataSize::k8Bytes, "8_bytes"},
+};
+
 ViewSettings::ViewSettings() {}
 
 ViewSettings::ViewSettings(QJsonObject view_object) {
-  view_type_ = kViewTypeMap.value(view_object["view_type"].toString());
-  display_type_ = kDisplayTypeMap.value(view_object["view_display"].toString());
-  data_size_ = kDataSizeMap.value(view_object["view_size"].toString());
+  view_type_ = kViewTypeFromString.value(view_object["view_type"].toString());
+  display_type_ = kDisplayTypeFromString.value(view_object["view_display"].toString());
+  data_size_ = kDataSizeFromString.value(view_object["view_size"].toString());
 }
 
 ViewSettings::ViewType ViewSettings::GetViewType(void) {
@@ -71,4 +94,12 @@ void ViewSettings::SetDisplayType(ViewSettings::DisplayType display_type) {
 
 void ViewSettings::SetDataSize(DataSize data_size) {
   data_size_ = data_size;
+}
+
+QJsonObject ViewSettings::ToJson(void) {
+  QJsonObject view_object;
+  view_object["view_type"] = kStringFromViewType.value(view_type_);
+  view_object["view_display"] = kStringFromDisplayType.value(display_type_);
+  view_object["view_size"] = kStringFromDataSize.value(data_size_);
+  return view_object;
 }

@@ -37,8 +37,8 @@ class PortPage : public QWidget {
                     qint32 port_index,
                     QWidget *parent = 0);
 
-  //! Add view
-  void AddView(ViewSettings* view_settings);
+  //! Add view in page
+  void AddView(ViewSettings* settings);
 
  private slots: //NOLINT
   //! Executed when new view button is clicked

@@ -53,7 +53,7 @@ void PortPage::OnNewViewClicked(void) {
   switch (result) {
   case QDialog::Accepted:
   {
-    AddView(view_settings);
+    session_->AddView(port_index_, view_settings);
     break;
   }
   case QDialog::Rejected:
@@ -62,17 +62,17 @@ void PortPage::OnNewViewClicked(void) {
   }
 }
 
-void PortPage::AddView(ViewSettings* view_settings) {
+void PortPage::AddView(ViewSettings* settings) {
   PortView* view;
-  switch (view_settings->GetViewType()) {
+  switch (settings->GetViewType()) {
   case ViewSettings::ViewType::kDump:
-    view = new DumpPortView(view_settings, this);
+    view = new DumpPortView(settings, this);
     break;
   case ViewSettings::ViewType::kTerminal:
-    view = new TerminalPortView(view_settings, this);
+    view = new TerminalPortView(settings, this);
     break;
   case ViewSettings::ViewType::kTable:
-    view = new TablePortView(view_settings, this);
+    view = new TablePortView(settings, this);
     break;
   default:
     break;
@@ -82,6 +82,6 @@ void PortPage::AddView(ViewSettings* view_settings) {
   ComPortManager* port_mgr = session_->GetPortManager(port_index_);
 
   // Connect received data to port
-  connect(port_mgr, SIGNAL(Receive(const DataPacket&)),
-          view, SLOT(OnReceivedData(const DataPacket&)));
+  connect(port_mgr, SIGNAL(Receive(DataPacket&)),
+          view, SLOT(OnReceivedData(DataPacket&)));
 }

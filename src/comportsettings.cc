@@ -68,3 +68,14 @@ void ComPortSettings::SetStopBits(QSerialPort::StopBits stop_bits) {
 void ComPortSettings::SetFlowControl(QSerialPort::FlowControl flow_control) {
   port_flow_control_ = flow_control;
 }
+
+QJsonObject ComPortSettings::ToJson(void) {
+  QJsonObject port_object;
+  port_object["port_name"] = port_info_.portName();
+  port_object["port_baudrate"] = (int)port_baud_rate_;
+  port_object["port_parity"] = (int)port_parity_;
+  port_object["port_data_bits"] = (int)port_data_bits_;
+  port_object["port_stop_bits"] = (int)port_stop_bits_;
+  port_object["port_flow_ctrl"] = (int)port_flow_control_;
+  return port_object;
+}

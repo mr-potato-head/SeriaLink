@@ -56,22 +56,45 @@ class ViewSettings {
   //! Constructor with json object
   ViewSettings(QJsonObject view_object);
 
+  //! Get view type
   ViewType GetViewType(void);
+
+  //! Get display type
   DisplayType GetDisplayType(void);
+
+  //! Get data size
   DataSize GetDataSize(void);
+
+  //! Set view type
   void SetViewType(ViewSettings::ViewType view_type);
+
+  //! Set display type
   void SetDisplayType(ViewSettings::DisplayType display_type);
+
+  //! Set data size
   void SetDataSize(ViewSettings::DataSize data_size);
+
+  //! Get JSON translation
+  QJsonObject ToJson(void);
 
  private:
   //! Map ViewType<>JsonStrViewType
-  static const QMap<QString, ViewSettings::ViewType> kViewTypeMap;
+  static const QMap<QString, ViewSettings::ViewType> kViewTypeFromString;
 
   //! Map ViewType<>JsonStrDisplayType
-  static const QMap<QString, ViewSettings::DisplayType> kDisplayTypeMap;
+  static const QMap<QString, ViewSettings::DisplayType> kDisplayTypeFromString;
 
   //! Map ViewType<>JsonStrSize
-  static const QMap<QString, ViewSettings::DataSize> kDataSizeMap;
+  static const QMap<QString, ViewSettings::DataSize> kDataSizeFromString;
+
+  //! Map ViewType<>JsonStrViewType
+  static const QMap<ViewSettings::ViewType, QString> kStringFromViewType;
+
+  //! Map ViewType<>JsonStrDisplayType
+  static const QMap<ViewSettings::DisplayType, QString> kStringFromDisplayType;
+
+  //! Map ViewType<>JsonStrSize
+  static const QMap<ViewSettings::DataSize, QString> kStringFromDataSize;
 
   //! View type
   ViewType view_type_ {ViewType::kUnknown};

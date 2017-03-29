@@ -21,6 +21,7 @@
 
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QJsonObject>
 
 class ComPortSettings {
  public:
@@ -62,6 +63,9 @@ class ComPortSettings {
 
   //! Setter of flow control
   void SetFlowControl(QSerialPort::FlowControl flow_control);
+
+  //! Get JSON translation
+  QJsonObject ToJson(void);
 
  private:
   //! Port infos

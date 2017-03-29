@@ -31,13 +31,18 @@ MenuWidget::MenuWidget(Session* session,
   open_session_button_->setIcon(QIcon(":/icons/icons/folder-8x.png"));
   open_session_button_->setFixedSize(200, 60);
 
+  save_session_button_ = new QPushButton(this);
+  save_session_button_->setIcon(QIcon(":/icons/icons/hard-drive-8x.png"));
+  save_session_button_->setFixedSize(200, 60);
+
   about_button_ = new QPushButton(this);
   about_button_->setIcon(QIcon(":/icons/icons/question-mark-8x.png"));
   about_button_->setFixedSize(200, 60);
 
   main_layout_ = new QGridLayout(this);
-  main_layout_->addWidget(open_session_button_);
-  main_layout_->addWidget(about_button_);
+  main_layout_->addWidget(open_session_button_, 0, 0);
+  main_layout_->addWidget(save_session_button_, 1, 0);
+  main_layout_->addWidget(about_button_, 2, 0);
 
   connect(open_session_button_, &QPushButton::clicked, [=](void) {
     // Choose session file
@@ -52,6 +57,21 @@ MenuWidget::MenuWidget(Session* session,
 
     // Load session
     session_->LoadFromFile(fileName);
+  });
+
+  connect(save_session_button_, &QPushButton::clicked, [=](void) {
+    // Choose session file
+    QString fileName =
+        QFileDialog::getSaveFileName(this,
+                                     tr("Open session file"),
+                                     QDir::homePath(),
+                                     tr("Session files (*.json)"));
+
+    // Close menu
+    this->close();
+
+    // Load session
+    session_->SaveInFile(fileName);
   });
 
   connect(about_button_, &QPushButton::clicked, [=](void) {

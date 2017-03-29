@@ -28,24 +28,24 @@ Session::Session(QObject *parent)
 }
 
 Session::~Session() {
-    // Delete threads for this session
-    QList<QThread*>::iterator itBeginTh = thread_list_.begin();
-    QList<QThread*>::iterator itEndTh = thread_list_.end();
-    for (QList<QThread*>::iterator it = itBeginTh ; it != itEndTh ; it++) {
-        (*it)->quit();
-        if (!(*it)->wait(1000)) {
-            qDebug() << "Timeout arret du thread.";
-        }
-        delete *it;
+  // Delete threads for this session
+  QList<QThread*>::iterator itBeginTh = thread_list_.begin();
+  QList<QThread*>::iterator itEndTh = thread_list_.end();
+  for (QList<QThread*>::iterator it = itBeginTh ; it != itEndTh ; it++) {
+    (*it)->quit();
+    if (!(*it)->wait(1000)) {
+      qDebug() << "Timeout arret du thread.";
     }
+    delete *it;
+  }
 
-    // Delete COM ports for this session
-    QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
-    QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
-    QList<ComPortManager*>::iterator it = itBeginPort;
-    for (; it != itEndPort ; it++) {
-      delete *it;
-    }
+  // Delete COM ports for this session
+  QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
+  QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
+  QList<ComPortManager*>::iterator it = itBeginPort;
+  for (; it != itEndPort ; it++) {
+    delete *it;
+  }
 }
 
 void Session::Close() {
@@ -81,35 +81,37 @@ void Session::AddPort(qint8 page_idx, ComPortSettings* port_settings) {
 }
 
 void Session::AddPort(qint8 page_idx, const QJsonObject& port_object) {
-  ComPortSettings port_settings;
-  port_settings.SetBaudRate(
+  ComPortSettings* port_settings = new ComPortSettings();
+  port_settings->SetBaudRate(
         static_cast<QSerialPort::BaudRate>(
           port_object["port_baudrate"].toInt()));
-  port_settings.SetDataBits(
+  port_settings->SetDataBits(
         static_cast<QSerialPort::DataBits>(
           port_object["port_data_bits"].toInt()));
-  port_settings.SetFlowControl(
+  port_settings->SetFlowControl(
         static_cast<QSerialPort::FlowControl>(
           port_object["port_flow_ctrl"].toInt()));
-  port_settings.SetParity(
+  port_settings->SetParity(
         static_cast<QSerialPort::Parity>(
           port_object["port_parity"].toInt()));
   QSerialPortInfo port_info(port_object["port_name"].toString());
-  port_settings.SetPortInfo(port_info);
-  port_settings.SetStopBits(
+  port_settings->SetPortInfo(port_info);
+  port_settings->SetStopBits(
         static_cast<QSerialPort::StopBits>(
           port_object["port_stop_bits"].toInt()));
 
   // Call overloaded AddPort function
-  this->AddPort(page_idx, &port_settings);
+  this->AddPort(page_idx, port_settings);
 }
 
-void AddView(qint8 page_idx, ViewSettings* view_settings) {
-
+void Session::AddView(qint8 page_idx, ViewSettings* view_settings) {
+  page_list_.at(page_idx)->view_setting_list_.append(view_settings);
+  emit ViewAdded(page_idx, view_settings);
 }
 
-void AddView(qint8 page_idx, const QJsonObject& view_object) {
-
+void Session::AddView(qint8 page_idx, const QJsonObject& view_object) {
+  ViewSettings* settings = new ViewSettings(view_object);
+  this->AddView(page_idx, settings);
 }
 
 void Session::SetCurrentPortMgrIndex(qint32 index) {
@@ -123,8 +125,8 @@ void Session::OpenPort(qint32 index) {
 }
 
 void Session::ClosePort(qint32 index) {
-    ComPortManager* port_mgr = com_port_mgr_list_.at(index);
-    QTimer::singleShot(0, port_mgr, &ComPortManager::ClosePort);
+  ComPortManager* port_mgr = com_port_mgr_list_.at(index);
+  QTimer::singleShot(0, port_mgr, &ComPortManager::ClosePort);
 }
 
 quint8 Session::GetPortNumber(void) {
@@ -136,7 +138,7 @@ quint8 Session::GetCurrentPortMgrIndex(void) {
 }
 
 ComPortManager* Session::GetPortManager(qint32 index) {
-    return com_port_mgr_list_.at(index);
+  return com_port_mgr_list_.at(index);
 }
 
 void Session::LoadFromFile(QString filepath) {
@@ -169,9 +171,7 @@ void Session::LoadFromFile(QString filepath) {
           QJsonArray view_array = page_object["page_views"].toArray();
           for (int view_idx = 0; view_idx < view_array.size(); ++view_idx) {
             QJsonObject view_object = view_array[view_idx].toObject();
-            ViewSettings* settings = new ViewSettings(view_object);
-            page_list_.at(page_idx)->view_setting_list_.append(settings);
-            emit ViewAdded(page_idx, settings);
+            this->AddView(page_idx, view_object);
           }
         }
       } else {
@@ -186,6 +186,42 @@ void Session::LoadFromFile(QString filepath) {
 }
 
 void Session::SaveInFile(QString filepath) {
+  QFile session_file(filepath);
 
+  if (!session_file.open(QIODevice::WriteOnly)) {
+    qWarning("Couldn't open save file.");
+    return;
+  }
+
+  QJsonArray page_array;
+  for (int i=0 ; i<page_list_.size() ; i++) {
+    QJsonObject page_object;
+    // Create ports
+    QJsonArray port_array;
+    for (int j=0 ; j<page_list_.at(i)->port_setting_list_.size() ; j++) {
+      ComPortSettings* settings = page_list_.at(i)->port_setting_list_.at(j);
+      QJsonObject port_object = settings->ToJson();
+      port_array.append(port_object);
+    }
+
+    // Create views
+    QJsonArray view_array;
+    for (int k=0 ; k<page_list_.at(i)->view_setting_list_.size() ; k++) {
+      ViewSettings* settings = page_list_.at(i)->view_setting_list_.at(k);
+      QJsonObject view_object = settings->ToJson();
+      view_array.append(view_object);
+    }
+
+    page_object["page_ports"] = port_array;
+    page_object["page_views"] = view_array;
+    page_array.append(page_object);
+  }
+
+  QJsonObject session_object;
+  session_object.insert("session_pages", page_array);
+
+  QJsonDocument save_doc(session_object);
+  session_file.write(save_doc.toJson());
+  session_file.close();
 }
 

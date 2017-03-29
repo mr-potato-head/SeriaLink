@@ -42,6 +42,9 @@ class MenuWidget : public QWidget {
   //! Open session button
   QPushButton* open_session_button_ {nullptr};
 
+  //! Save session button
+  QPushButton* save_session_button_ {nullptr};
+
   //! Session manager pointer
   Session* session_ {nullptr};
 };
