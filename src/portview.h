@@ -39,6 +39,10 @@ class PortView : public QWidget {
   PortView(ViewSettings* view_settings,
            QWidget *parent = 0);
 
+ signals:
+  //! Emitted when delete button has been clicked
+  void DeleteView(PortView*);
+
  public slots: //NOLINT
   //! Executed when new data are received
   virtual void OnReceivedData(DataPacket& packet) = 0;

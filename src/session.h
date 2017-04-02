@@ -59,6 +59,9 @@ class Session : public QObject {
   //! Add view in page from JSON array
   void AddView(qint8 page_idx, const QJsonObject& view_object);
 
+  //! Delete view in page
+  void DeleteView(qint8 page_idx, qint8 view_idx);
+
   //! Get port number
   quint8 GetPortNumber(void);
 
@@ -68,6 +71,7 @@ class Session : public QObject {
   //! Get a COM port manager
   ComPortManager* GetPortManager(qint32 index);
 
+  //! Close session
   void Close(void);
 
  public slots: //NOLINT

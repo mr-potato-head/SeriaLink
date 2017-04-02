@@ -87,7 +87,7 @@ PortView::PortView(ViewSettings* view_settings,
   main_layout_->setRowStretch(2, 20);
 
   connect(delete_button_, &QPushButton::clicked, [=](void) {
-    delete this;
+    emit DeleteView(this);
   });
   connect(browse_button_, &QPushButton::clicked, [=](void) {
     QString fileName =

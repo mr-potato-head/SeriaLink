@@ -114,6 +114,10 @@ void Session::AddView(qint8 page_idx, const QJsonObject& view_object) {
   this->AddView(page_idx, settings);
 }
 
+void Session::DeleteView(qint8 page_idx, qint8 view_idx) {
+  page_list_.at(page_idx)->view_setting_list_.removeAt(view_idx);
+}
+
 void Session::SetCurrentPortMgrIndex(qint32 index) {
   current_port_mgr_index_ = index;
   emit IndexChanged(index);

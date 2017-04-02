@@ -22,6 +22,7 @@
 #include <QWidget>
 #include <QGridLayout>
 #include <QMap>
+#include <QList>
 #include "src/session.h"
 #include "src/portinfowidget.h"
 #include "src/portview.h"
@@ -65,6 +66,9 @@ class PortPage : public QWidget {
 
   //! QHBoxLayout for views
   QHBoxLayout* view_layout_ {NULL};
+
+  //! View list
+  QList<PortView*> view_list_ {NULL};
 };
 
 #endif  // SRC_PORTPAGE_H_

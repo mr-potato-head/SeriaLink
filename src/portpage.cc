@@ -78,10 +78,19 @@ void PortPage::AddView(ViewSettings* settings) {
     break;
   }
   view_layout_->addWidget(view);
+  view_list_.append(view);
 
   ComPortManager* port_mgr = session_->GetPortManager(port_index_);
 
   // Connect received data to port
   connect(port_mgr, SIGNAL(Receive(DataPacket&)),
           view, SLOT(OnReceivedData(DataPacket&)));
+  connect(view, &PortView::DeleteView, [=](PortView* view) {
+    for (int i=0 ; i<view_list_.size() ; i++) {
+      if (view_list_.at(i) == view) {
+        delete view;
+        session_->DeleteView(port_index_, i);
+      }
+    }
+  });
 }
