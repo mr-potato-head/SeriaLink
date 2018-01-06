@@ -31,7 +31,7 @@
 class ManualModePage : public ModePage {
  public:
   //! Constructor
-  explicit ManualModePage(ComPortManager* port_mgr, QWidget *parent = 0);
+  explicit ManualModePage(QWidget *parent = 0);
 
  private slots: //NOLINT
   //! Click on send button reaction

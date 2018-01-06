@@ -30,7 +30,7 @@
 class DumpModePage : public ModePage {
  public:
   //! Constructor
-  explicit DumpModePage(ComPortManager* port_mgr, QWidget *parent = 0);
+  explicit DumpModePage(QWidget *parent = 0);
 
  private slots: //NOLINT
   //! Click on send button reaction

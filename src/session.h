@@ -26,20 +26,16 @@
 #include "src/comportmanager.h"
 #include "src/comportsettings.h"
 #include "src/viewsettings.h"
+#include "src/portpage.h"
+#include "src/pagecontainer.h"
 
 class Session : public QObject {
   Q_OBJECT
 
  public:
 
-  class Page {
-    public :
-     QList<ComPortSettings*> port_setting_list_;
-     QList<ViewSettings*> view_setting_list_;
-  };
-
   //! Default constructor
-  explicit Session(QObject *parent = 0);
+  explicit Session(PageContainer* page_container, QObject *parent = 0);
 
   //! Destructor
   ~Session();
@@ -54,7 +50,7 @@ class Session : public QObject {
   void AddPort(qint8 page_idx, const QJsonObject& port_object);
 
   //! Add view in page from view settings
-  void AddView(qint8 page_idx, ViewSettings* view_settings);
+  void  AddView(qint8 page_idx, ViewSettings* settings);
 
   //! Add view in page from JSON array
   void AddView(qint8 page_idx, const QJsonObject& view_object);
@@ -114,10 +110,13 @@ class Session : public QObject {
   QList<QThread*> thread_list_;
 
   //! Index of the current port manager;
-  qint32 current_port_mgr_index_ {-1};
+  qint32 current_port_mgr_index_ {0};
 
-  //! Global list for load/save session
-  QList<Page*> page_list_;
+  //! Pointer on page container
+  PageContainer* page_container_ {NULL};
+
+  //! Global list of pages
+  QList<PortPage*> page_list_;
 };
 
 #endif  // SRC_SESSION_H_

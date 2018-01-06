@@ -132,3 +132,7 @@ PortView::PortView(ViewSettings* view_settings,
     }
   });
 }
+
+ViewSettings* PortView::GetViewSettings(void) {
+  return view_settings_;
+}

@@ -19,8 +19,8 @@
 #include "src/manualmodepage.h"
 #include "src/dataparser.h"
 
-ManualModePage::ManualModePage(ComPortManager* port_mgr, QWidget *parent)
-  : ModePage(port_mgr, parent) {
+ManualModePage::ManualModePage(QWidget *parent)
+  : ModePage(parent) {
   data_line_ = new QLineEdit(this);
   data_line_->setPlaceholderText(tr("Enter data here..."));
   loop_groupbox_ = new QGroupBox(tr("Loop"), this);

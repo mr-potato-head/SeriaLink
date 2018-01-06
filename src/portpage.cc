@@ -17,23 +17,25 @@
  */
 
 #include "src/portpage.h"
-#include "src/terminalportview.h"
-#include "src/dumpportview.h"
-#include "src/tableportview.h"
+#include "src/session.h"
 
 PortPage::PortPage(Session* session,
                    qint32 port_index,
-                   QWidget *parent)
+                   QWidget* parent)
   : QWidget(parent),
-    session_{session},
+    session_(session),
     port_index_{port_index} {
-  port_info_ = new PortInfoWidget(session, port_index, this);
-  send_widget_ = new SendWidget(session, port_index, this);
+  port_info_ = new PortInfoWidget(this);
+  send_widget_ = new SendWidget(this);
   view_widget_ = new QWidget(this);
   view_layout_ = new QHBoxLayout(view_widget_);
 
   connect(port_info_, SIGNAL(NewViewClicked()),
           this, SLOT(OnNewViewClicked()));
+  connect(port_info_, SIGNAL(OpenPortClicked()),
+          this, SLOT(OnOpenPortClicked()));
+  connect(port_info_, SIGNAL(ClosePortClicked()),
+          this, SLOT(OnClosePortClicked()));
 
   main_layout_ = new QGridLayout(this);
   main_layout_->addWidget(port_info_, 0, 0);
@@ -62,7 +64,21 @@ void PortPage::OnNewViewClicked(void) {
   }
 }
 
-void PortPage::AddView(ViewSettings* settings) {
+void PortPage::AddView(PortView* view) {
+  view_layout_->addWidget(view);
+  view_list_.append(view);
+
+  connect(view, &PortView::DeleteView, [=](PortView* view) {
+    for (int i=0 ; i<view_list_.size() ; i++) {
+      if (view_list_.at(i) == view) {
+        delete view;
+        //session_->DeleteView(port_index_, i);
+        view_list_.removeAt(i);
+      }
+    }
+  });
+
+  /*
   PortView* view;
   switch (settings->GetViewType()) {
   case ViewSettings::ViewType::kDump:
@@ -93,4 +109,29 @@ void PortPage::AddView(ViewSettings* settings) {
       }
     }
   });
+  */
+}
+
+void PortPage::AddPortMgr(ComPortManager* port_mgr) {
+  port_mgr_list_.append(port_mgr);
+  port_info_->SetPortSettings(port_mgr->GetPortSettings());
+  send_widget_->SetPortManager(port_mgr);
+}
+
+QList<PortView*>* PortPage::GetViewList(void) {
+  return &view_list_;
+}
+
+QList<ComPortManager*> PortPage::GetPortMgrList(void) {
+  return port_mgr_list_;
+}
+
+void PortPage::OnOpenPortClicked(void) {
+  ComPortManager* port_mgr = session_->GetPortManager(port_index_);
+  port_mgr->OpenPort();
+}
+
+void PortPage::OnClosePortClicked(void) {
+  ComPortManager* port_mgr = session_->GetPortManager(port_index_);
+  port_mgr->ClosePort();
 }

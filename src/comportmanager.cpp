@@ -51,9 +51,11 @@ void ComPortManager::ClosePort(void) {
   }
 
   // Close port
-  com_port_->ClosePort();
-  delete com_port_;
-  com_port_ = NULL;
+  if(com_port_) {
+    com_port_->ClosePort();
+    delete com_port_;
+    com_port_ = NULL;
+  }
 }
 
 void ComPortManager::OnStartManualSequence(DataParser::ParserType eParser,

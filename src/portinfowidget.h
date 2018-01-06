@@ -25,27 +25,26 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include "src/comportsettings.h"
-#include "src/session.h"
 
 class PortInfoWidget : public QWidget {
   Q_OBJECT
 
  public:
   //! Default constructor
-  explicit PortInfoWidget(Session* session,
-                          qint32 port_index,
-                          QWidget *parent = 0);
+  explicit PortInfoWidget(QWidget *parent = 0);
+
+  //! Set port settings
+  void SetPortSettings(ComPortSettings* port_settings);
 
  signals:
   //! Emitted when the new view button is clicked
   void NewViewClicked(void);
 
- private slots: //NOLINT
-  //! Executed on click on open button
-  void OnOpenPortClicked(void);
+  //! Emitted on click on open button
+  void OpenPortClicked(void);
 
-  //! Executed on click on close button
-  void OnClosePortClicked(void);
+  //! Emitted on click on close button
+  void ClosePortClicked(void);
 
  private:
   //! Group box of settings
@@ -54,14 +53,8 @@ class PortInfoWidget : public QWidget {
   //! Group box vertical layout
   QVBoxLayout* group_box_layout_ {NULL};
 
-  //! Session
-  Session* session_ {NULL};
-
   //! Port index
   qint32 port_index_ {-1};
-
-  //! Com port settings
-  ComPortSettings* port_settings_ {NULL};
 
   //! Main vertical layout
   QVBoxLayout* main_layout_ {NULL};

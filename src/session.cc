@@ -22,9 +22,13 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include "src/session.h"
+#include "src/terminalportview.h"
+#include "src/dumpportview.h"
+#include "src/tableportview.h"
 
-Session::Session(QObject *parent)
-  : QObject(parent) {
+Session::Session(PageContainer* page_container, QObject *parent)
+  : QObject(parent),
+    page_container_(page_container) {
 }
 
 Session::~Session() {
@@ -66,9 +70,6 @@ void Session::AddPort(qint8 page_idx, ComPortSettings* port_settings) {
   // Create new port manager
   ComPortManager* com_port_mgr = new ComPortManager(port_settings);
   com_port_mgr_list_.append(com_port_mgr);
-  Page* page = new Page();
-  page->port_setting_list_.append(port_settings);
-  page_list_.append(page);
 
   // Create thread for this port manager
   QThread* thread = new QThread(this);
@@ -76,7 +77,14 @@ void Session::AddPort(qint8 page_idx, ComPortSettings* port_settings) {
   com_port_mgr->moveToThread(thread);
   thread->start(QThread::TimeCriticalPriority);
 
-  current_port_mgr_index_ = com_port_mgr_list_.size()-1;
+  // Create page
+  PortPage* page = new PortPage(this, page_idx);
+  page->AddPortMgr(com_port_mgr);
+  page_list_.append(page);
+  int page_index = page_container_->addWidget(page);
+  page_container_->setCurrentIndex(page_index);
+
+  current_port_mgr_index_ = page_idx;
   emit PortAdded(current_port_mgr_index_);
 }
 
@@ -104,9 +112,39 @@ void Session::AddPort(qint8 page_idx, const QJsonObject& port_object) {
   this->AddPort(page_idx, port_settings);
 }
 
-void Session::AddView(qint8 page_idx, ViewSettings* view_settings) {
-  page_list_.at(page_idx)->view_setting_list_.append(view_settings);
-  emit ViewAdded(page_idx, view_settings);
+void Session::AddView(qint8 page_idx, ViewSettings* settings) {
+  PortView* view;
+  switch (settings->GetViewType()) {
+  case ViewSettings::ViewType::kDump:
+    view = new DumpPortView(settings);
+    break;
+  case ViewSettings::ViewType::kTerminal:
+    view = new TerminalPortView(settings);
+    break;
+  case ViewSettings::ViewType::kTable:
+    view = new TablePortView(settings);
+    break;
+  default:
+    break;
+  }
+
+  ComPortManager* port_mgr = com_port_mgr_list_.at(page_idx);
+
+  // Connect received data to port
+  connect(port_mgr, SIGNAL(Receive(DataPacket&)),
+          view, SLOT(OnReceivedData(DataPacket&)));
+  /*
+  connect(view, &PortView::DeleteView, [=](PortView* view) {
+    for (int i=0 ; i<view_list_.size() ; i++) {
+      if (view_list_.at(i) == view) {
+        delete view;
+        //session_->DeleteView(port_index_, i);
+      }
+    }
+  });
+  */
+  //page_list_.at(page_idx)->GetViewList()->append(view);
+  page_list_.at(page_idx)->AddView(view);
 }
 
 void Session::AddView(qint8 page_idx, const QJsonObject& view_object) {
@@ -115,7 +153,7 @@ void Session::AddView(qint8 page_idx, const QJsonObject& view_object) {
 }
 
 void Session::DeleteView(qint8 page_idx, qint8 view_idx) {
-  page_list_.at(page_idx)->view_setting_list_.removeAt(view_idx);
+  page_list_.at(page_idx)->GetViewList()->removeAt(view_idx);
 }
 
 void Session::SetCurrentPortMgrIndex(qint32 index) {
@@ -202,16 +240,16 @@ void Session::SaveInFile(QString filepath) {
     QJsonObject page_object;
     // Create ports
     QJsonArray port_array;
-    for (int j=0 ; j<page_list_.at(i)->port_setting_list_.size() ; j++) {
-      ComPortSettings* settings = page_list_.at(i)->port_setting_list_.at(j);
+    for (int j=0 ; j<page_list_.at(i)->GetPortMgrList().size() ; j++) {
+      ComPortSettings* settings = page_list_.at(i)->GetPortMgrList().at(j)->GetPortSettings();
       QJsonObject port_object = settings->ToJson();
       port_array.append(port_object);
     }
 
     // Create views
     QJsonArray view_array;
-    for (int k=0 ; k<page_list_.at(i)->view_setting_list_.size() ; k++) {
-      ViewSettings* settings = page_list_.at(i)->view_setting_list_.at(k);
+    for (int k=0 ; k<page_list_.at(i)->GetViewList()->size() ; k++) {
+      ViewSettings* settings = page_list_.at(i)->GetViewList()->at(k)->GetViewSettings();
       QJsonObject view_object = settings->ToJson();
       view_array.append(view_object);
     }

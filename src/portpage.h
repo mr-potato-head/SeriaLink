@@ -23,12 +23,14 @@
 #include <QGridLayout>
 #include <QMap>
 #include <QList>
-#include "src/session.h"
 #include "src/portinfowidget.h"
 #include "src/portview.h"
 #include "src/sendwidget.h"
 #include "src/viewsettingdialog.h"
 #include "src/viewsettings.h"
+#include "src/comportmanager.h"
+
+class Session;
 
 class PortPage : public QWidget {
   Q_OBJECT
@@ -36,14 +38,29 @@ class PortPage : public QWidget {
  public:
   explicit PortPage(Session* session,
                     qint32 port_index,
-                    QWidget *parent = 0);
+                    QWidget* parent = 0);
 
   //! Add view in page
-  void AddView(ViewSettings* settings);
+  void AddView(PortView* view);
+
+  //! Add port in page
+  void AddPortMgr(ComPortManager* port_mgr);
+
+  //! Get view list
+  QList<PortView*>* GetViewList(void);
+
+  //! Get port manager list
+  QList<ComPortManager*> GetPortMgrList(void);
 
  private slots: //NOLINT
   //! Executed when new view button is clicked
   void OnNewViewClicked(void);
+
+  //! Executed on click on open button
+  void OnOpenPortClicked(void);
+
+  //! Executed on click on close button
+  void OnClosePortClicked(void);
 
  private:
   //! Main grid layout of the page
@@ -68,7 +85,10 @@ class PortPage : public QWidget {
   QHBoxLayout* view_layout_ {NULL};
 
   //! View list
-  QList<PortView*> view_list_ {NULL};
+  QList<PortView*> view_list_;
+
+  //! Comport manager list
+  QList<ComPortManager*> port_mgr_list_;
 };
 
 #endif  // SRC_PORTPAGE_H_

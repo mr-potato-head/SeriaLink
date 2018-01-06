@@ -18,29 +18,5 @@
 
 #include "src/pagecontainer.h"
 
-PageContainer::PageContainer(Session* session,
-                             QWidget *parent)
-  : QStackedWidget(parent),
-    session_{session} {
-  // Register metatypes
-  qRegisterMetaType<ViewSettings>("ViewSettings");
-
-  connect(session, SIGNAL(PortAdded(qint32)),
-          this, SLOT(AddPage(qint32)));
-  connect(session, SIGNAL(IndexChanged(qint32)),
-          this, SLOT(setCurrentIndex(int)));
-  connect(session, SIGNAL(ViewAdded(qint8, ViewSettings*)),
-          this, SLOT(OnViewAdded(qint8, ViewSettings*)));
-}
-
-void PageContainer::AddPage(qint32 page_idx) {
-  PortPage* page = new PortPage(session_, page_idx, this);
-  page_list_.append(page);
-
-  this->insertWidget(page_idx, page);
-  this->setCurrentIndex(page_idx);
-}
-
-void PageContainer::OnViewAdded(qint8 page_idx, ViewSettings* view_settings) {
-  page_list_.at(page_idx)->AddView(view_settings);
-}
+PageContainer::PageContainer(QWidget *parent)
+  : QStackedWidget(parent) {}

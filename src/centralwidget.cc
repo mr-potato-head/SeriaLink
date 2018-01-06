@@ -22,11 +22,11 @@
 
 CentralWidget::CentralWidget(QWidget *parent) :
   QWidget(parent) {
-  // Instanciate session manager
-  session_ = new Session(this);
 
+  page_container_ = new PageContainer(this);
+  // Instanciate session manager
+  session_ = new Session(page_container_, this);
   top_bar_ = new TopBar(session_, this);
-  page_container_ = new PageContainer(session_, this);
 
   main_layout_ = new QVBoxLayout(this);
   main_layout_->addWidget(top_bar_);

@@ -32,7 +32,6 @@
 #include <QRadioButton>
 #include "src/manualmodepage.h"
 #include "src/dumpmodepage.h"
-#include "src/session.h"
 
 class SendWidget : public QWidget {
   Q_OBJECT
@@ -46,15 +45,17 @@ class SendWidget : public QWidget {
   };
 
   //! Default constructor
-  explicit SendWidget(Session* session,
-                      qint32 port_index, QWidget *parent = 0);
+  explicit SendWidget(QWidget *parent = 0);
+
+  //! Set port manager
+  void SetPortManager(ComPortManager* port_mgr);
 
  private:
   //! Main grid layout of the widget
   QGridLayout* main_layout_ {NULL};
 
-  //! Session
-  Session* session_ {NULL};
+  //! Port manager
+  ComPortManager* port_mgr_ {NULL};
 
   //! Port index
   qint32 port_index_ {-1};

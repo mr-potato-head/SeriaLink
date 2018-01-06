@@ -33,10 +33,13 @@ class ModePage : public QWidget {
 
  public:
   //! Constructor
-  explicit ModePage(ComPortManager* port_mgr, QWidget *parent = 0);
+  explicit ModePage(QWidget *parent = 0);
 
   //! Destructor
   ~ModePage();
+
+  //! Set port manager
+  void SetPortManager(ComPortManager* port_mgr);
 
  signals:
   //! Emitted for starting manual sequence

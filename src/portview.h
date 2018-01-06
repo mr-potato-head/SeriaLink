@@ -36,8 +36,12 @@ class PortView : public QWidget {
   Q_OBJECT
 
  public:
+  //! Constructeur
   PortView(ViewSettings* view_settings,
            QWidget *parent = 0);
+
+  //! Get view settings
+  ViewSettings* GetViewSettings(void);
 
  signals:
   //! Emitted when delete button has been clicked

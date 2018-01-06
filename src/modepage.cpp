@@ -18,9 +18,8 @@
 
 #include "src/modepage.h"
 
-ModePage::ModePage(ComPortManager* port_mgr, QWidget *parent)
-  : QWidget(parent),
-    port_manager_{port_mgr} {
+ModePage::ModePage(QWidget *parent)
+  : QWidget(parent) {
   main_layout_ = new QGridLayout(this);
   progress_bar_ = new QProgressBar(this);
   progress_bar_->setAlignment(Qt::AlignCenter);
@@ -53,6 +52,24 @@ ModePage::ModePage(ComPortManager* port_mgr, QWidget *parent)
   main_layout_->setColumnStretch(2, 10);
 
   // Signals connection
+  connect(start_button_, &QPushButton::clicked,
+          this, [=](void) {
+    start_button_->setEnabled(false);
+    stop_button_->setEnabled(true);
+  });
+  connect(stop_button_, &QPushButton::clicked,
+          this, [=](void) {
+    progress_bar_->setValue(0);
+    start_button_->setEnabled(true);
+    stop_button_->setEnabled(false);
+  });
+}
+
+ModePage::~ModePage() {}
+
+void ModePage::SetPortManager(ComPortManager* port_mgr) {
+  port_manager_ = port_mgr;
+
   connect(this, &ModePage::StartDumpSequence,
           port_manager_, &ComPortManager::OnStartDumpSequence);
   connect(this, &ModePage::StartAutoSequence,
@@ -61,24 +78,11 @@ ModePage::ModePage(ComPortManager* port_mgr, QWidget *parent)
           progress_bar_, &QProgressBar::setValue);
   connect(this, &ModePage::StartManualSequence,
           port_manager_, &ComPortManager::OnStartManualSequence);
-  connect(start_button_, &QPushButton::clicked,
-          this, [=](void) {
-    start_button_->setEnabled(false);
-    stop_button_->setEnabled(true);
-  });
-  connect(stop_button_, &QPushButton::clicked,
-          port_manager_, &ComPortManager::OnStopSequence);
-  connect(stop_button_, &QPushButton::clicked,
-          this, [=](void) {
-    progress_bar_->setValue(0);
-    start_button_->setEnabled(true);
-    stop_button_->setEnabled(false);
-  });
   connect(port_manager_, &ComPortManager::SequenceOver,
           this, [=](void) {
     start_button_->setEnabled(true);
     stop_button_->setEnabled(false);
   });
+  connect(stop_button_, &QPushButton::clicked,
+          port_manager_, &ComPortManager::OnStopSequence);
 }
-
-ModePage::~ModePage() {}

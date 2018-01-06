@@ -18,11 +18,8 @@
 
 #include "src/sendwidget.h"
 
-SendWidget::SendWidget(Session* session,
-                       qint32 port_index, QWidget *parent)
-  : QWidget(parent),
-    session_{session},
-    port_index_{port_index} {
+SendWidget::SendWidget(QWidget *parent)
+  : QWidget(parent) {
   mode_label_ = new QLabel(tr("Mode"), this);
   mode_label_->setAlignment(Qt::AlignCenter);
   mode_combobox_ = new QComboBox(this);
@@ -32,10 +29,9 @@ SendWidget::SendWidget(Session* session,
   //  mode_combobox_->addItem(tr("Auto"), static_cast<int>(MODES::AUTO));
   stacked_widget_ = new QStackedWidget(this);
 
-  ComPortManager* port_mgr = session->GetPortManager(port_index_);
-  manual_mode_page_ = new ManualModePage(port_mgr, this);
+  manual_mode_page_ = new ManualModePage(this);
   stacked_widget_->addWidget(manual_mode_page_);
-  dump_mode_page_ = new DumpModePage(port_mgr, this);
+  dump_mode_page_ = new DumpModePage(this);
   stacked_widget_->addWidget(dump_mode_page_);
 
   mode_layout_ = new QVBoxLayout();
@@ -52,4 +48,9 @@ SendWidget::SendWidget(Session* session,
   // Connexion des signaux
   connect(mode_combobox_, SIGNAL(currentIndexChanged(int)),
           stacked_widget_, SLOT(setCurrentIndex(int)));
+}
+
+void SendWidget::SetPortManager(ComPortManager* port_mgr) {
+  manual_mode_page_->SetPortManager(port_mgr);
+  dump_mode_page_->SetPortManager(port_mgr);
 }
