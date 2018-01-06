@@ -131,19 +131,8 @@ void Session::AddView(qint8 page_idx, ViewSettings* settings) {
   ComPortManager* port_mgr = com_port_mgr_list_.at(page_idx);
 
   // Connect received data to port
-  connect(port_mgr, SIGNAL(Receive(DataPacket&)),
-          view, SLOT(OnReceivedData(DataPacket&)));
-  /*
-  connect(view, &PortView::DeleteView, [=](PortView* view) {
-    for (int i=0 ; i<view_list_.size() ; i++) {
-      if (view_list_.at(i) == view) {
-        delete view;
-        //session_->DeleteView(port_index_, i);
-      }
-    }
-  });
-  */
-  //page_list_.at(page_idx)->GetViewList()->append(view);
+  connect(port_mgr, SIGNAL(Receive(DataPacket const&)),
+          view, SLOT(OnReceivedData(DataPacket const&)));
   page_list_.at(page_idx)->AddView(view);
 }
 
@@ -236,20 +225,22 @@ void Session::SaveInFile(QString filepath) {
   }
 
   QJsonArray page_array;
-  for (int i=0 ; i<page_list_.size() ; i++) {
+  for (int i=0 ; i < page_list_.size() ; i++) {
     QJsonObject page_object;
     // Create ports
     QJsonArray port_array;
-    for (int j=0 ; j<page_list_.at(i)->GetPortMgrList().size() ; j++) {
-      ComPortSettings* settings = page_list_.at(i)->GetPortMgrList().at(j)->GetPortSettings();
+    for (int j=0 ; j < page_list_.at(i)->GetPortMgrList().size() ; j++) {
+      QList<ComPortManager*> port_mgr = page_list_.at(i)->GetPortMgrList();
+      ComPortSettings* settings = port_mgr.at(j)->GetPortSettings();
       QJsonObject port_object = settings->ToJson();
       port_array.append(port_object);
     }
 
     // Create views
     QJsonArray view_array;
-    for (int k=0 ; k<page_list_.at(i)->GetViewList()->size() ; k++) {
-      ViewSettings* settings = page_list_.at(i)->GetViewList()->at(k)->GetViewSettings();
+    QList<PortView*>* port_view_list = page_list_.at(i)->GetViewList();
+    for (int k=0 ; k < port_view_list->size() ; k++) {
+      ViewSettings* settings = port_view_list->at(k)->GetViewSettings();
       QJsonObject view_object = settings->ToJson();
       view_array.append(view_object);
     }

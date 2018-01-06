@@ -31,7 +31,7 @@ class TerminalPortView : public PortView {
 
  public slots: //NOLINT
   //! Executed when new data are received
-  virtual void OnReceivedData(DataPacket& packet);
+  virtual void OnReceivedData(DataPacket const& packet);
 
  private:
   //! Text edit of the view

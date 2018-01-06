@@ -33,7 +33,6 @@ class Session : public QObject {
   Q_OBJECT
 
  public:
-
   //! Default constructor
   explicit Session(PageContainer* page_container, QObject *parent = 0);
 

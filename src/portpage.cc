@@ -69,10 +69,9 @@ void PortPage::AddView(PortView* view) {
   view_list_.append(view);
 
   connect(view, &PortView::DeleteView, [=](PortView* view) {
-    for (int i=0 ; i<view_list_.size() ; i++) {
+    for (int i=0 ; i < view_list_.size() ; i++) {
       if (view_list_.at(i) == view) {
         delete view;
-        //session_->DeleteView(port_index_, i);
         view_list_.removeAt(i);
       }
     }

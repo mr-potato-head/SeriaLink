@@ -32,17 +32,17 @@ SOURCES += src/main.cc\
     src/viewsettings.cc \
     src/viewsettingdialog.cc \
     src/dataformatter.cc \
-    src/comportmanager.cpp \
-    src/datapacket.cpp \
-    src/modepage.cpp \
-    src/manualmodepage.cpp \
-    src/dumpmodepage.cpp \
     src/tableportview.cc \
     src/dumpportview.cc \
-    src/terminalportview.cpp \
-    src/dataparser.cpp \
-    src/menuwidget.cpp \
-    src/aboutwindow.cpp
+    src/aboutwindow.cc \
+    src/comportmanager.cc \
+    src/dumpmodepage.cc \
+    src/manualmodepage.cc \
+    src/menuwidget.cc \
+    src/modepage.cc \
+    src/terminalportview.cc \
+    src/datapacket.cc \
+    src/dataparser.cc
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \

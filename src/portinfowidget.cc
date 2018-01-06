@@ -19,8 +19,7 @@
 #include "src/portinfowidget.h"
 
 PortInfoWidget::PortInfoWidget(QWidget *parent)
-  : QWidget(parent)
-{
+  : QWidget(parent) {
   // Port name
   port_name_label_ = new QLabel(tr("Port name:"), this);
   port_name_value_  = new QLabel(this);

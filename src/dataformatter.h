@@ -28,8 +28,8 @@ class DataFormatter {
  public:
   DataFormatter();
 
-  static QString formatData(ViewSettings& settings,
-                            DataPacket& packet);
+  static QString formatData(ViewSettings const& settings,
+                            DataPacket const& packet);
 };
 
 #endif  // SRC_DATAFORMATTER_H_

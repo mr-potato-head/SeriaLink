@@ -51,7 +51,7 @@ void ComPortManager::ClosePort(void) {
   }
 
   // Close port
-  if(com_port_) {
+  if (com_port_) {
     com_port_->ClosePort();
     delete com_port_;
     com_port_ = NULL;

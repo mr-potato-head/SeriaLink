@@ -22,7 +22,6 @@
 
 CentralWidget::CentralWidget(QWidget *parent) :
   QWidget(parent) {
-
   page_container_ = new PageContainer(this);
   // Instanciate session manager
   session_ = new Session(page_container_, this);

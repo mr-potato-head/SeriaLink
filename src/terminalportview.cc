@@ -30,7 +30,7 @@ TerminalPortView::TerminalPortView(ViewSettings* view_settings, QWidget* parent)
   });
 }
 
-void TerminalPortView::OnReceivedData(DataPacket& packet) {
+void TerminalPortView::OnReceivedData(const DataPacket& packet) {
   QString str = DataFormatter::formatData(*view_settings_, packet);
   text_edit_->appendPlainText(str);
   if (capture_in_progress_) {
