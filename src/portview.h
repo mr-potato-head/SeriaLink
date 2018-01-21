@@ -52,7 +52,7 @@ class PortView : public QWidget {
   virtual void OnReceivedData(DataPacket const& packet) = 0;
 
   //! Executed when new data are received
-  virtual void OnSentData(DataPacket const& packet) = 0;
+  virtual void OnDataSent(DataPacket const& packet) = 0;
 
  protected:
   //! Main grid layout of the view

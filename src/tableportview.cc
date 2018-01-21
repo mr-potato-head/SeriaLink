@@ -55,7 +55,7 @@ void TablePortView::OnReceivedData(const DataPacket& packet) {
   current_row_idx_++;
 }
 
-void TablePortView::OnSentData(const DataPacket& packet) {
+void TablePortView::OnDataSent(const DataPacket& packet) {
   table_widget_->insertRow(current_row_idx_);
 
   QString dt = packet.GetDateTime().toString("dd/MM/yy - hh:mm:ss");

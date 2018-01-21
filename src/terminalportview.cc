@@ -38,7 +38,7 @@ void TerminalPortView::OnReceivedData(const DataPacket& packet) {
   }
 }
 
-void TerminalPortView::OnSentData(const DataPacket& packet) {
+void TerminalPortView::OnDataSent(const DataPacket& packet) {
   QString str = DataFormatter::formatData(*view_settings_, packet);
   text_edit_->appendPlainText(str);
   if (capture_in_progress_) {

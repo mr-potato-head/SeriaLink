@@ -33,7 +33,7 @@ class TerminalPortView : public PortView {
   //! Executed when new data are received
   virtual void OnReceivedData(DataPacket const& packet);
 
-  virtual void OnSentData(const DataPacket& packet);
+  virtual void OnDataSent(const DataPacket& packet);
 
  private:
   //! Text edit of the view
