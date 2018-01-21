@@ -28,56 +28,85 @@
 #include "src/viewsettings.h"
 #include "src/portpage.h"
 #include "src/pagecontainer.h"
+#include "src/topbar.h"
 
 class Session : public QObject {
   Q_OBJECT
 
  public:
   //! Default constructor
-  explicit Session(PageContainer* page_container, QObject *parent = 0);
+  explicit Session(QObject *parent = 0);
 
   //! Destructor
   ~Session();
 
-  //! Add port in page in this session
-  void AddPort(ComPortSettings* port_settings);
+  //! Set TopBar pointer
+  void SetTopbar(TopBar* top_bar);
+
+  //! Set page container pointer
+  void SetPageContainer(PageContainer* page_container);
 
   //! Add port in page in this session
-  void AddPort(qint8 page_idx, ComPortSettings* port_settings);
+  void AddPage(void);
+
+  //! Add port in page in this session
+  void AddPage(ComPortSettings* port_settings);
+
+  //! Delete page in this session
+  void DeletePage(quint8 page_idx);
+
+  //! Add port in page in this session
+  void AddPort(quint8 page_idx, ComPortSettings* port_settings);
 
   //! Add port in page from JSON array
-  void AddPort(qint8 page_idx, const QJsonObject& port_object);
+  void AddPort(quint8 page_idx, const QJsonObject& port_object);
+
+  //! Update port settings
+  void UpdatePortSettings(quint8 page_idx,
+                          quint8 port_idx,
+                          ComPortSettings* port_settings);
+
+  //! Delete port
+  void DeletePort(quint8 page_idx, quint8 port_idx);
 
   //! Add view in page from view settings
-  void  AddView(qint8 page_idx, ViewSettings* settings);
+  void AddView(quint8 page_idx, ViewSettings* settings);
 
   //! Add view in page from JSON array
-  void AddView(qint8 page_idx, const QJsonObject& view_object);
+  void AddView(quint8 page_idx, const QJsonObject& view_object);
+
+  //! Update view in page
+  void UpdateViewSettings(quint8 page_idx,
+                          quint8 view_idx,
+                          ViewSettings* settings);
 
   //! Delete view in page
-  void DeleteView(qint8 page_idx, qint8 view_idx);
+  void DeleteView(quint8 page_idx, quint8 view_idx);
 
   //! Get port number
-  quint8 GetPortNumber(void);
+  //quint8 GetPortNumber(void);
 
   //! Get current page index
-  quint8 GetCurrentPortMgrIndex(void);
+  quint8 GetCurrentPageIndex(void);
 
   //! Get a COM port manager
-  ComPortManager* GetPortManager(qint32 index);
+  //ComPortManager* GetPortManager(qint32 index);
+
+  //! Get page list
+  QList<PortPage*>* GetPortPageList(void);
 
   //! Close session
   void Close(void);
 
  public slots: //NOLINT
-  //! Set current port index
-  void SetCurrentPortMgrIndex(qint32 index);
+  //! Set current page index
+  void SetCurrentPageIndex(int page_index);
 
   //! Open port
-  void OpenPort(qint32 index);
+  //void OpenPort(qint32 index);
 
   //! Close port
-  void ClosePort(qint32 index);
+  //void ClosePort(qint32 index);
 
   //! Load session from file
   void LoadFromFile(QString filepath);
@@ -87,32 +116,35 @@ class Session : public QObject {
 
  signals:
   //! Emitted when a new port is added in session
-  void PortAdded(qint32);
+  void PageAdded(quint32);
 
   //! Emitted when the current port index is changed
-  void IndexChanged(qint32);
+  void IndexChanged(quint32);
 
   //! Emitted for opening the port
-  void OpenPortSignal(void);
+  //void OpenPortSignal(void);
 
   //! Emitted for closing the port
-  void ClosePortSignal(void);
+  //void ClosePortSignal(void);
 
-  //! Emmitted for adding view
-  void ViewAdded(qint8, ViewSettings*);
+  //! Emitted for adding view
+  //void ViewAdded(qint8, ViewSettings*);
 
  private:
   //! COM port list
-  QList<ComPortManager*> com_port_mgr_list_;
+  //QList<ComPortManager*> com_port_mgr_list_;
 
   //! Thread list
-  QList<QThread*> thread_list_;
+  //QList<QThread*> thread_list_;
 
-  //! Index of the current port manager;
-  qint32 current_port_mgr_index_ {0};
+  //! Index of the current page index;
+  quint32 current_page_index_ {0};
 
   //! Pointer on page container
   PageContainer* page_container_ {NULL};
+
+  //! Pointer on top bar
+  TopBar* top_bar_ {NULL};
 
   //! Global list of pages
   QList<PortPage*> page_list_;

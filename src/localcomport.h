@@ -38,7 +38,10 @@ class LocalComPort : public ComPort {
 
  signals:
   //! Emitted when data have been received
-  void Receive(const DataPacket& data);
+  void DataReceived(const DataPacket& data);
+
+  //! Emitted when data have been sent
+  void DataSent(const DataPacket& data);
 
  public slots: //NOLINT
   //! Executed to open port

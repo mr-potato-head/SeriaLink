@@ -18,8 +18,10 @@
 
 #include "src/portinfowidget.h"
 
-PortInfoWidget::PortInfoWidget(QWidget *parent)
-  : QWidget(parent) {
+PortInfoWidget::PortInfoWidget(QList<ComPortManager*>* port_mgr_list,
+                               QWidget *parent)
+  : QWidget(parent),
+    port_mgr_list_ {port_mgr_list} {
   // Port name
   port_name_label_ = new QLabel(tr("Port name:"), this);
   port_name_value_  = new QLabel(this);
@@ -54,18 +56,40 @@ PortInfoWidget::PortInfoWidget(QWidget *parent)
   open_button_ = new QPushButton(this);
   open_button_->setIcon(QIcon(":/icons/icons/media-play-8x.png"));
   open_button_->setToolTip(tr("Open serial port."));
+  open_button_->setEnabled(true);
   connect(open_button_, SIGNAL(clicked()),
           this, SIGNAL(OpenPortClicked()));
+  connect(open_button_, &QPushButton::clicked, [=](void) {
+    open_button_->setEnabled(false);
+    new_view_button_->setEnabled(false);
+    new_port_button_->setEnabled(false);
+    close_button_->setEnabled(true);
+  });
+
   close_button_ = new QPushButton(this);
   close_button_->setIcon(QIcon(":/icons/icons/media-stop-8x.png"));
   close_button_->setToolTip(tr("Close serial port."));
+  close_button_->setEnabled(false);
   connect(close_button_, SIGNAL(clicked()),
           this, SIGNAL(ClosePortClicked()));
+  connect(close_button_, &QPushButton::clicked, [=](void) {
+    open_button_->setEnabled(true);
+    new_view_button_->setEnabled(true);
+    new_port_button_->setEnabled(true);
+    close_button_->setEnabled(false);
+  });
+
   new_view_button_ = new QPushButton(this);
   new_view_button_->setIcon(QIcon(":/icons/icons/plus-8x.png"));
-  new_view_button_->setToolTip(tr("Add a view for this port."));
+  new_view_button_->setToolTip(tr("Add a view to this port."));
   connect(new_view_button_, SIGNAL(clicked()),
           this, SIGNAL(NewViewClicked()));
+
+  new_port_button_ = new QPushButton(this);
+  new_port_button_->setIcon(QIcon(":/icons/icons/plus-8x.png"));
+  new_port_button_->setToolTip(tr("Add a port to this page."));
+  connect(new_port_button_, SIGNAL(clicked()),
+          this, SIGNAL(NewPortClicked()));
 
   settings_group_box_ = new QGroupBox(tr("Port settings"), this);
   group_box_layout_ = new QVBoxLayout(settings_group_box_);
@@ -87,6 +111,7 @@ PortInfoWidget::PortInfoWidget(QWidget *parent)
   main_layout_->addWidget(open_button_);
   main_layout_->addWidget(close_button_);
   main_layout_->addWidget(new_view_button_);
+  main_layout_->addWidget(new_port_button_);
 
   settings_group_box_->setSizePolicy(QSizePolicy::Expanding,
                                      QSizePolicy::Expanding);

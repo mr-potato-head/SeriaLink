@@ -18,6 +18,7 @@
 
 
 #include "src/pageswitcher.h"
+#include "src/session.h"
 
 PageSwitcher::PageSwitcher(QWidget *parent) :
   QWidget(parent) {
@@ -61,6 +62,10 @@ PageSwitcher::PageSwitcher(QWidget *parent) :
           this, SIGNAL(DecreaseCurrentPageIndex()));
   connect(right_button_, SIGNAL(clicked()),
           this, SIGNAL(IncreaseCurrentPageIndex()));
+}
+
+void PageSwitcher::SetSession(Session* session) {
+  session_ = session;
 }
 
 void PageSwitcher::EnableButton(ButtonType type) {

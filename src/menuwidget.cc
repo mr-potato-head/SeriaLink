@@ -63,7 +63,7 @@ MenuWidget::MenuWidget(Session* session,
     // Choose session file
     QString fileName =
         QFileDialog::getSaveFileName(this,
-                                     tr("Open session file"),
+                                     tr("Save session file"),
                                      QDir::homePath(),
                                      tr("Session files (*.json)"));
 

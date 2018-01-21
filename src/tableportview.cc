@@ -54,3 +54,20 @@ void TablePortView::OnReceivedData(const DataPacket& packet) {
   }
   current_row_idx_++;
 }
+
+void TablePortView::OnSentData(const DataPacket& packet) {
+  table_widget_->insertRow(current_row_idx_);
+
+  QString dt = packet.GetDateTime().toString("dd/MM/yy - hh:mm:ss");
+  QTableWidgetItem *dtItem = new QTableWidgetItem(dt);
+  table_widget_->setItem(current_row_idx_, 0, dtItem);
+
+  QString str = DataFormatter::formatData(*view_settings_, packet);
+  QTableWidgetItem *strItem = new QTableWidgetItem(str);
+  table_widget_->setItem(current_row_idx_, 1, strItem);
+
+  if (capture_in_progress_) {
+    *capture_stream_ << dt << ";" << str << "\r";
+  }
+  current_row_idx_++;
+}

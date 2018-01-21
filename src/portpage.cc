@@ -18,24 +18,26 @@
 
 #include "src/portpage.h"
 #include "src/session.h"
+#include "src/addormodifyportdialog.h"
+#include "src/terminalportview.h"
+#include "src/dumpportview.h"
+#include "src/tableportview.h"
 
 PortPage::PortPage(Session* session,
-                   qint32 port_index,
+                   quint32 page_index,
                    QWidget* parent)
   : QWidget(parent),
     session_(session),
-    port_index_{port_index} {
-  port_info_ = new PortInfoWidget(this);
-  send_widget_ = new SendWidget(this);
+    page_index_{page_index} {
+  port_info_ = new PortInfoWidget(&port_mgr_list_, this);
+  send_widget_ = new SendWidget(&port_mgr_list_, this);
   view_widget_ = new QWidget(this);
   view_layout_ = new QHBoxLayout(view_widget_);
 
   connect(port_info_, SIGNAL(NewViewClicked()),
           this, SLOT(OnNewViewClicked()));
-  connect(port_info_, SIGNAL(OpenPortClicked()),
-          this, SLOT(OnOpenPortClicked()));
-  connect(port_info_, SIGNAL(ClosePortClicked()),
-          this, SLOT(OnClosePortClicked()));
+  connect(port_info_, SIGNAL(NewPortClicked()),
+          this, SLOT(OnNewPortClicked()));
 
   main_layout_ = new QGridLayout(this);
   main_layout_->addWidget(port_info_, 0, 0);
@@ -55,7 +57,7 @@ void PortPage::OnNewViewClicked(void) {
   switch (result) {
   case QDialog::Accepted:
   {
-    session_->AddView(port_index_, view_settings);
+    session_->AddView(page_index_, view_settings);
     break;
   }
   case QDialog::Rejected:
@@ -64,20 +66,38 @@ void PortPage::OnNewViewClicked(void) {
   }
 }
 
-void PortPage::AddView(PortView* view) {
-  view_layout_->addWidget(view);
-  view_list_.append(view);
+void PortPage::OnNewPortClicked(void) {
+  ComPortSettings* port_settings = new ComPortSettings();
+  AddOrModifyPortDialog addDialog(port_settings, this);
+  qint32 result = addDialog.exec();
 
-  connect(view, &PortView::DeleteView, [=](PortView* view) {
-    for (int i=0 ; i < view_list_.size() ; i++) {
-      if (view_list_.at(i) == view) {
-        delete view;
-        view_list_.removeAt(i);
-      }
-    }
-  });
+  switch (result) {
+  case QDialog::Accepted:
+  {
+    session_->AddPort(page_index_, port_settings);
+    break;
+  }
+  case QDialog::Rejected:
+  default:
+    break;
+  }
+}
 
-  /*
+void PortPage::AddView(ViewSettings* settings) {
+
+
+  //  view_layout_->addWidget(view);
+  //  view_list_.append(view);
+
+  //  connect(view, &PortView::DeleteView, [=](PortView* view) {
+  //    for (int i=0 ; i < view_list_.size() ; i++) {
+  //      if (view_list_.at(i) == view) {
+  //        delete view;
+  //        view_list_.removeAt(i);
+  //      }
+  //    }
+  //  });
+
   PortView* view;
   switch (settings->GetViewType()) {
   case ViewSettings::ViewType::kDump:
@@ -95,42 +115,75 @@ void PortPage::AddView(PortView* view) {
   view_layout_->addWidget(view);
   view_list_.append(view);
 
-  ComPortManager* port_mgr = session_->GetPortManager(port_index_);
+  // Connect port managers to this new view
+  foreach (ComPortManager* port_mgr, port_mgr_list_) {
+    connect(port_mgr, SIGNAL(DataReceived(DataPacket const&)),
+            view, SLOT(OnReceivedData(DataPacket const&)));
+    connect(port_mgr, SIGNAL(DataSent(DataPacket const&)),
+            view, SLOT(OnDataSent(DataPacket const&)));
+  }
 
-  // Connect received data to port
-  connect(port_mgr, SIGNAL(Receive(DataPacket&)),
-          view, SLOT(OnReceivedData(DataPacket&)));
+  // Process DeleteView signal
   connect(view, &PortView::DeleteView, [=](PortView* view) {
-    for (int i=0 ; i<view_list_.size() ; i++) {
-      if (view_list_.at(i) == view) {
-        delete view;
-        session_->DeleteView(port_index_, i);
-      }
-    }
+
+    int view_idx = view_list_.indexOf(view);
+    view_list_.removeAt(view_idx);
+    delete view;
+
+//    for (int i=0 ; i<view_list_.size() ; i++) {
+//      if (view_list_.at(i) == view) {
+//        delete view;
+//        session_->DeleteView(port_index_, i);
+//      }
+//    }
   });
-  */
 }
 
-void PortPage::AddPortMgr(ComPortManager* port_mgr) {
+void PortPage::AddPort(ComPortSettings* settings) {
+  // Create new port manager
+  ComPortManager* port_mgr = new ComPortManager(settings);
   port_mgr_list_.append(port_mgr);
-  port_info_->SetPortSettings(port_mgr->GetPortSettings());
-  send_widget_->SetPortManager(port_mgr);
+
+  // Connect views to this port manager
+  foreach (PortView* view, view_list_) {
+    connect(port_mgr, SIGNAL(Receive(DataPacket&)),
+            view, SLOT(OnReceivedData(DataPacket&)));
+  }
+
+  // Create thread for this port manager
+  QThread* thread = new QThread(this);
+  thread_list_.append(thread);
+  port_mgr->moveToThread(thread);
+  thread->start(QThread::TimeCriticalPriority);
+
+  // TODO: refaire les connexions avec les vues et les widgets
+  // et/ou appeler directement les méthodes dédiées des widgets ?
+
+  connect(port_info_, &PortInfoWidget::OpenPortClicked,
+          port_mgr, &ComPortManager::OpenPort);
+  connect(port_info_, &PortInfoWidget::ClosePortClicked,
+          port_mgr, &ComPortManager::ClosePort);
+
+  //port_info_->SetPortSettings(port_mgr->GetPortSettings());
+  send_widget_->PortListUpdated();
+  // TODO delete this, work with lists in port info widget
+  // warn info widget and send widget that new port has been added
 }
 
 QList<PortView*>* PortPage::GetViewList(void) {
   return &view_list_;
 }
 
-QList<ComPortManager*> PortPage::GetPortMgrList(void) {
-  return port_mgr_list_;
+QList<ComPortManager*>* PortPage::GetPortMgrList(void) {
+  return &port_mgr_list_;
 }
 
 void PortPage::OnOpenPortClicked(void) {
-  ComPortManager* port_mgr = session_->GetPortManager(port_index_);
-  port_mgr->OpenPort();
+  //  ComPortManager* port_mgr = session_->GetPortManager(port_index_);
+  //  port_mgr->OpenPort();
 }
 
 void PortPage::OnClosePortClicked(void) {
-  ComPortManager* port_mgr = session_->GetPortManager(port_index_);
-  port_mgr->ClosePort();
+  //  ComPortManager* port_mgr = session_->GetPortManager(port_index_);
+  //  port_mgr->ClosePort();
 }

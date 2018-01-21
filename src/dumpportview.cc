@@ -39,3 +39,13 @@ void DumpPortView::OnReceivedData(const DataPacket& packet) {
     *capture_stream_ << str;
   }
 }
+
+void DumpPortView::OnSentData(const DataPacket& packet) {
+  QString str = packet.GetDateTime().toString("dd.MM.yyyy at hh:mm:ss.zzz");
+  str += "\r  ";
+  str += DataFormatter::formatData(*view_settings_, packet);
+  text_edit_->appendPlainText(str);
+  if (capture_in_progress_) {
+    *capture_stream_ << str;
+  }
+}

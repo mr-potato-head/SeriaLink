@@ -51,6 +51,9 @@ class PortView : public QWidget {
   //! Executed when new data are received
   virtual void OnReceivedData(DataPacket const& packet) = 0;
 
+  //! Executed when new data are received
+  virtual void OnSentData(DataPacket const& packet) = 0;
+
  protected:
   //! Main grid layout of the view
   QGridLayout* main_layout_ {NULL};

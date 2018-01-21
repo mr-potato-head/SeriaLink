@@ -37,24 +37,27 @@ class PortPage : public QWidget {
 
  public:
   explicit PortPage(Session* session,
-                    qint32 port_index,
+                    quint32 page_index,
                     QWidget* parent = 0);
 
   //! Add view in page
-  void AddView(PortView* view);
+  void AddView(ViewSettings* settings);
 
   //! Add port in page
-  void AddPortMgr(ComPortManager* port_mgr);
+  void AddPort(ComPortSettings* settings);
 
   //! Get view list
   QList<PortView*>* GetViewList(void);
 
   //! Get port manager list
-  QList<ComPortManager*> GetPortMgrList(void);
+  QList<ComPortManager*>* GetPortMgrList(void);
 
  private slots: //NOLINT
   //! Executed when new view button is clicked
   void OnNewViewClicked(void);
+
+  //! Executed when new port button is clicked
+  void OnNewPortClicked(void);
 
   //! Executed on click on open button
   void OnOpenPortClicked(void);
@@ -69,8 +72,8 @@ class PortPage : public QWidget {
   //! Pointer on session
   Session* session_ {NULL};
 
-  //! Port index in session
-  qint32 port_index_ {-1};
+  //! Page index in session
+  quint32 page_index_ {0};
 
   //! Port info widget of the page
   PortInfoWidget* port_info_ {NULL};
@@ -89,6 +92,9 @@ class PortPage : public QWidget {
 
   //! Comport manager list
   QList<ComPortManager*> port_mgr_list_;
+
+  //! Thread list
+  QList<QThread*> thread_list_;
 };
 
 #endif  // SRC_PORTPAGE_H_

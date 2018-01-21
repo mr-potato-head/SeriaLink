@@ -24,23 +24,27 @@
 #include <QList>
 #include <QSignalMapper>
 #include <QPushButton>
-#include "src/session.h"
+
+class Session;
 
 class PageSelector : public QWidget {
   Q_OBJECT
 
  public:
   //! Default constructor
-  explicit PageSelector(Session* session,
-                        QWidget *parent = 0);
+  explicit PageSelector(QWidget *parent = 0);
 
+  //! Set session pointer
+  void SetSession(Session* session);
 
   //! Set checked state for a button
-  void SetCheckedState(qint32 port_index);
+  void SetCheckedState(qint32 page_index);
+
+  void UpdateButtonName(quint8 page_idx);
 
  public slots: // NOLINT
   //! Add button
-  void AddButton(qint32 port_index);
+  void AddButton();
 
  private:
   //! Button list

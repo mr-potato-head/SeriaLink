@@ -33,6 +33,8 @@ class DumpPortView : public PortView {
   //! Executed when new data are received
   virtual void OnReceivedData(DataPacket const& packet);
 
+  virtual void OnSentData(const DataPacket& packet);
+
  private:
   //! Text edit of the view
   QPlainTextEdit* text_edit_ {nullptr};

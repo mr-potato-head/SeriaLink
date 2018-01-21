@@ -19,8 +19,9 @@
 #include <QFileDialog>
 #include "src/dumpmodepage.h"
 
-DumpModePage::DumpModePage(QWidget *parent)
-  : ModePage(parent) {
+DumpModePage::DumpModePage(QList<ComPortManager*>* port_mgr_list,
+                           QWidget *parent)
+  : ModePage(port_mgr_list, parent) {
   path_line_ = new QLineEdit(this);
   path_line_->setPlaceholderText(tr("Enter dump file path here..."));
   path_line_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

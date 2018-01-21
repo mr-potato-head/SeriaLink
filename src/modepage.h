@@ -26,6 +26,7 @@
 #include <QProgressBar>
 #include <QLabel>
 #include <QRegularExpression>
+#include <QList>
 #include "src/comportmanager.h"
 
 class ModePage : public QWidget {
@@ -33,13 +34,15 @@ class ModePage : public QWidget {
 
  public:
   //! Constructor
-  explicit ModePage(QWidget *parent = 0);
+  explicit ModePage(QList<ComPortManager*>* port_mgr_list,
+                    QWidget *parent = 0);
 
   //! Destructor
   ~ModePage();
 
-  //! Set port manager
-  void SetPortManager(ComPortManager* port_mgr);
+ public slots:
+  //! Change current port manager index
+  void ChangePortManagerIndex(int index);
 
  signals:
   //! Emitted for starting manual sequence
@@ -77,6 +80,12 @@ class ModePage : public QWidget {
 
   //! Button layout
   QVBoxLayout* button_layout_ {nullptr};
+
+  //! COM Port manager list
+  QList<ComPortManager*>* port_mgr_list_;
+
+ private slots:
+  void OnStopButtonClicked(void);
 };
 
 #endif  // SRC_MODEPAGE_H_

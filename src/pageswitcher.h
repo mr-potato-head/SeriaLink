@@ -23,6 +23,8 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 
+class Session;
+
 class PageSwitcher : public QWidget {
   Q_OBJECT
 
@@ -36,6 +38,8 @@ class PageSwitcher : public QWidget {
 
   //! Default constructor
   explicit PageSwitcher(QWidget *parent = 0);
+
+  void SetSession(Session* session);
 
   //! Enable button
   void EnableButton(ButtonType type);
@@ -74,6 +78,9 @@ class PageSwitcher : public QWidget {
 
   //! Vertical line
   QWidget* vertical_line_ {NULL};
+
+  //! Pointer on session
+  Session* session_ {NULL};
 };
 
 #endif  // SRC_PAGESWITCHER_H_

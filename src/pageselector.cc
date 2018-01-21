@@ -18,38 +18,49 @@
 
 #include <QPushButton>
 #include "src/pageselector.h"
+#include "src/session.h"
 
-PageSelector::PageSelector(Session* session,
-                           QWidget *parent)
-  : QWidget(parent),
-    session_{session} {
+PageSelector::PageSelector(QWidget *parent)
+  : QWidget(parent) {
   button_layout_ = new QHBoxLayout(this);
   signal_mapper_ = new QSignalMapper(this);
-
-  connect(signal_mapper_,
-          SIGNAL(mapped(int)),
-          session,
-          SLOT(SetCurrentPortMgrIndex(qint32)));
 }
 
-void PageSelector::AddButton(qint32 port_index) {
-  // Get port name
-  ComPortManager* port_manager = session_->GetPortManager(port_index);
-  ComPortSettings* portSettings = port_manager->GetPortSettings();
+void PageSelector::SetSession(Session* session) {
+  session_ = session;
 
-  QPushButton* button = new QPushButton(portSettings->GetPortInfo().portName());
+  connect(signal_mapper_, SIGNAL(mapped(int)),
+          session, SLOT(SetCurrentPageIndex(int)));
+}
+
+void PageSelector::AddButton() {
+  QPushButton* button = new QPushButton();
   button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   button->setCheckable(true);
   button_list_.append(button);
   button_layout_->addWidget(button);
 
   connect(button, SIGNAL(clicked()), signal_mapper_, SLOT(map()));
-  signal_mapper_->setMapping(button, port_index);
+  signal_mapper_->setMapping(button, button_list_.size()-1);
 }
 
-void PageSelector::SetCheckedState(qint32 port_index) {
+void PageSelector::UpdateButtonName(quint8 page_idx) {
+  // Get port name
+  PortPage* page = session_->GetPortPageList()->at(page_idx);
+  QList<ComPortManager*>* port_mgr_list = page->GetPortMgrList();
+
+  QList<ComPortManager*>::iterator itBeginTh = port_mgr_list->begin();
+  QList<ComPortManager*>::iterator itEndTh = port_mgr_list->end();
+  QString page_name;
+  for (QList<ComPortManager*>::iterator it = itBeginTh ; it != itEndTh ; it++) {
+    page_name += "-" + (*it)->GetPortSettings()->GetPortInfo().portName() + "-";
+  }
+  button_list_.at(page_idx)->setText(page_name);
+}
+
+void PageSelector::SetCheckedState(qint32 page_index) {
   foreach(QPushButton* button, button_list_) {
     button->setChecked(false);
   }
-  button_list_.at(port_index)->setChecked(true);
+  button_list_.at(page_index)->setChecked(true);
 }

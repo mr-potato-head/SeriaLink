@@ -18,8 +18,10 @@
 
 #include "src/modepage.h"
 
-ModePage::ModePage(QWidget *parent)
-  : QWidget(parent) {
+ModePage::ModePage(QList<ComPortManager*>* port_mgr_list,
+                   QWidget *parent)
+  : QWidget(parent),
+    port_mgr_list_ {port_mgr_list} {
   main_layout_ = new QGridLayout(this);
   progress_bar_ = new QProgressBar(this);
   progress_bar_->setAlignment(Qt::AlignCenter);
@@ -31,7 +33,7 @@ ModePage::ModePage(QWidget *parent)
   button_layout_ = new QVBoxLayout();
   start_button_ = new QPushButton(tr("Start !"));
   start_button_->setSizePolicy(QSizePolicy::Expanding,
-                              QSizePolicy::Expanding);
+                               QSizePolicy::Expanding);
   stop_button_ = new QPushButton(tr("Stop"));
   stop_button_->setSizePolicy(QSizePolicy::Expanding,
                               QSizePolicy::Expanding);
@@ -67,22 +69,58 @@ ModePage::ModePage(QWidget *parent)
 
 ModePage::~ModePage() {}
 
-void ModePage::SetPortManager(ComPortManager* port_mgr) {
-  port_manager_ = port_mgr;
+void ModePage::ChangePortManagerIndex(int index) {
 
-  connect(this, &ModePage::StartDumpSequence,
-          port_manager_, &ComPortManager::OnStartDumpSequence);
-  connect(this, &ModePage::StartAutoSequence,
-          port_manager_, &ComPortManager::OnStartAutoSequence);
-  connect(port_manager_, &ComPortManager::SequenceProgress,
-          progress_bar_, &QProgressBar::setValue);
-  connect(this, &ModePage::StartManualSequence,
-          port_manager_, &ComPortManager::OnStartManualSequence);
-  connect(port_manager_, &ComPortManager::SequenceOver,
-          this, [=](void) {
-    start_button_->setEnabled(true);
-    stop_button_->setEnabled(false);
-  });
-  connect(stop_button_, &QPushButton::clicked,
-          port_manager_, &ComPortManager::OnStopSequence);
+  if(port_manager_ != nullptr) {
+    // Disconnect all signals from old port manager
+    disconnect(this, &ModePage::StartDumpSequence,
+               port_manager_, &ComPortManager::OnStartDumpSequence);
+    disconnect(this, &ModePage::StartAutoSequence,
+               port_manager_, &ComPortManager::OnStartAutoSequence);
+    disconnect(this, &ModePage::StartManualSequence,
+               port_manager_, &ComPortManager::OnStartManualSequence);
+    disconnect(port_manager_, &ComPortManager::SequenceProgress,
+               progress_bar_, &QProgressBar::setValue);
+    disconnect(port_manager_, &ComPortManager::SequenceOver,
+               this, ModePage::OnStopButtonClicked);
+    disconnect(stop_button_, &QPushButton::clicked,
+               port_manager_, &ComPortManager::OnStopSequence);
+  }
+
+  if(index >= 0) {
+    // Set new port manager
+    port_manager_ = port_mgr_list_->at(index);
+
+    // Connect new port manager
+    connect(this, &ModePage::StartDumpSequence,
+            port_manager_, &ComPortManager::OnStartDumpSequence);
+    connect(this, &ModePage::StartAutoSequence,
+            port_manager_, &ComPortManager::OnStartAutoSequence);
+    connect(this, &ModePage::StartManualSequence,
+            port_manager_, &ComPortManager::OnStartManualSequence);
+    connect(port_manager_, &ComPortManager::SequenceProgress,
+            progress_bar_, &QProgressBar::setValue);
+    connect(port_manager_, &ComPortManager::SequenceOver,
+            this, ModePage::OnStopButtonClicked);
+    connect(stop_button_, &QPushButton::clicked,
+            port_manager_, &ComPortManager::OnStopSequence);
+  }
+
+  //  connect(this, &ModePage::StartDumpSequence,
+  //          port_manager_, &ComPortManager::OnStartDumpSequence);
+  //  connect(this, &ModePage::StartAutoSequence,
+  //          port_manager_, &ComPortManager::OnStartAutoSequence);
+  //  connect(this, &ModePage::StartManualSequence,
+  //          port_manager_, &ComPortManager::OnStartManualSequence);
+  //  connect(port_manager_, &ComPortManager::SequenceProgress,
+  //          progress_bar_, &QProgressBar::setValue);
+  //  connect(port_manager_, &ComPortManager::SequenceOver, this, [=](void) );
+  //  connect(stop_button_, &QPushButton::clicked,
+  //          port_manager_, &ComPortManager::OnStopSequence);
+}
+
+void ModePage::OnStopButtonClicked(void)
+{
+  start_button_->setEnabled(true);
+  stop_button_->setEnabled(false);
 }

@@ -44,7 +44,10 @@ class ComPortManager : public QObject {
 
  signals:
   //! Emitted when new data are received
-  void Receive(DataPacket const&);
+  void DataReceived(DataPacket const&);
+
+  //! Emitted when new data are received
+  void DataSent(DataPacket const&);
 
   //! Emitted to inform GUI on sequence progression
   void SequenceProgress(int);

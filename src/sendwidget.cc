@@ -18,8 +18,10 @@
 
 #include "src/sendwidget.h"
 
-SendWidget::SendWidget(QWidget *parent)
-  : QWidget(parent) {
+SendWidget::SendWidget(QList<ComPortManager*>* port_mgr_list,
+                       QWidget *parent)
+  : QWidget(parent),
+    port_mgr_list_ {port_mgr_list} {
   mode_label_ = new QLabel(tr("Mode"), this);
   mode_label_->setAlignment(Qt::AlignCenter);
   mode_combobox_ = new QComboBox(this);
@@ -29,17 +31,33 @@ SendWidget::SendWidget(QWidget *parent)
   //  mode_combobox_->addItem(tr("Auto"), static_cast<int>(MODES::AUTO));
   stacked_widget_ = new QStackedWidget(this);
 
-  manual_mode_page_ = new ManualModePage(this);
+  manual_mode_page_ = new ManualModePage(port_mgr_list_, this);
   stacked_widget_->addWidget(manual_mode_page_);
-  dump_mode_page_ = new DumpModePage(this);
+  dump_mode_page_ = new DumpModePage(port_mgr_list_, this);
   stacked_widget_->addWidget(dump_mode_page_);
+
+  port_label_ = new QLabel(tr("Port"), this);
+  port_label_->setAlignment(Qt::AlignCenter);
+
+  port_combobox_ = new QComboBox(this);
+  port_combobox_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+//  connect(port_combobox_, &QComboBox::currentIndexChanged,
+//          manual_mode_page_, &ManualModePage::ChangePortManagerIndex);
+  connect(port_combobox_, SIGNAL(currentIndexChanged(int)),
+          manual_mode_page_, SLOT(ChangePortManagerIndex(int)));
+  foreach (ComPortManager* port_mgr, *port_mgr_list) {
+    port_combobox_->addItem(port_mgr->GetPortSettings()->GetPortInfo().portName());
+  }
 
   mode_layout_ = new QVBoxLayout();
   mode_layout_->addWidget(mode_label_);
   mode_layout_->addWidget(mode_combobox_);
-  mode_layout_->setStretch(0, 33);
-  mode_layout_->setStretch(1, 33);
-  mode_layout_->addStretch(33);
+  mode_layout_->addWidget(port_label_);
+  mode_layout_->addWidget(port_combobox_);
+  mode_layout_->setStretch(0, 25);
+  mode_layout_->setStretch(1, 25);
+  mode_layout_->setStretch(2, 25);
+  mode_layout_->setStretch(3, 25);
 
   main_layout_ = new QGridLayout(this);
   main_layout_->addLayout(mode_layout_, 0, 0);
@@ -50,7 +68,12 @@ SendWidget::SendWidget(QWidget *parent)
           stacked_widget_, SLOT(setCurrentIndex(int)));
 }
 
-void SendWidget::SetPortManager(ComPortManager* port_mgr) {
-  manual_mode_page_->SetPortManager(port_mgr);
-  dump_mode_page_->SetPortManager(port_mgr);
+void SendWidget::PortListUpdated(void) {
+  port_combobox_->clear();
+  QList<ComPortManager*>::iterator itBeginTh = (*port_mgr_list_).begin();
+  QList<ComPortManager*>::iterator itEndTh = (*port_mgr_list_).end();
+  for (QList<ComPortManager*>::iterator it = itBeginTh ; it != itEndTh ; it++) {
+    ComPortSettings* settings = (*it)->GetPortSettings();
+    port_combobox_->addItem(settings->GetPortInfo().portName());
+  }
 }

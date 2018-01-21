@@ -24,12 +24,27 @@
 #include "src/pageswitcher.h"
 #include "src/pageselector.h"
 
+class Session;
+
 class TopBar : public QWidget {
   Q_OBJECT
 
  public:
   //! Default constructor
-  explicit TopBar(Session* session, QWidget *parent = 0);
+  explicit TopBar(QWidget *parent = 0);
+
+  //! Set pointer on session
+  void SetSession(Session* session);
+
+  void AddPageButton(void);
+
+  void UpdatePageButtonName(quint8 page_idx);
+
+  //! Update page switcher button status
+  void UpdateSwitcherButtonStatus(void);
+
+  //! Update page selector button status
+  void UpdateSelectorButtonStatus(void);
 
  signals:
   //! Signal emitted when index is updated
@@ -47,12 +62,6 @@ class TopBar : public QWidget {
 
   //! Slots called when add button is clicked
   void openAddOrModifyDialog(void);
-
-  //! Update page switcher button status
-  void UpdateSwitcherButtonStatus(void);
-
-  //! Update page selector button status
-  void UpdateSelectorButtonStatus(void);
 
  private:
   //! Main layout of the widget

@@ -45,10 +45,11 @@ class SendWidget : public QWidget {
   };
 
   //! Default constructor
-  explicit SendWidget(QWidget *parent = 0);
+  explicit SendWidget(QList<ComPortManager*>* port_mgr_list,
+                      QWidget *parent = 0);
 
-  //! Set port manager
-  void SetPortManager(ComPortManager* port_mgr);
+  //! Update widget with port manager list
+  void PortListUpdated(void);
 
  private:
   //! Main grid layout of the widget
@@ -66,6 +67,12 @@ class SendWidget : public QWidget {
   //! Mode combo box
   QComboBox* mode_combobox_ {nullptr};
 
+  //! Port label
+  QLabel* port_label_ {nullptr};
+
+  //! Port combo box
+  QComboBox* port_combobox_ {nullptr};
+
   //! Mode stacked widget
   QStackedWidget* stacked_widget_ {nullptr};
 
@@ -77,6 +84,9 @@ class SendWidget : public QWidget {
 
   //! Vertical layout of the mode choice system
   QVBoxLayout* mode_layout_ {nullptr};
+
+  //! COM Port manager list
+  QList<ComPortManager*>* port_mgr_list_;
 };
 
 #endif  // SRC_SENDWIDGET_H_

@@ -53,12 +53,13 @@ void LocalComPort::ClosePort(void) {
 
 void LocalComPort::OnReadyRead(void) {
   DataPacket packet(serial_port_->readAll());
-  emit Receive(packet);
+  emit DataReceived(packet);
 }
 
 void LocalComPort::Send(DataPacket packet) {
   const QByteArray& data = packet.GetData();
   serial_port_->write(data, data.size());
+  emit DataSent(packet);
 }
 
 //! Getter of port status

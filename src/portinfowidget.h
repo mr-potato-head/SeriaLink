@@ -24,6 +24,8 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QGroupBox>
+#include <QList>
+#include "src/comportmanager.h"
 #include "src/comportsettings.h"
 
 class PortInfoWidget : public QWidget {
@@ -31,12 +33,16 @@ class PortInfoWidget : public QWidget {
 
  public:
   //! Default constructor
-  explicit PortInfoWidget(QWidget *parent = 0);
+  explicit PortInfoWidget(QList<ComPortManager*>* port_mgr_list,
+                          QWidget *parent = 0);
 
   //! Set port settings
   void SetPortSettings(ComPortSettings* port_settings);
 
  signals:
+  //! Emitted when the new port button is clicked
+  void NewPortClicked(void);
+
   //! Emitted when the new view button is clicked
   void NewViewClicked(void);
 
@@ -103,6 +109,12 @@ class PortInfoWidget : public QWidget {
 
   //! Create new view
   QPushButton* new_view_button_ {NULL};
+
+  //! Add new port
+  QPushButton* new_port_button_ {NULL};
+
+  //! COM Port manager list
+  QList<ComPortManager*>* port_mgr_list_;
 };
 
 #endif  // SRC_PORTINFOWIDGET_H_

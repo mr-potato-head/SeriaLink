@@ -26,69 +26,122 @@
 #include "src/dumpportview.h"
 #include "src/tableportview.h"
 
-Session::Session(PageContainer* page_container, QObject *parent)
-  : QObject(parent),
-    page_container_(page_container) {
+Session::Session(QObject *parent)
+  : QObject(parent) {
 }
 
 Session::~Session() {
-  // Delete threads for this session
-  QList<QThread*>::iterator itBeginTh = thread_list_.begin();
-  QList<QThread*>::iterator itEndTh = thread_list_.end();
-  for (QList<QThread*>::iterator it = itBeginTh ; it != itEndTh ; it++) {
-    (*it)->quit();
-    if (!(*it)->wait(1000)) {
-      qDebug() << "Timeout arret du thread.";
-    }
-    delete *it;
-  }
+//  // Delete threads for this session
+//  QList<QThread*>::iterator itBeginTh = thread_list_.begin();
+//  QList<QThread*>::iterator itEndTh = thread_list_.end();
+//  for (QList<QThread*>::iterator it = itBeginTh ; it != itEndTh ; it++) {
+//    (*it)->quit();
+//    if (!(*it)->wait(1000)) {
+//      qDebug() << "Timeout arret du thread.";
+//    }
+//    delete *it;
+//  }
 
-  // Delete COM ports for this session
-  QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
-  QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
-  QList<ComPortManager*>::iterator it = itBeginPort;
-  for (; it != itEndPort ; it++) {
-    delete *it;
-  }
+//  // Delete COM ports for this session
+//  QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
+//  QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
+//  QList<ComPortManager*>::iterator it = itBeginPort;
+//  for (; it != itEndPort ; it++) {
+//    delete *it;
+//  }
+}
+
+void Session::SetTopbar(TopBar* top_bar) {
+  top_bar_ = top_bar;
+}
+
+void Session::SetPageContainer(PageContainer* page_container) {
+  page_container_ = page_container;
 }
 
 void Session::Close() {
-  // Delete COM ports for this session
-  QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
-  QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
-  QList<ComPortManager*>::iterator it = itBeginPort;
-  for (; it != itEndPort ; it++) {
-    QTimer::singleShot(0, *it, &ComPortManager::ClosePort);
-  }
+//  // Delete COM ports for this session
+//  QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
+//  QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
+//  QList<ComPortManager*>::iterator it = itBeginPort;
+//  for (; it != itEndPort ; it++) {
+//    QTimer::singleShot(0, *it, &ComPortManager::ClosePort);
+//  }
 }
 
-void Session::AddPort(ComPortSettings* port_settings) {
-  this->AddPort(current_port_mgr_index_, port_settings);
-}
-
-void Session::AddPort(qint8 page_idx, ComPortSettings* port_settings) {
-  // Create new port manager
-  ComPortManager* com_port_mgr = new ComPortManager(port_settings);
-  com_port_mgr_list_.append(com_port_mgr);
-
-  // Create thread for this port manager
-  QThread* thread = new QThread(this);
-  thread_list_.append(thread);
-  com_port_mgr->moveToThread(thread);
-  thread->start(QThread::TimeCriticalPriority);
-
+void Session::AddPage(void) {
   // Create page
-  PortPage* page = new PortPage(this, page_idx);
-  page->AddPortMgr(com_port_mgr);
+  PortPage* page = new PortPage(this, page_list_.size());
   page_list_.append(page);
-  int page_index = page_container_->addWidget(page);
+
+  // Add page in container
+  quint8 page_index = page_container_->addWidget(page);
   page_container_->setCurrentIndex(page_index);
 
-  current_port_mgr_index_ = page_idx;
-  emit PortAdded(current_port_mgr_index_);
+  // Update topbar widgets
+  //emit PageAdded(page_index);
+  top_bar_->AddPageButton();
+
+  // Update current page index in session
+  this->SetCurrentPageIndex(page_index);
 }
 
-void Session::AddPort(qint8 page_idx, const QJsonObject& port_object) {
+void Session::AddPage(ComPortSettings* port_settings) {
+  // Create page
+  PortPage* page = new PortPage(this, page_list_.size());
+  page_list_.append(page);
+
+  // Add page in container
+  quint8 page_index = page_container_->addWidget(page);
+  page_container_->setCurrentIndex(page_index);
+
+  // Add port in page
+  page->AddPort(port_settings);
+
+  // Emit signal to update topbar widgets
+  //emit PageAdded(page_index);
+  // Update topbar widgets
+  top_bar_->AddPageButton();
+  top_bar_->UpdatePageButtonName(page_index);
+
+  // Update current page index in session
+  this->SetCurrentPageIndex(page_index);
+}
+
+void Session::DeletePage(quint8 page_idx) {
+
+}
+
+void Session::AddPort(quint8 page_idx, ComPortSettings* port_settings) {
+
+  PortPage* page = page_list_.at(page_idx);
+
+  // Add port in page
+  page->AddPort(port_settings);
+
+  top_bar_->UpdatePageButtonName(page_idx);
+//  // Create new port manager
+//  ComPortManager* com_port_mgr = new ComPortManager(port_settings);
+//  com_port_mgr_list_.append(com_port_mgr);
+
+//  // Create thread for this port manager
+//  QThread* thread = new QThread(this);
+//  thread_list_.append(thread);
+//  com_port_mgr->moveToThread(thread);
+//  thread->start(QThread::TimeCriticalPriority);
+
+//  // Create page
+//  PortPage* page = new PortPage(this, page_idx);
+//  page->AddPortMgr(com_port_mgr);
+//  page_list_.append(page);
+//  int page_index = page_container_->addWidget(page);
+//  page_container_->setCurrentIndex(page_index);
+
+//  current_port_mgr_index_ = page_idx;
+//  emit PortAdded(current_port_mgr_index_);
+}
+
+void Session::AddPort(quint8 page_idx, const QJsonObject& port_object) {
   ComPortSettings* port_settings = new ComPortSettings();
   port_settings->SetBaudRate(
         static_cast<QSerialPort::BaudRate>(
@@ -112,65 +165,83 @@ void Session::AddPort(qint8 page_idx, const QJsonObject& port_object) {
   this->AddPort(page_idx, port_settings);
 }
 
-void Session::AddView(qint8 page_idx, ViewSettings* settings) {
-  PortView* view;
-  switch (settings->GetViewType()) {
-  case ViewSettings::ViewType::kDump:
-    view = new DumpPortView(settings);
-    break;
-  case ViewSettings::ViewType::kTerminal:
-    view = new TerminalPortView(settings);
-    break;
-  case ViewSettings::ViewType::kTable:
-    view = new TablePortView(settings);
-    break;
-  default:
-    break;
-  }
+void Session::UpdatePortSettings(quint8 page_idx,
+                        quint8 port_idx,
+                        ComPortSettings* port_settings) {
 
-  ComPortManager* port_mgr = com_port_mgr_list_.at(page_idx);
-
-  // Connect received data to port
-  connect(port_mgr, SIGNAL(Receive(DataPacket const&)),
-          view, SLOT(OnReceivedData(DataPacket const&)));
-  page_list_.at(page_idx)->AddView(view);
 }
 
-void Session::AddView(qint8 page_idx, const QJsonObject& view_object) {
+void Session::DeletePort(quint8 page_idx, quint8 port_idx) {
+
+}
+
+void Session::AddView(quint8 page_idx, ViewSettings* settings) {
+//  PortView* view;
+//  switch (settings->GetViewType()) {
+//  case ViewSettings::ViewType::kDump:
+//    view = new DumpPortView(settings);
+//    break;
+//  case ViewSettings::ViewType::kTerminal:
+//    view = new TerminalPortView(settings);
+//    break;
+//  case ViewSettings::ViewType::kTable:
+//    view = new TablePortView(settings);
+//    break;
+//  default:
+//    break;
+//  }
+
+//  ComPortManager* port_mgr = com_port_mgr_list_.at(page_idx);
+
+//  // Connect received data to port
+//  connect(port_mgr, SIGNAL(Receive(DataPacket const&)),
+//          view, SLOT(OnReceivedData(DataPacket const&)));
+  page_list_.at(page_idx)->AddView(settings);
+}
+
+void Session::AddView(quint8 page_idx, const QJsonObject& view_object) {
   ViewSettings* settings = new ViewSettings(view_object);
   this->AddView(page_idx, settings);
 }
 
-void Session::DeleteView(qint8 page_idx, qint8 view_idx) {
-  page_list_.at(page_idx)->GetViewList()->removeAt(view_idx);
+void Session::UpdateViewSettings(quint8 page_idx,
+                                 quint8 view_idx,
+                                 ViewSettings *settings) {
+
 }
 
-void Session::SetCurrentPortMgrIndex(qint32 index) {
-  current_port_mgr_index_ = index;
-  emit IndexChanged(index);
+void Session::DeleteView(quint8 page_idx, quint8 view_idx) {
+  //page_list_.at(page_idx)->GetViewList()->removeAt(view_idx);
 }
 
-void Session::OpenPort(qint32 index) {
-  ComPortManager* port_mgr = com_port_mgr_list_.at(index);
-  QTimer::singleShot(0, port_mgr, &ComPortManager::OpenPort);
+void Session::SetCurrentPageIndex(int page_index) {
+  current_page_index_ = page_index;
+  top_bar_->UpdateSelectorButtonStatus();
+  top_bar_->UpdateSwitcherButtonStatus();
+  page_container_->setCurrentIndex(page_index);
 }
 
-void Session::ClosePort(qint32 index) {
-  ComPortManager* port_mgr = com_port_mgr_list_.at(index);
-  QTimer::singleShot(0, port_mgr, &ComPortManager::ClosePort);
+//void Session::OpenPort(qint32 index) {
+//  ComPortManager* port_mgr = com_port_mgr_list_.at(index);
+//  QTimer::singleShot(0, port_mgr, &ComPortManager::OpenPort);
+//}
+
+//void Session::ClosePort(qint32 index) {
+//  ComPortManager* port_mgr = com_port_mgr_list_.at(index);
+//  QTimer::singleShot(0, port_mgr, &ComPortManager::ClosePort);
+//}
+
+//quint8 Session::GetPortNumber(void) {
+//  return com_port_mgr_list_.size();
+//}
+
+quint8 Session::GetCurrentPageIndex(void) {
+  return current_page_index_;
 }
 
-quint8 Session::GetPortNumber(void) {
-  return com_port_mgr_list_.size();
-}
-
-quint8 Session::GetCurrentPortMgrIndex(void) {
-  return current_port_mgr_index_;
-}
-
-ComPortManager* Session::GetPortManager(qint32 index) {
-  return com_port_mgr_list_.at(index);
-}
+//ComPortManager* Session::GetPortManager(qint32 index) {
+//  return com_port_mgr_list_.at(index);
+//}
 
 void Session::LoadFromFile(QString filepath) {
   QFile session_file(filepath);
@@ -191,6 +262,9 @@ void Session::LoadFromFile(QString filepath) {
         QJsonArray session_pages = global_object["session_pages"].toArray();
         for (int page_idx = 0; page_idx < session_pages.size(); ++page_idx) {
           QJsonObject page_object = session_pages[page_idx].toObject();
+          // Create page
+          this->AddPage();
+
           // Add ports in session
           QJsonArray port_array = page_object["page_ports"].toArray();
           for (int port_idx = 0; port_idx < port_array.size(); ++port_idx) {
@@ -229,9 +303,9 @@ void Session::SaveInFile(QString filepath) {
     QJsonObject page_object;
     // Create ports
     QJsonArray port_array;
-    for (int j=0 ; j < page_list_.at(i)->GetPortMgrList().size() ; j++) {
-      QList<ComPortManager*> port_mgr = page_list_.at(i)->GetPortMgrList();
-      ComPortSettings* settings = port_mgr.at(j)->GetPortSettings();
+    for (int j=0 ; j < page_list_.at(i)->GetPortMgrList()->size() ; j++) {
+      QList<ComPortManager*>* port_mgr = page_list_.at(i)->GetPortMgrList();
+      ComPortSettings* settings = port_mgr->at(j)->GetPortSettings();
       QJsonObject port_object = settings->ToJson();
       port_array.append(port_object);
     }
@@ -258,3 +332,6 @@ void Session::SaveInFile(QString filepath) {
   session_file.close();
 }
 
+QList<PortPage*>* Session::GetPortPageList(void) {
+  return &page_list_;
+}

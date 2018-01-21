@@ -22,17 +22,24 @@
 
 CentralWidget::CentralWidget(QWidget *parent) :
   QWidget(parent) {
+
+  // Create widget
   page_container_ = new PageContainer(this);
+  top_bar_ = new TopBar(this);
+
   // Instanciate session manager
-  session_ = new Session(page_container_, this);
-  top_bar_ = new TopBar(session_, this);
+  session_ = new Session(this);
+  session_->SetTopbar(top_bar_);
+  session_->SetPageContainer(page_container_);
+  top_bar_->SetSession(session_);
 
   main_layout_ = new QVBoxLayout(this);
   main_layout_->addWidget(top_bar_);
   main_layout_->addWidget(page_container_);
 
-  main_layout_->setStretchFactor(static_cast<QWidget*>(top_bar_), 10);
-  main_layout_->setStretchFactor(static_cast<QWidget*>(page_container_), 90);
+  top_bar_->setFixedHeight(60);
+//  main_layout_->setStretchFactor(static_cast<QWidget*>(top_bar_), 10);
+//  main_layout_->setStretchFactor(static_cast<QWidget*>(page_container_), 90);
 
   main_layout_->setMargin(0);
   main_layout_->setSpacing(0);
