@@ -21,6 +21,7 @@
 #include <QMessageBox>
 #include "src/portview.h"
 #include "src/dataformatter.h"
+#include "src/viewsettingdialog.h"
 
 PortView::PortView(ViewSettings* view_settings,
                    QWidget *parent)
@@ -33,12 +34,15 @@ PortView::PortView(ViewSettings* view_settings,
   delete_button_ = new QPushButton(this);
   delete_button_->setIcon(QIcon(":/icons/icons/circle-x-8x.png"));
   delete_button_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  delete_button_->setToolTip(tr("Delete view."));
   edit_button_ = new QPushButton(this);
   edit_button_->setIcon(QIcon(":/icons/icons/pencil-8x.png"));
   edit_button_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  edit_button_->setToolTip(tr("Edit view settings."));
   clear_button_ = new QPushButton(this);
   clear_button_->setIcon(QIcon(":/icons/icons/trash-8x.png"));
   clear_button_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  clear_button_->setToolTip(tr("Clear view."));
   button_layout_->addWidget(clear_button_);
   button_layout_->addWidget(edit_button_);
   button_layout_->addWidget(delete_button_);
@@ -130,6 +134,13 @@ PortView::PortView(ViewSettings* view_settings,
     } else {
       start_rec_button_->setEnabled(false);
     }
+  });
+
+  connect(edit_button_, &QPushButton::clicked, [=](void) {
+    ViewSettingDialog view_setting_dialog(view_settings_,
+                                          ViewSettingDialog::ActionType::kUpdate,
+                                          this);
+    view_setting_dialog.exec();
   });
 }
 

@@ -21,11 +21,10 @@
 static const quint16 kMinimumWidth = 400;
 
 ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
+                                     ActionType action_type,
                                      QWidget *parent)
   : QDialog(parent),
     view_settings_{view_settings} {
-  this->setWindowTitle(tr("View settings"));
-
   view_type_label_ = new QLabel(tr("View type"), this);
   view_type_combobox_ = new QComboBox(this);
   display_type_label_ = new QLabel(tr("Display type"), this);
@@ -60,6 +59,27 @@ ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
   FillViewTypeList();
   FillDisplayTypeList();
   FillDataSizeList();
+
+  // Special process if add or update view
+  if(action_type == ActionType::kAdd) {
+    this->setWindowTitle(tr("Choose view settings"));
+  } else if(action_type == ActionType::kUpdate) {
+    this->setWindowTitle(tr("Update view settings"));
+
+    // Preset old settings
+    int index = 0;
+    index = view_type_combobox_->findData(static_cast<qint32>(view_settings->GetViewType()));
+    view_type_combobox_->setCurrentIndex(index);
+    index = display_type_combobox_->findData(static_cast<qint32>(view_settings->GetDisplayType()));
+    display_type_combobox_->setCurrentIndex(index);
+    index = data_size_combobox_->findData(static_cast<qint32>(view_settings->GetDataSize()));
+    data_size_combobox_->setCurrentIndex(index);
+
+    view_type_combobox_->setEnabled(false);
+  } else {
+    // Should not happened
+    this->setWindowTitle(tr("View settings"));
+  }
 
   // Dialog minimum width
   this->setMinimumWidth(kMinimumWidth);

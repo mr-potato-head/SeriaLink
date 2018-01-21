@@ -82,7 +82,9 @@ PortPage::~PortPage() {
 
 void PortPage::OnNewViewClicked(void) {
   ViewSettings* view_settings = new ViewSettings();
-  ViewSettingDialog view_setting_dialog(view_settings, this);
+  ViewSettingDialog view_setting_dialog(view_settings,
+                                        ViewSettingDialog::ActionType::kAdd,
+                                        this);
   qint32 result = view_setting_dialog.exec();
 
   switch (result) {

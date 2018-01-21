@@ -31,8 +31,15 @@ class ViewSettingDialog : public QDialog {
   Q_OBJECT
 
  public:
+
+  enum class ActionType {
+    kAdd = 0,
+    kUpdate
+  };
+
   //! Default constructor
   explicit ViewSettingDialog(ViewSettings* view_settings,
+                             ActionType action_type,
                              QWidget *parent = 0);
 
  private slots: // NOLINT
