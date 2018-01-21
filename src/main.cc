@@ -21,7 +21,6 @@
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    app.setStyleSheet("QWidget { border-style: outset; border-width: 1px; border-color: red; }");
     MainWindow mainWindow;
     mainWindow.show();
     return app.exec();
