@@ -55,6 +55,9 @@ class PortPage : public QWidget {
   //! Get port manager list
   QList<ComPortManager*>* GetPortMgrList(void);
 
+  //! Set page index
+  void SetPageIndex(quint32 page_idx);
+
  private slots: //NOLINT
   //! Executed when new view button is clicked
   void OnNewViewClicked(void);

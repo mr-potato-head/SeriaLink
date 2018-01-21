@@ -211,6 +211,10 @@ QList<ComPortManager*>* PortPage::GetPortMgrList(void) {
   return &port_mgr_list_;
 }
 
+void PortPage::SetPageIndex(quint32 page_idx) {
+  page_index_ = page_idx;
+}
+
 void PortPage::OnOpenPortClicked(void) {
   //  ComPortManager* port_mgr = session_->GetPortManager(port_index_);
   //  port_mgr->OpenPort();

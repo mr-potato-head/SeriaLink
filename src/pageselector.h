@@ -46,6 +46,8 @@ class PageSelector : public QWidget {
   //! Add button
   void AddButton();
 
+  void DeleteButton(quint8 page_idx);
+
  private:
   //! Button list
   QList<QPushButton*> button_list_;

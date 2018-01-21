@@ -34,14 +34,33 @@ void PageSelector::SetSession(Session* session) {
 }
 
 void PageSelector::AddButton() {
-  QPushButton* button = new QPushButton();
+  QPushButton* button = new QPushButton(this);
   button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   button->setCheckable(true);
   button_list_.append(button);
   button_layout_->addWidget(button);
 
+  QPushButton* deleteButton = new QPushButton(button);
+  connect(deleteButton, &QPushButton::clicked, [=](void) {
+    int idx = button_list_.indexOf(button);
+    session_->DeletePage(idx);
+  });
+
   connect(button, SIGNAL(clicked()), signal_mapper_, SLOT(map()));
   signal_mapper_->setMapping(button, button_list_.size()-1);
+}
+
+void PageSelector::DeleteButton(quint8 page_idx) {
+  QPushButton* button = button_list_.at(page_idx);
+  button_list_.removeAt(page_idx);
+  delete button;
+
+  int index = 0;
+  foreach (QPushButton* button, button_list_) {
+    connect(button, SIGNAL(clicked()), signal_mapper_, SLOT(map()));
+    signal_mapper_->setMapping(button, index);
+    index++;
+  }
 }
 
 void PageSelector::UpdateButtonName(quint8 page_idx) {

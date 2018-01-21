@@ -63,6 +63,12 @@ void TopBar::AddPageButton(void) {
   page_selector_->AddButton();
 }
 
+void TopBar::DeletePageButton(quint8 page_idx) {
+  page_selector_->DeleteButton(page_idx);
+  UpdateSwitcherButtonStatus();
+  UpdateSelectorButtonStatus();
+}
+
 void TopBar::UpdatePageButtonName(quint8 page_idx) {
   page_selector_->UpdateButtonName(page_idx);
 }

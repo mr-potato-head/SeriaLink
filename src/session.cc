@@ -105,7 +105,27 @@ void Session::AddPage(ComPortSettings* port_settings) {
 }
 
 void Session::DeletePage(quint8 page_idx) {
+  int old_last_idx = page_list_.size()-1;
 
+  PortPage* port_page = page_list_.at(page_idx);
+  page_container_->removeWidget(port_page);
+  delete port_page;
+  page_list_.removeAt(page_idx);
+
+  int index = 0;
+  foreach (PortPage* port_page, page_list_) {
+    port_page->SetPageIndex(index);
+  }
+
+  if(page_idx == 0) {
+    this->SetCurrentPageIndex(0);
+  } else if (page_idx == old_last_idx) {
+    this->SetCurrentPageIndex(page_list_.size()-1);
+  } else {
+    this->SetCurrentPageIndex(page_idx);
+  }
+
+  top_bar_->DeletePageButton(page_idx);
 }
 
 void Session::AddPort(quint8 page_idx, ComPortSettings* port_settings) {
