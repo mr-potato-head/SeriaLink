@@ -27,11 +27,13 @@ PageSwitcher::PageSwitcher(QWidget *parent) :
   right_button_->setSizePolicy(QSizePolicy::Expanding,
                                QSizePolicy::Expanding);
   right_button_->setToolTip(tr("Switch to next port."));
+  right_button_->setEnabled(false);
   left_button_ = new QPushButton(this);
   left_button_->setIcon(QIcon(":/icons/icons/chevron-left-8x.png"));
   left_button_->setSizePolicy(QSizePolicy::Expanding,
                               QSizePolicy::Expanding);
   left_button_->setToolTip(tr("Switch to previous port."));
+  left_button_->setEnabled(false);
   add_button_ = new QPushButton(this);
   add_button_->setIcon(QIcon(":/icons/icons/plus-8x.png"));
   add_button_->setSizePolicy(QSizePolicy::Expanding,
