@@ -40,6 +40,9 @@ class PortPage : public QWidget {
                     quint32 page_index,
                     QWidget* parent = 0);
 
+  //! Destructor
+  ~PortPage(void);
+
   //! Add view in page
   void AddView(ViewSettings* settings);
 

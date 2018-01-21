@@ -28,6 +28,8 @@ ComPortManager::ComPortManager(ComPortSettings *port_settings,
 }
 
 ComPortManager::~ComPortManager() {
+  ClosePort();
+  delete com_port_settings_;
 }
 
 ComPortSettings* ComPortManager::GetPortSettings(void) const {

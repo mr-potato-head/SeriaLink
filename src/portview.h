@@ -40,6 +40,9 @@ class PortView : public QWidget {
   PortView(ViewSettings* view_settings,
            QWidget *parent = 0);
 
+  //! Destruteur
+  ~PortView(void);
+
   //! Get view settings
   ViewSettings* GetViewSettings(void);
 

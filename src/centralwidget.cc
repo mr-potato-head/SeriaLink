@@ -63,5 +63,6 @@ CentralWidget::CentralWidget(QWidget *parent) :
 
 CentralWidget::~CentralWidget() {
   session_->Close();
+  delete session_;
 }
 

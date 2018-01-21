@@ -60,13 +60,9 @@ void Session::SetPageContainer(PageContainer* page_container) {
 }
 
 void Session::Close() {
-//  // Delete COM ports for this session
-//  QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
-//  QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
-//  QList<ComPortManager*>::iterator it = itBeginPort;
-//  for (; it != itEndPort ; it++) {
-//    QTimer::singleShot(0, *it, &ComPortManager::ClosePort);
-//  }
+  foreach (PortPage* port_page, page_list_) {
+    delete port_page;
+  }
 }
 
 void Session::AddPage(void) {

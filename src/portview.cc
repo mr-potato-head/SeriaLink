@@ -133,6 +133,11 @@ PortView::PortView(ViewSettings* view_settings,
   });
 }
 
+PortView::~PortView(void) {
+  delete capture_file_;
+  delete view_settings_;
+}
+
 ViewSettings* PortView::GetViewSettings(void) {
   return view_settings_;
 }

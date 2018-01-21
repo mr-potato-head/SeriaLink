@@ -49,6 +49,37 @@ PortPage::PortPage(Session* session,
   main_layout_->setRowStretch(0, 80);
 }
 
+PortPage::~PortPage() {
+  //  // Delete COM ports for this session
+  //  QList<ComPortManager*>::iterator itBeginPort = com_port_mgr_list_.begin();
+  //  QList<ComPortManager*>::iterator itEndPort = com_port_mgr_list_.end();
+  //  QList<ComPortManager*>::iterator it = itBeginPort;
+  //  for (; it != itEndPort ; it++) {
+  //    QTimer::singleShot(0, *it, &ComPortManager::ClosePort);
+  //  }
+
+  // Delete threads
+  foreach (QThread* thread, thread_list_) {
+    thread->quit();
+    if (!thread->wait(1000)) {
+      qDebug() << "Timeout arret du thread.";
+    }
+    delete thread;
+  }
+
+  // Delete port managers
+  foreach (ComPortManager* port_mgr, port_mgr_list_) {
+    delete port_mgr;
+  }
+
+  // Delete views
+  foreach (PortView* port_view, view_list_) {
+    delete port_view;
+  }
+
+
+}
+
 void PortPage::OnNewViewClicked(void) {
   ViewSettings* view_settings = new ViewSettings();
   ViewSettingDialog view_setting_dialog(view_settings, this);
