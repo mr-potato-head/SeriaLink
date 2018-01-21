@@ -39,8 +39,12 @@ void PageSelector::AddButton() {
   button->setCheckable(true);
   button_list_.append(button);
   button_layout_->addWidget(button);
+  QHBoxLayout* layout = new QHBoxLayout(button);
 
   QPushButton* deleteButton = new QPushButton(button);
+  deleteButton->setIcon(QIcon(":/icons/icons/circle-x-8x.png"));
+  layout->addStretch(90);
+  layout->addWidget(deleteButton);
   connect(deleteButton, &QPushButton::clicked, [=](void) {
     int idx = button_list_.indexOf(button);
     session_->DeletePage(idx);
