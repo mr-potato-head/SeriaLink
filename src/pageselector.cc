@@ -43,6 +43,7 @@ void PageSelector::AddButton() {
 
   QPushButton* deleteButton = new QPushButton(button);
   deleteButton->setIcon(QIcon(":/icons/icons/circle-x-8x.png"));
+  deleteButton->setToolTip(tr("Delete page."));
   layout->addStretch(90);
   layout->addWidget(deleteButton);
   connect(deleteButton, &QPushButton::clicked, [=](void) {

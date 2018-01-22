@@ -32,11 +32,13 @@ ModePage::ModePage(QList<ComPortManager*>* port_mgr_list,
                                  QSizePolicy::Expanding);
   button_layout_ = new QVBoxLayout();
   start_button_ = new QPushButton(tr("Start !"));
+  start_button_->setToolTip(tr("Start sequence."));
   start_button_->setSizePolicy(QSizePolicy::Expanding,
                                QSizePolicy::Expanding);
   stop_button_ = new QPushButton(tr("Stop"));
   stop_button_->setSizePolicy(QSizePolicy::Expanding,
                               QSizePolicy::Expanding);
+  stop_button_->setToolTip(tr("Stop sequence."));
   start_button_->setEnabled(false);
   stop_button_->setEnabled(false);
   button_layout_->addWidget(start_button_);

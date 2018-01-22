@@ -35,6 +35,7 @@ AddOrModifyPortDialog::AddOrModifyPortDialog(ComPortSettings* port_settings,
   port_combobox_ = new QComboBox(this);
   port_list_upd_button_ = new QPushButton(this);
   port_list_upd_button_->setIcon(QIcon(":/icons/icons/loop-circular-8x.png"));
+  port_list_upd_button_->setToolTip(tr("Update port list."));
   baud_rate_label_ = new QLabel(tr("Baud rate"), this);
   baudrate_combobox_ = new QComboBox(this);
   parity_label_ = new QLabel(tr("Parity"), this);
