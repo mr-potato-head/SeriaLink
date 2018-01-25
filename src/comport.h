@@ -59,6 +59,17 @@ class ComPort : public QObject {
   //! Executed to send data
   virtual void Send(DataPacket packet) = 0;
 
+signals:
+
+  //! Emitted when the port is successfully opened
+  void PortOpened(void);
+
+  //! Emitted when the port is successfully closed
+  void PortClosed(void);
+
+  //! Emitted when an error occurred on port
+  void PortErrorOccurred(QSerialPort::SerialPortError);
+
  protected:
   //! COM port settings
   ComPortSettings* com_port_settings_ {NULL};

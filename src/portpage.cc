@@ -29,18 +29,19 @@ PortPage::PortPage(Session* session,
   : QWidget(parent),
     session_(session),
     page_index_{page_index} {
-  port_info_ = new PortInfoWidget(&port_mgr_list_, this);
+  //port_info_ = new PortInfoWidget(&port_mgr_list_, this);
+  port_info_area_widget_ = new PortInfoAreaWidget(session, page_index, this);
   send_widget_ = new SendWidget(&port_mgr_list_, this);
   view_widget_ = new QWidget(this);
   view_layout_ = new QHBoxLayout(view_widget_);
 
-  connect(port_info_, SIGNAL(NewViewClicked()),
-          this, SLOT(OnNewViewClicked()));
-  connect(port_info_, SIGNAL(NewPortClicked()),
-          this, SLOT(OnNewPortClicked()));
+//  connect(port_info_, SIGNAL(NewViewClicked()),
+//          this, SLOT(OnNewViewClicked()));
+//  connect(port_info_, SIGNAL(NewPortClicked()),
+//          this, SLOT(OnNewPortClicked()));
 
   main_layout_ = new QGridLayout(this);
-  main_layout_->addWidget(port_info_, 0, 0);
+  main_layout_->addWidget(port_info_area_widget_, 0, 0);
   main_layout_->addWidget(view_widget_, 0, 1);
   main_layout_->addWidget(send_widget_, 1, 0, 1, 2);
 
@@ -101,7 +102,7 @@ void PortPage::OnNewViewClicked(void) {
 
 void PortPage::OnNewPortClicked(void) {
   ComPortSettings* port_settings = new ComPortSettings();
-  AddOrModifyPortDialog addDialog(port_settings, this);
+  AddOrModifyPortDialog addDialog(port_settings, AddOrModifyPortDialog::ActionType::kAdd, this);
   qint32 result = addDialog.exec();
 
   switch (result) {
@@ -192,15 +193,36 @@ void PortPage::AddPort(ComPortSettings* settings) {
   // TODO: refaire les connexions avec les vues et les widgets
   // et/ou appeler directement les méthodes dédiées des widgets ?
 
-  connect(port_info_, &PortInfoWidget::OpenPortClicked,
-          port_mgr, &ComPortManager::OpenPort);
-  connect(port_info_, &PortInfoWidget::ClosePortClicked,
-          port_mgr, &ComPortManager::ClosePort);
+//  connect(port_info_, &PortInfoWidget::OpenPortClicked,
+//          port_mgr, &ComPortManager::OpenPort);
+//  connect(port_info_, &PortInfoWidget::ClosePortClicked,
+//          port_mgr, &ComPortManager::ClosePort);
 
   //port_info_->SetPortSettings(port_mgr->GetPortSettings());
-  send_widget_->PortListUpdated();
+  port_info_area_widget_->AddPort(port_mgr_list_.size()-1);
+  send_widget_->PortListUpdated(); // TODO : à modifier, moisi
   // TODO delete this, work with lists in port info widget
   // warn info widget and send widget that new port has been added
+}
+
+void PortPage::DeletePort(quint8 port_idx) {
+  // Delete threads
+  QThread* thread = thread_list_.at(port_idx);
+  thread->quit();
+  if (!thread->wait(1000)) {
+    qDebug() << "Timeout arret du thread.";
+  }
+  delete thread;
+  thread_list_.removeAt(port_idx);
+
+  // Delete port managers
+  ComPortManager* port_mgr = port_mgr_list_.at(port_idx);
+  delete port_mgr;
+  port_mgr_list_.removeAt(port_idx);
+
+  port_info_area_widget_->DeletePort(port_idx);
+
+  // TODO il faut remettre à jour les port index des widgets qui en dépendent (portinfo par exemple)
 }
 
 QList<PortView*>* PortPage::GetViewList(void) {

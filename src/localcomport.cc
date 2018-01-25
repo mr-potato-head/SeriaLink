@@ -31,6 +31,9 @@ void LocalComPort::OpenPort(void) {
   serial_port_->setStopBits(com_port_settings_->GetStopBits());
   serial_port_->setFlowControl(com_port_settings_->GetFlowControl());
 
+  connect(serial_port_, SIGNAL(error(QSerialPort::SerialPortError)),
+          this, SIGNAL(PortErrorOccurred(QSerialPort::SerialPortError)));
+
   if (!serial_port_->open(QIODevice::ReadWrite)) {
     qDebug() << tr("Opening error.");
     qDebug() << serial_port_->errorString();
@@ -38,10 +41,12 @@ void LocalComPort::OpenPort(void) {
     qDebug() << tr("Port ")
                 + com_port_settings_->GetPortInfo().portName()
                 + tr(" opened.");
-  }
 
-  connect(serial_port_, SIGNAL(readyRead()),
-          this, SLOT(OnReadyRead()));
+    connect(serial_port_, SIGNAL(readyRead()),
+            this, SLOT(OnReadyRead()));
+
+    emit PortOpened();
+  }
 }
 
 void LocalComPort::ClosePort(void) {
@@ -49,6 +54,7 @@ void LocalComPort::ClosePort(void) {
   qDebug() << tr("Port ")
               + com_port_settings_->GetPortInfo().portName()
               + tr(" closed.");
+  emit PortClosed();
 }
 
 void LocalComPort::OnReadyRead(void) {

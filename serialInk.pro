@@ -42,7 +42,8 @@ SOURCES += src/main.cc\
     src/modepage.cc \
     src/terminalportview.cc \
     src/datapacket.cc \
-    src/dataparser.cc
+    src/dataparser.cc \
+    src/portinfoareawidget.cc
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \
@@ -72,7 +73,8 @@ HEADERS += src/mainwindow.h \
     src/terminalportview.h \
     src/dataparser.h \
     src/menuwidget.h \
-    src/aboutwindow.h
+    src/aboutwindow.h \
+    src/portinfoareawidget.h
 
 OTHER_FILES += \
     LICENSE.txt \

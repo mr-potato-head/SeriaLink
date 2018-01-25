@@ -188,7 +188,7 @@ void Session::UpdatePortSettings(quint8 page_idx,
 }
 
 void Session::DeletePort(quint8 page_idx, quint8 port_idx) {
-
+  page_list_.at(page_idx)->DeletePort(port_idx);
 }
 
 void Session::AddView(quint8 page_idx, ViewSettings* settings) {

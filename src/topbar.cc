@@ -119,7 +119,9 @@ void TopBar::UpdateSelectorButtonStatus(void) {
 
 void TopBar::openAddOrModifyDialog(void) {
   ComPortSettings* port_settings = new ComPortSettings();
-  AddOrModifyPortDialog addDialog(port_settings, this);
+  AddOrModifyPortDialog addDialog(port_settings,
+                                  AddOrModifyPortDialog::ActionType::kAdd,
+                                  this);
   qint32 result = addDialog.exec();
 
   switch (result) {

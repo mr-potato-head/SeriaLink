@@ -55,6 +55,15 @@ class ComPortManager : public QObject {
   //! Emitted when sequence is over
   void SequenceOver(void);
 
+  //! Emitted when the port is successfully opened
+  void PortOpened(void);
+
+  //! Emitted when the port is successfully closed
+  void PortClosed(void);
+
+  //! Emitted when an error occurred on port
+  void PortErrorOccurred(QSerialPort::SerialPortError);
+
  public slots: //NOLINT
   //! Open COM port
   void OpenPort(void);

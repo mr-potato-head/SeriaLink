@@ -28,75 +28,58 @@
 #include "src/comportmanager.h"
 #include "src/comportsettings.h"
 
-class PortInfoWidget : public QWidget {
+class Session;
+
+class PortInfoWidget : public QGroupBox {
   Q_OBJECT
 
  public:
   //! Default constructor
-  explicit PortInfoWidget(QList<ComPortManager*>* port_mgr_list,
+  explicit PortInfoWidget(Session* session,
+                          quint8 page_idx,
+                          quint8 port_idx,
                           QWidget *parent = 0);
 
   //! Set port settings
-  void SetPortSettings(ComPortSettings* port_settings);
+  //void SetPortSettings(ComPortSettings* port_settings);
 
  signals:
-  //! Emitted when the new port button is clicked
-  void NewPortClicked(void);
+//  //! Emitted when the new port button is clicked
+//  void NewPortClicked(void);
 
-  //! Emitted when the new view button is clicked
-  void NewViewClicked(void);
+//  //! Emitted when the new view button is clicked
+//  void NewViewClicked(void);
 
-  //! Emitted on click on open button
-  void OpenPortClicked(void);
+//  //! Emitted on click on open button
+//  void OpenPortClicked(void);
 
-  //! Emitted on click on close button
-  void ClosePortClicked(void);
+//  //! Emitted on click on close button
+//  void ClosePortClicked(void);
 
  private:
   //! Group box of settings
-  QGroupBox* settings_group_box_ {NULL};
+  //QGroupBox* settings_group_box_ {NULL};
 
   //! Group box vertical layout
   QVBoxLayout* group_box_layout_ {NULL};
 
-  //! Port index
-  qint32 port_index_ {-1};
+//  //! Port index
+//  qint32 port_index_ {-1};
 
   //! Main vertical layout
-  QVBoxLayout* main_layout_ {NULL};
+  //QVBoxLayout* main_layout_ {NULL};
 
   //! Port name label
-  QLabel* port_name_label_ {NULL};
+  QLabel* port_name_ {NULL};
 
-  //! Port name value
-  QLabel* port_name_value_ {NULL};
+  //! Port baud rate
+  QLabel* port_baud_rate_ {NULL};
 
-  //! Port baud rate label
-  QLabel* port_baud_rate_label_ {NULL};
-
-  //! Port baud rate value
-  QLabel* port_baud_rate_value_ {NULL};
-
-  //! Port parity label
-  QLabel* port_parity_label_ {NULL};
-
-  //! Port parity value
-  QLabel* port_parity_value_ {NULL};
-
-  //! Port data bits label
-  QLabel* port_data_bits_label_ {NULL};
-
-  //! Port data bits value
-  QLabel* port_data_bits_value_ {NULL};
-
-  //! Port stop bits label
-  QLabel* port_stop_bits_label_ {NULL};
-
-  //! Port stop bits value
-  QLabel* port_stop_bits_value_ {NULL};
+  //! Port parity parity/data bits/stop bits
+  QLabel* port_settings_ {NULL};
 
   //! Port flow control label
-  QLabel* port_flow_control_label_ {NULL};
+  QLabel* port_flow_control_ {NULL};
 
   //! Port flow control value
   QLabel* port_flow_control_value_ {NULL};
@@ -107,14 +90,25 @@ class PortInfoWidget : public QWidget {
   //! Close COM port button
   QPushButton* close_button_ {NULL};
 
-  //! Create new view
-  QPushButton* new_view_button_ {NULL};
+  //! Modify COM port button
+  QPushButton* modify_button_ {NULL};
+  //! Delete COM port button
+  QPushButton* delete_button_ {NULL};
 
-  //! Add new port
-  QPushButton* new_port_button_ {NULL};
+//  //! Create new view
+//  QPushButton* new_view_button_ {NULL};
+
+//  //! Modify new port
+//  QPushButton* new_port_button_ {NULL};
 
   //! COM Port manager list
-  QList<ComPortManager*>* port_mgr_list_;
+  ComPortManager* port_mgr_ {NULL};
+
+  QGridLayout* main_layout_ {NULL};
+
+  quint8 page_idx_ {0};
+  quint8 port_idx_ {0};
+  Session* session_ {nullptr};
 };
 
 #endif  // SRC_PORTINFOWIDGET_H_

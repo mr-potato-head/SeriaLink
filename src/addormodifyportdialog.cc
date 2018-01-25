@@ -27,6 +27,7 @@ static const quint8 kPortComboBoxSF = 85;
 static const quint8 kPortUpdateBtnSF = 15;
 
 AddOrModifyPortDialog::AddOrModifyPortDialog(ComPortSettings* port_settings,
+                                             ActionType action_type,
                                              QWidget *parent)
   : QDialog(parent),
     port_settings_{port_settings} {
@@ -100,6 +101,31 @@ AddOrModifyPortDialog::AddOrModifyPortDialog(ComPortSettings* port_settings,
   FillDataBitsList();
   FillStopBitsList();
   FillFlowControlList();
+
+  // Special process if add or update port settings
+  if(action_type == ActionType::kAdd) {
+    this->setWindowTitle(tr("Choose port settings"));
+  } else if(action_type == ActionType::kUpdate) {
+    this->setWindowTitle(tr("Update port settings"));
+
+    // Preset old settings
+    int index = 0;
+    port_combobox_->setCurrentText(port_settings->GetPortInfo().portName());
+    index = baudrate_combobox_->findData(static_cast<qint32>(port_settings->GetBaudRate()));
+    baudrate_combobox_->setCurrentIndex(index);
+    index = parity_combobox_->findData(static_cast<qint32>(port_settings->GetParity()));
+    parity_combobox_->setCurrentIndex(index);
+    index = data_bits_combobox_->findData(static_cast<qint32>(port_settings->GetDataBits()));
+    data_bits_combobox_->setCurrentIndex(index);
+    index = stop_bits_combobox_->findData(static_cast<qint32>(port_settings->GetStopBits()));
+    stop_bits_combobox_->setCurrentIndex(index);
+    index = flow_control_combobox_->findData(static_cast<qint32>(port_settings->GetFlowControl()));
+    flow_control_combobox_->setCurrentIndex(index);
+
+  } else {
+    // Should not happened
+    this->setWindowTitle(tr("Port settings"));
+  }
 
   // Dialog minimum width
   this->setMinimumWidth(kMinimumWidth);

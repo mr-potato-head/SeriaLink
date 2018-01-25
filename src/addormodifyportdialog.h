@@ -32,8 +32,15 @@ class AddOrModifyPortDialog : public QDialog {
   Q_OBJECT
 
  public:
+
+  enum class ActionType {
+    kAdd = 0,
+    kUpdate
+  };
+
   //! Default constructor
   explicit AddOrModifyPortDialog(ComPortSettings* port_settings,
+                                 ActionType action_type,
                                  QWidget *parent = 0);
 
  private slots: // NOLINT

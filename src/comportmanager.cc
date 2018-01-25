@@ -46,6 +46,15 @@ void ComPortManager::OpenPort(void) {
   connect(com_port_, SIGNAL(DataSent(const DataPacket&)),
           this, SIGNAL(DataSent(const DataPacket&)));
 
+  connect(com_port_, SIGNAL(PortOpened()),
+          this, SIGNAL(PortOpened()));
+
+  connect(com_port_, SIGNAL(PortClosed()),
+          this, SIGNAL(PortClosed()));
+
+  connect(com_port_, SIGNAL(PortErrorOccurred(QSerialPort::SerialPortError)),
+          this, SIGNAL(PortErrorOccurred(QSerialPort::SerialPortError)));
+
   com_port_->OpenPort();
 }
 

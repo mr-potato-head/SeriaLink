@@ -29,6 +29,7 @@
 #include "src/viewsettingdialog.h"
 #include "src/viewsettings.h"
 #include "src/comportmanager.h"
+#include "src/portinfoareawidget.h"
 
 class Session;
 
@@ -48,6 +49,9 @@ class PortPage : public QWidget {
 
   //! Add port in page
   void AddPort(ComPortSettings* settings);
+
+  //! Delete port in page
+  void DeletePort(quint8 port_idx);
 
   //! Get view list
   QList<PortView*>* GetViewList(void);
@@ -82,7 +86,10 @@ class PortPage : public QWidget {
   quint32 page_index_ {0};
 
   //! Port info widget of the page
-  PortInfoWidget* port_info_ {NULL};
+  //PortInfoWidget* port_info_ {NULL};
+
+  //! Port info widget area
+  PortInfoAreaWidget* port_info_area_widget_ {NULL};
 
   //! Send widget of the page
   SendWidget* send_widget_ {NULL};
