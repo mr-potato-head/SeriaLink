@@ -71,7 +71,7 @@ void Session::AddPage(void) {
   page_list_.append(page);
 
   // Add page in container
-  quint8 page_index = page_container_->addWidget(page);
+  int page_index = page_container_->addWidget(page);
   page_container_->setCurrentIndex(page_index);
 
   // Update topbar widgets
@@ -88,7 +88,7 @@ void Session::AddPage(ComPortSettings* port_settings) {
   page_list_.append(page);
 
   // Add page in container
-  quint8 page_index = page_container_->addWidget(page);
+  int page_index = page_container_->addWidget(page);
   page_container_->setCurrentIndex(page_index);
 
   // Add port in page
@@ -104,7 +104,7 @@ void Session::AddPage(ComPortSettings* port_settings) {
   this->SetCurrentPageIndex(page_index);
 }
 
-void Session::DeletePage(quint8 page_idx) {
+void Session::DeletePage(int page_idx) {
   int old_last_idx = page_list_.size()-1;
 
   PortPage* port_page = page_list_.at(page_idx);
@@ -112,23 +112,28 @@ void Session::DeletePage(quint8 page_idx) {
   delete port_page;
   page_list_.removeAt(page_idx);
 
-  int index = 0;
-  foreach (PortPage* port_page, page_list_) {
-    port_page->SetPageIndex(index);
-  }
-
-  if(page_idx == 0) {
-    this->SetCurrentPageIndex(0);
-  } else if (page_idx == old_last_idx) {
-    this->SetCurrentPageIndex(page_list_.size()-1);
+  // Check if page list is empty
+  if(page_list_.size() == 0) {
+    this->SetCurrentPageIndex(-1);
   } else {
-    this->SetCurrentPageIndex(page_idx);
+    int index = 0;
+    foreach (PortPage* port_page, page_list_) {
+      port_page->SetPageIndex(index);
+    }
+
+    if(page_idx == 0) {
+      this->SetCurrentPageIndex(0);
+    } else if (page_idx == old_last_idx) {
+      this->SetCurrentPageIndex(page_list_.size()-1);
+    } else {
+      this->SetCurrentPageIndex(page_idx);
+    }
   }
 
   top_bar_->DeletePageButton(page_idx);
 }
 
-void Session::AddPort(quint8 page_idx, ComPortSettings* port_settings) {
+void Session::AddPort(int page_idx, ComPortSettings* port_settings) {
 
   PortPage* page = page_list_.at(page_idx);
 
@@ -157,7 +162,7 @@ void Session::AddPort(quint8 page_idx, ComPortSettings* port_settings) {
 //  emit PortAdded(current_port_mgr_index_);
 }
 
-void Session::AddPort(quint8 page_idx, const QJsonObject& port_object) {
+void Session::AddPort(int page_idx, const QJsonObject& port_object) {
   ComPortSettings* port_settings = new ComPortSettings();
   port_settings->SetBaudRate(
         static_cast<QSerialPort::BaudRate>(
@@ -181,17 +186,17 @@ void Session::AddPort(quint8 page_idx, const QJsonObject& port_object) {
   this->AddPort(page_idx, port_settings);
 }
 
-void Session::UpdatePortSettings(quint8 page_idx,
-                        quint8 port_idx,
+void Session::UpdatePortSettings(int page_idx,
+                        int port_idx,
                         ComPortSettings* port_settings) {
 
 }
 
-void Session::DeletePort(quint8 page_idx, quint8 port_idx) {
+void Session::DeletePort(int page_idx, int port_idx) {
   page_list_.at(page_idx)->DeletePort(port_idx);
 }
 
-void Session::AddView(quint8 page_idx, ViewSettings* settings) {
+void Session::AddView(int page_idx, ViewSettings* settings) {
 //  PortView* view;
 //  switch (settings->GetViewType()) {
 //  case ViewSettings::ViewType::kDump:
@@ -215,26 +220,29 @@ void Session::AddView(quint8 page_idx, ViewSettings* settings) {
   page_list_.at(page_idx)->AddView(settings);
 }
 
-void Session::AddView(quint8 page_idx, const QJsonObject& view_object) {
+void Session::AddView(int page_idx, const QJsonObject& view_object) {
   ViewSettings* settings = new ViewSettings(view_object);
   this->AddView(page_idx, settings);
 }
 
-void Session::UpdateViewSettings(quint8 page_idx,
-                                 quint8 view_idx,
+void Session::UpdateViewSettings(int page_idx,
+                                 int view_idx,
                                  ViewSettings *settings) {
 
 }
 
-void Session::DeleteView(quint8 page_idx, quint8 view_idx) {
+void Session::DeleteView(int page_idx, int view_idx) {
   //page_list_.at(page_idx)->GetViewList()->removeAt(view_idx);
 }
 
 void Session::SetCurrentPageIndex(int page_index) {
   current_page_index_ = page_index;
-  top_bar_->UpdateSelectorButtonStatus();
   top_bar_->UpdateSwitcherButtonStatus();
-  page_container_->setCurrentIndex(page_index);
+
+  if(page_index >= 0) {
+    top_bar_->UpdateSelectorButtonStatus();
+    page_container_->setCurrentIndex(page_index);
+  }
 }
 
 //void Session::OpenPort(qint32 index) {
@@ -247,11 +255,11 @@ void Session::SetCurrentPageIndex(int page_index) {
 //  QTimer::singleShot(0, port_mgr, &ComPortManager::ClosePort);
 //}
 
-//quint8 Session::GetPortNumber(void) {
+//int Session::GetPortNumber(void) {
 //  return com_port_mgr_list_.size();
 //}
 
-quint8 Session::GetCurrentPageIndex(void) {
+int Session::GetCurrentPageIndex(void) {
   return current_page_index_;
 }
 

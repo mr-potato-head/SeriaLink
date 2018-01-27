@@ -24,7 +24,7 @@
 #include "src/tableportview.h"
 
 PortPage::PortPage(Session* session,
-                   quint32 page_index,
+                   int page_index,
                    QWidget* parent)
   : QWidget(parent),
     session_(session),
@@ -220,7 +220,7 @@ void PortPage::AddPort(ComPortSettings* settings) {
   // warn info widget and send widget that new port has been added
 }
 
-void PortPage::DeletePort(quint8 port_idx) {
+void PortPage::DeletePort(int port_idx) {
   // Delete threads
   QThread* thread = thread_list_.at(port_idx);
   thread->quit();
@@ -246,7 +246,7 @@ QList<ComPortManager*>* PortPage::GetPortMgrList(void) {
   return &port_mgr_list_;
 }
 
-void PortPage::SetPageIndex(quint32 page_idx) {
+void PortPage::SetPageIndex(int page_idx) {
   page_index_ = page_idx;
 }
 

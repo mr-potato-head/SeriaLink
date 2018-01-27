@@ -50,10 +50,10 @@ QString DataFormatter::formatData(const ViewSettings& settings,
   if (qint8_size != -1) {
     out += "|";
   }
-  quint32 quint32_index = 0;
-  quint32 quint32_datasize = packet.GetData().size();
-  for (; quint32_index < quint32_datasize ; quint32_index+=qint8_size) {
-    QByteArray dataBlock = packet.GetData().mid(quint32_index, qint8_size);
+  int int_index = 0;
+  int int_datasize = packet.GetData().size();
+  for (; int_index < int_datasize ; int_index+=qint8_size) {
+    QByteArray dataBlock = packet.GetData().mid(int_index, qint8_size);
     switch (eDisplayType) {
     case ViewSettings::DisplayType::kAscii:
       dataBlock = dataBlock.replace("\r", "\\r");

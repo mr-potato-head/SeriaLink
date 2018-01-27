@@ -38,7 +38,7 @@ class PortPage : public QWidget {
 
  public:
   explicit PortPage(Session* session,
-                    quint32 page_index,
+                    int page_index,
                     QWidget* parent = 0);
 
   //! Destructor
@@ -51,7 +51,7 @@ class PortPage : public QWidget {
   void AddPort(ComPortSettings* settings);
 
   //! Delete port in page
-  void DeletePort(quint8 port_idx);
+  void DeletePort(int port_idx);
 
   //! Get view list
   QList<PortView*>* GetViewList(void);
@@ -60,7 +60,7 @@ class PortPage : public QWidget {
   QList<ComPortManager*>* GetPortMgrList(void);
 
   //! Set page index
-  void SetPageIndex(quint32 page_idx);
+  void SetPageIndex(int page_idx);
 
  private slots: //NOLINT
   //! Executed when new view button is clicked
@@ -83,7 +83,7 @@ class PortPage : public QWidget {
   Session* session_ {NULL};
 
   //! Page index in session
-  quint32 page_index_ {0};
+  int page_index_ {0};
 
   //! Port info widget of the page
   //PortInfoWidget* port_info_ {NULL};

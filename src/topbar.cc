@@ -41,11 +41,11 @@ TopBar::TopBar(QWidget *parent)
           this, SLOT(OnDecreaseCurrentPageIndex()));
   connect(page_switcher_, SIGNAL(AddPage()),
           this, SLOT(openAddOrModifyDialog()));
-//  connect(session_, SIGNAL(PageAdded(quint32)),
-//          page_selector_, SLOT(AddButton(quint32)));
-//  connect(session_, SIGNAL(IndexChanged(quint32)),
+//  connect(session_, SIGNAL(PageAdded(int)),
+//          page_selector_, SLOT(AddButton(int)));
+//  connect(session_, SIGNAL(IndexChanged(int)),
 //          this, SLOT(UpdateSelectorButtonStatus()));
-//  connect(session_, SIGNAL(IndexChanged(quint32)),
+//  connect(session_, SIGNAL(IndexChanged(int)),
 //          this, SLOT(UpdateSwitcherButtonStatus()));
   connect(page_switcher_, SIGNAL(OpenMenu()),
           this, SIGNAL(OpenMenu()));
@@ -63,18 +63,18 @@ void TopBar::AddPageButton(void) {
   page_selector_->AddButton();
 }
 
-void TopBar::DeletePageButton(quint8 page_idx) {
+void TopBar::DeletePageButton(int page_idx) {
   page_selector_->DeleteButton(page_idx);
   UpdateSwitcherButtonStatus();
   UpdateSelectorButtonStatus();
 }
 
-void TopBar::UpdatePageButtonName(quint8 page_idx) {
+void TopBar::UpdatePageButtonName(int page_idx) {
   page_selector_->UpdateButtonName(page_idx);
 }
 
 void TopBar::OnIncreaseCurrentPageIndex(void) {
-  quint8 current_page_index = session_->GetCurrentPageIndex();
+  int current_page_index = session_->GetCurrentPageIndex();
   current_page_index++;
   session_->SetCurrentPageIndex(current_page_index);
 
@@ -83,7 +83,7 @@ void TopBar::OnIncreaseCurrentPageIndex(void) {
 }
 
 void TopBar::OnDecreaseCurrentPageIndex(void) {
-  quint8 current_page_index = session_->GetCurrentPageIndex();
+  int current_page_index = session_->GetCurrentPageIndex();
   current_page_index--;
   session_->SetCurrentPageIndex(current_page_index);
 
@@ -92,8 +92,8 @@ void TopBar::OnDecreaseCurrentPageIndex(void) {
 }
 
 void TopBar::UpdateSwitcherButtonStatus(void) {
-  quint8 page_number = session_->GetPortPageList()->size();
-  quint8 current_page_index = session_->GetCurrentPageIndex();
+  int page_number = session_->GetPortPageList()->size();
+  int current_page_index = session_->GetCurrentPageIndex();
 
   if (page_number <= 1) {
     page_switcher_->DisableButton(PageSwitcher::ButtonType::kIncreaseButton);
@@ -113,8 +113,10 @@ void TopBar::UpdateSwitcherButtonStatus(void) {
 }
 
 void TopBar::UpdateSelectorButtonStatus(void) {
-  quint8 current_page_index = session_->GetCurrentPageIndex();
-  page_selector_->SetCheckedState(current_page_index);
+  int current_page_index = session_->GetCurrentPageIndex();
+  if(current_page_index >= 0) {
+    page_selector_->SetCheckedState(current_page_index);
+  }
 }
 
 void TopBar::openAddOrModifyDialog(void) {

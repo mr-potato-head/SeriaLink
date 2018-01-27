@@ -13,11 +13,11 @@ class PortInfoAreaWidget : public QScrollArea
 {
     Q_OBJECT
   public:
-    explicit PortInfoAreaWidget(Session* session, quint8 page_idx, QWidget *parent = 0);
+    explicit PortInfoAreaWidget(Session* session, int page_idx, QWidget *parent = 0);
 
-    void AddPort(quint8 port_idx);
+    void AddPort(int port_idx);
 
-    void DeletePort(quint8 port_idx);
+    void DeletePort(int port_idx);
 
   signals:
 
@@ -31,7 +31,7 @@ class PortInfoAreaWidget : public QScrollArea
 
   QList<PortInfoWidget*> port_info_widget_list_;
 
-  quint8 page_idx_ {0};
+  int page_idx_ {0};
 };
 
 #endif // PORTINFOAREAWIDGET_H

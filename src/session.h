@@ -53,41 +53,41 @@ class Session : public QObject {
   void AddPage(ComPortSettings* port_settings);
 
   //! Delete page in this session
-  void DeletePage(quint8 page_idx);
+  void DeletePage(int page_idx);
 
   //! Add port in page in this session
-  void AddPort(quint8 page_idx, ComPortSettings* port_settings);
+  void AddPort(int page_idx, ComPortSettings* port_settings);
 
   //! Add port in page from JSON array
-  void AddPort(quint8 page_idx, const QJsonObject& port_object);
+  void AddPort(int page_idx, const QJsonObject& port_object);
 
   //! Update port settings
-  void UpdatePortSettings(quint8 page_idx,
-                          quint8 port_idx,
+  void UpdatePortSettings(int page_idx,
+                          int port_idx,
                           ComPortSettings* port_settings);
 
   //! Delete port
-  void DeletePort(quint8 page_idx, quint8 port_idx);
+  void DeletePort(int page_idx, int port_idx);
 
   //! Add view in page from view settings
-  void AddView(quint8 page_idx, ViewSettings* settings);
+  void AddView(int page_idx, ViewSettings* settings);
 
   //! Add view in page from JSON array
-  void AddView(quint8 page_idx, const QJsonObject& view_object);
+  void AddView(int page_idx, const QJsonObject& view_object);
 
   //! Update view in page
-  void UpdateViewSettings(quint8 page_idx,
-                          quint8 view_idx,
+  void UpdateViewSettings(int page_idx,
+                          int view_idx,
                           ViewSettings* settings);
 
   //! Delete view in page
-  void DeleteView(quint8 page_idx, quint8 view_idx);
+  void DeleteView(int page_idx, int view_idx);
 
   //! Get port number
-  //quint8 GetPortNumber(void);
+  //int GetPortNumber(void);
 
   //! Get current page index
-  quint8 GetCurrentPageIndex(void);
+  int GetCurrentPageIndex(void);
 
   //! Get a COM port manager
   //ComPortManager* GetPortManager(qint32 index);
@@ -116,10 +116,10 @@ class Session : public QObject {
 
  signals:
   //! Emitted when a new port is added in session
-  void PageAdded(quint32);
+  void PageAdded(int);
 
   //! Emitted when the current port index is changed
-  void IndexChanged(quint32);
+  void IndexChanged(int);
 
   //! Emitted for opening the port
   //void OpenPortSignal(void);
@@ -138,7 +138,7 @@ class Session : public QObject {
   //QList<QThread*> thread_list_;
 
   //! Index of the current page index;
-  quint32 current_page_index_ {0};
+  int current_page_index_ {0};
 
   //! Pointer on page container
   PageContainer* page_container_ {NULL};

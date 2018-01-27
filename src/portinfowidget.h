@@ -36,14 +36,15 @@ class PortInfoWidget : public QGroupBox {
  public:
   //! Default constructor
   explicit PortInfoWidget(Session* session,
-                          quint8 page_idx,
-                          quint8 port_idx,
+                          int page_idx,
+                          int port_idx,
                           QWidget *parent = 0);
 
   //! Set port settings
   //void SetPortSettings(ComPortSettings* port_settings);
 
-  void SetPortIndex(quint8 port_index);
+  void SetPortIndex(int port_index);
+  void SetLastInList(bool last_in_list);
 
  signals:
 //  //! Emitted when the new port button is clicked
@@ -108,9 +109,10 @@ class PortInfoWidget : public QGroupBox {
 
   QGridLayout* main_layout_ {NULL};
 
-  quint8 page_idx_ {0};
-  quint8 port_idx_ {0};
+  int page_idx_ {0};
+  int port_idx_ {0};
   Session* session_ {nullptr};
+  bool last_in_list_ {false};
 };
 
 #endif  // SRC_PORTINFOWIDGET_H_

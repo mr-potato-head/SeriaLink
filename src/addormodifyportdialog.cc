@@ -22,9 +22,9 @@
 static const char kBlankString[] =
     QT_TRANSLATE_NOOP("AddOrModifyPortDialog", "N/A");
 
-static const quint16 kMinimumWidth = 400;
-static const quint8 kPortComboBoxSF = 85;
-static const quint8 kPortUpdateBtnSF = 15;
+static const int kMinimumWidth = 400;
+static const int kPortComboBoxSF = 85;
+static const int kPortUpdateBtnSF = 15;
 
 AddOrModifyPortDialog::AddOrModifyPortDialog(ComPortSettings* port_settings,
                                              ActionType action_type,
@@ -78,7 +78,7 @@ AddOrModifyPortDialog::AddOrModifyPortDialog(ComPortSettings* port_settings,
   port_hbox_layout_->setStretchFactor(
         static_cast<QWidget*>(port_list_upd_button_), kPortUpdateBtnSF);
 
-  quint8 row_index = 0;
+  int row_index = 0;
   form_grid_layout_ = new QGridLayout(this);
   form_grid_layout_->addWidget(port_label_, row_index, 0);
   form_grid_layout_->addLayout(port_hbox_layout_, row_index++, 1);

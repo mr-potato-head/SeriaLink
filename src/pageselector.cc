@@ -55,7 +55,7 @@ void PageSelector::AddButton() {
   signal_mapper_->setMapping(button, button_list_.size()-1);
 }
 
-void PageSelector::DeleteButton(quint8 page_idx) {
+void PageSelector::DeleteButton(int page_idx) {
   QPushButton* button = button_list_.at(page_idx);
   button_list_.removeAt(page_idx);
   delete button;
@@ -68,7 +68,7 @@ void PageSelector::DeleteButton(quint8 page_idx) {
   }
 }
 
-void PageSelector::UpdateButtonName(quint8 page_idx) {
+void PageSelector::UpdateButtonName(int page_idx) {
   // Get port name
   PortPage* page = session_->GetPortPageList()->at(page_idx);
   QList<ComPortManager*>* port_mgr_list = page->GetPortMgrList();

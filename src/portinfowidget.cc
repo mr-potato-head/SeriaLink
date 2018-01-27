@@ -21,8 +21,8 @@
 #include "src/session.h"
 
 PortInfoWidget::PortInfoWidget(Session* session,
-                               quint8 page_idx,
-                               quint8 port_idx,
+                               int page_idx,
+                               int port_idx,
                                QWidget *parent)
   : QGroupBox(parent),
     session_ {session},
@@ -177,8 +177,19 @@ PortInfoWidget::PortInfoWidget(Session* session,
 //                      QSizePolicy::Expanding);
 }
 
-void PortInfoWidget::SetPortIndex(quint8 port_index) {
+void PortInfoWidget::SetPortIndex(int port_index) {
   port_idx_ = port_index;
+}
+
+void PortInfoWidget::SetLastInList(bool last_in_list) {
+  last_in_list_ = last_in_list;
+  if(last_in_list) {
+    delete_button_->setEnabled(false);
+    delete_button_->setToolTip(tr("Each page must have at least one port."));
+  } else {
+    delete_button_->setEnabled(true);
+    delete_button_->setToolTip(tr("Delete serial port."));
+  }
 }
 
 //void PortInfoWidget::SetPortSettings(ComPortSettings* port_settings) {

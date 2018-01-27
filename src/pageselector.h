@@ -40,13 +40,13 @@ class PageSelector : public QWidget {
   //! Set checked state for a button
   void SetCheckedState(qint32 page_index);
 
-  void UpdateButtonName(quint8 page_idx);
+  void UpdateButtonName(int page_idx);
 
  public slots: // NOLINT
   //! Add button
   void AddButton();
 
-  void DeleteButton(quint8 page_idx);
+  void DeleteButton(int page_idx);
 
  private:
   //! Button list

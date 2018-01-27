@@ -38,9 +38,9 @@ class TopBar : public QWidget {
 
   void AddPageButton(void);
 
-  void DeletePageButton(quint8 page_idx);
+  void DeletePageButton(int page_idx);
 
-  void UpdatePageButtonName(quint8 page_idx);
+  void UpdatePageButtonName(int page_idx);
 
   //! Update page switcher button status
   void UpdateSwitcherButtonStatus(void);

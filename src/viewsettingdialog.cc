@@ -18,7 +18,7 @@
 
 #include "src/viewsettingdialog.h"
 
-static const quint16 kMinimumWidth = 400;
+static const int kMinimumWidth = 400;
 
 ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
                                      ActionType action_type,
@@ -45,7 +45,7 @@ ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
   connect(button_bar_, SIGNAL(accepted()), this, SLOT(FillViewSettings()));
   connect(button_bar_, SIGNAL(rejected()), this, SLOT(reject()));
 
-  quint8 row_index = 0;
+  int row_index = 0;
   form_grid_layout_ = new QGridLayout(this);
   form_grid_layout_->addWidget(view_type_label_, row_index, 0);
   form_grid_layout_->addWidget(view_type_combobox_, row_index++, 1);
