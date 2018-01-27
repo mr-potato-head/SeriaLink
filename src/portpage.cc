@@ -236,6 +236,7 @@ void PortPage::DeletePort(int port_idx) {
   port_mgr_list_.removeAt(port_idx);
 
   port_info_area_widget_->DeletePort(port_idx);
+  send_widget_->PortListUpdated();
 }
 
 QList<PortView*>* PortPage::GetViewList(void) {
