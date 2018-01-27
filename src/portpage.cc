@@ -35,13 +35,28 @@ PortPage::PortPage(Session* session,
   view_widget_ = new QWidget(this);
   view_layout_ = new QHBoxLayout(view_widget_);
 
-//  connect(port_info_, SIGNAL(NewViewClicked()),
-//          this, SLOT(OnNewViewClicked()));
-//  connect(port_info_, SIGNAL(NewPortClicked()),
-//          this, SLOT(OnNewPortClicked()));
+  add_view_button_ = new QPushButton(this);
+  add_view_button_->setIcon(QIcon(":/icons/icons/plus-8x.png"));
+  add_view_button_->setToolTip(tr("Add a view to this port."));
+  connect(add_view_button_, SIGNAL(clicked()),
+          this, SLOT(OnNewViewClicked()));
+
+  add_port_button_ = new QPushButton(this);
+  add_port_button_->setIcon(QIcon(":/icons/icons/plus-8x.png"));
+  add_port_button_->setToolTip(tr("Add a port to this page."));
+  connect(add_port_button_, SIGNAL(clicked()),
+          this, SLOT(OnNewPortClicked()));
+
+  left_glayout_ = new QGridLayout();
+  left_glayout_->addWidget(add_port_button_, 0, 0);
+  left_glayout_->addWidget(add_view_button_, 0, 1);
+  left_vlayout_ = new QVBoxLayout();
+
+  left_vlayout_->addWidget(port_info_area_widget_);
+  left_vlayout_->addLayout(left_glayout_);
 
   main_layout_ = new QGridLayout(this);
-  main_layout_->addWidget(port_info_area_widget_, 0, 0);
+  main_layout_->addLayout(left_vlayout_, 0, 0);
   main_layout_->addWidget(view_widget_, 0, 1);
   main_layout_->addWidget(send_widget_, 1, 0, 1, 2);
 
@@ -221,8 +236,6 @@ void PortPage::DeletePort(quint8 port_idx) {
   port_mgr_list_.removeAt(port_idx);
 
   port_info_area_widget_->DeletePort(port_idx);
-
-  // TODO il faut remettre à jour les port index des widgets qui en dépendent (portinfo par exemple)
 }
 
 QList<PortView*>* PortPage::GetViewList(void) {

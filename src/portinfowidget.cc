@@ -134,6 +134,8 @@ PortInfoWidget::PortInfoWidget(Session* session,
   });
   main_layout_->addWidget(delete_button_, 1, 2);
 
+  //this->setFixedHeight(200);
+
 //  new_view_button_ = new QPushButton(this);
 //  new_view_button_->setIcon(QIcon(":/icons/icons/plus-8x.png"));
 //  new_view_button_->setToolTip(tr("Add a view to this port."));
@@ -173,6 +175,10 @@ PortInfoWidget::PortInfoWidget(Session* session,
 
 //  this->setSizePolicy(QSizePolicy::Expanding,
 //                      QSizePolicy::Expanding);
+}
+
+void PortInfoWidget::SetPortIndex(quint8 port_index) {
+  port_idx_ = port_index;
 }
 
 //void PortInfoWidget::SetPortSettings(ComPortSettings* port_settings) {

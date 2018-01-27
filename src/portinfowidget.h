@@ -43,6 +43,8 @@ class PortInfoWidget : public QGroupBox {
   //! Set port settings
   //void SetPortSettings(ComPortSettings* port_settings);
 
+  void SetPortIndex(quint8 port_index);
+
  signals:
 //  //! Emitted when the new port button is clicked
 //  void NewPortClicked(void);

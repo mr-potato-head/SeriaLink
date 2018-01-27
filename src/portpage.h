@@ -100,6 +100,18 @@ class PortPage : public QWidget {
   //! QHBoxLayout for views
   QHBoxLayout* view_layout_ {NULL};
 
+  //! Vertical left layout
+  QVBoxLayout* left_vlayout_ {NULL};
+
+  //! Left top grid layout
+  QGridLayout* left_glayout_ {NULL};
+
+  //! Add port button
+  QPushButton* add_port_button_ {NULL};
+
+  //! Add view button
+  QPushButton* add_view_button_ {NULL};
+
   //! View list
   QList<PortView*> view_list_;
 
