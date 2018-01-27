@@ -194,6 +194,7 @@ void Session::UpdatePortSettings(int page_idx,
 
 void Session::DeletePort(int page_idx, int port_idx) {
   page_list_.at(page_idx)->DeletePort(port_idx);
+  top_bar_->UpdatePageButtonName(page_idx);
 }
 
 void Session::AddView(int page_idx, ViewSettings* settings) {
