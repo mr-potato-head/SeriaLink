@@ -21,6 +21,7 @@
 
 #include <QWidget>
 #include <QVBoxLayout>
+#include "dragdroparea.h"
 #include "src/topbar.h"
 #include "src/pagecontainer.h"
 #include "src/session.h"
@@ -46,6 +47,9 @@ class CentralWidget : public QWidget {
 
   //! Session
   Session* session_ {NULL};
+
+  //! Central darg & drop zone for session file
+  DragDropArea* drag_drop_area_ {nullptr};
 };
 
 #endif  // SRC_CENTRALWIDGET_H_

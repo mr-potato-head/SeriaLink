@@ -131,6 +131,8 @@ void Session::DeletePage(int page_idx) {
   }
 
   top_bar_->DeletePageButton(page_idx);
+
+  emit LastPageDeleted();
 }
 
 void Session::AddPort(int page_idx, ComPortSettings* port_settings) {

@@ -43,7 +43,8 @@ SOURCES += src/main.cc\
     src/terminalportview.cc \
     src/datapacket.cc \
     src/dataparser.cc \
-    src/portinfoareawidget.cc
+    src/portinfoareawidget.cc \
+    src/dragdroparea.cc
 
 HEADERS += src/mainwindow.h \
     src/pageswitcher.h \
@@ -74,7 +75,8 @@ HEADERS += src/mainwindow.h \
     src/dataparser.h \
     src/menuwidget.h \
     src/aboutwindow.h \
-    src/portinfoareawidget.h
+    src/portinfoareawidget.h \
+    src/dragdroparea.h
 
 OTHER_FILES += \
     LICENSE.txt \

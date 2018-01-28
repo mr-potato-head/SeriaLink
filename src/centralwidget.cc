@@ -26,6 +26,7 @@ CentralWidget::CentralWidget(QWidget *parent) :
   // Create widget
   page_container_ = new PageContainer(this);
   top_bar_ = new TopBar(this);
+  drag_drop_area_ = new DragDropArea(this);
 
   // Instanciate session manager
   session_ = new Session(this);
@@ -35,7 +36,10 @@ CentralWidget::CentralWidget(QWidget *parent) :
 
   main_layout_ = new QVBoxLayout(this);
   main_layout_->addWidget(top_bar_);
+  main_layout_->addWidget(drag_drop_area_);
   main_layout_->addWidget(page_container_);
+
+  page_container_->hide();
 
   top_bar_->setFixedHeight(60);
 //  main_layout_->setStretchFactor(static_cast<QWidget*>(top_bar_), 10);
@@ -58,6 +62,17 @@ CentralWidget::CentralWidget(QWidget *parent) :
     menu->move(move_point);
     menu->show();
     menu->setFocus();
+  });
+
+  connect(drag_drop_area_, &DragDropArea::sessionFileDropped, [=](QString filepath) {
+    drag_drop_area_->hide();
+    page_container_->show();
+    session_->LoadFromFile(filepath);
+  });
+
+  connect(session_, &Session::LastPageDeleted, [=](void) {
+    drag_drop_area_->show();
+    page_container_->hide();
   });
 }
 

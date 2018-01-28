@@ -130,6 +130,9 @@ class Session : public QObject {
   //! Emitted for adding view
   //void ViewAdded(qint8, ViewSettings*);
 
+  //! Emitted when the last page has been deleted
+  void LastPageDeleted(void);
+
  private:
   //! COM port list
   //QList<ComPortManager*> com_port_mgr_list_;
