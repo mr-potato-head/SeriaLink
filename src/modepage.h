@@ -40,7 +40,7 @@ class ModePage : public QWidget {
   //! Destructor
   ~ModePage();
 
- public slots:
+ public slots: // NOLINT
   //! Change current port manager index
   void ChangePortManagerIndex(int index);
 
@@ -84,7 +84,7 @@ class ModePage : public QWidget {
   //! COM Port manager list
   QList<ComPortManager*>* port_mgr_list_;
 
- private slots:
+ private slots: // NOLINT
   void OnStopButtonClicked(void);
 };
 

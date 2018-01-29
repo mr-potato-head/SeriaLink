@@ -41,16 +41,8 @@ TopBar::TopBar(QWidget *parent)
           this, SLOT(OnDecreaseCurrentPageIndex()));
   connect(page_switcher_, SIGNAL(AddPage()),
           this, SLOT(openAddOrModifyDialog()));
-//  connect(session_, SIGNAL(PageAdded(int)),
-//          page_selector_, SLOT(AddButton(int)));
-//  connect(session_, SIGNAL(IndexChanged(int)),
-//          this, SLOT(UpdateSelectorButtonStatus()));
-//  connect(session_, SIGNAL(IndexChanged(int)),
-//          this, SLOT(UpdateSwitcherButtonStatus()));
   connect(page_switcher_, SIGNAL(OpenMenu()),
           this, SIGNAL(OpenMenu()));
-
-  //UpdateSwitcherButtonStatus();
 }
 
 void TopBar::SetSession(Session* session) {
@@ -114,7 +106,7 @@ void TopBar::UpdateSwitcherButtonStatus(void) {
 
 void TopBar::UpdateSelectorButtonStatus(void) {
   int current_page_index = session_->GetCurrentPageIndex();
-  if(current_page_index >= 0) {
+  if (current_page_index >= 0) {
     page_selector_->SetCheckedState(current_page_index);
   }
 }

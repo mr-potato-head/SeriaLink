@@ -85,9 +85,6 @@ class PortPage : public QWidget {
   //! Page index in session
   int page_index_ {0};
 
-  //! Port info widget of the page
-  //PortInfoWidget* port_info_ {NULL};
-
   //! Port info widget area
   PortInfoAreaWidget* port_info_area_widget_ {NULL};
 

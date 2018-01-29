@@ -41,12 +41,12 @@ SendWidget::SendWidget(QList<ComPortManager*>* port_mgr_list,
 
   port_combobox_ = new QComboBox(this);
   port_combobox_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-//  connect(port_combobox_, &QComboBox::currentIndexChanged,
-//          manual_mode_page_, &ManualModePage::ChangePortManagerIndex);
   connect(port_combobox_, SIGNAL(currentIndexChanged(int)),
           manual_mode_page_, SLOT(ChangePortManagerIndex(int)));
-  foreach (ComPortManager* port_mgr, *port_mgr_list) {
-    port_combobox_->addItem(port_mgr->GetPortSettings()->GetPortInfo().portName());
+
+  foreach (ComPortManager* port_mgr, *port_mgr_list) { // NOLINT
+    ComPortSettings* port_settings = port_mgr->GetPortSettings();
+    port_combobox_->addItem(port_settings->GetPortInfo().portName());
   }
 
   mode_layout_ = new QVBoxLayout();

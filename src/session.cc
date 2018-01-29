@@ -60,7 +60,7 @@ void Session::SetPageContainer(PageContainer* page_container) {
 }
 
 void Session::Close() {
-  foreach (PortPage* port_page, page_list_) {
+  foreach (PortPage* port_page, page_list_) { // NOLINT
     delete port_page;
   }
 }
@@ -75,7 +75,6 @@ void Session::AddPage(void) {
   page_container_->setCurrentIndex(page_index);
 
   // Update topbar widgets
-  //emit PageAdded(page_index);
   top_bar_->AddPageButton();
 
   // Update current page index in session
@@ -94,8 +93,6 @@ void Session::AddPage(ComPortSettings* port_settings) {
   // Add port in page
   page->AddPort(port_settings);
 
-  // Emit signal to update topbar widgets
-  //emit PageAdded(page_index);
   // Update topbar widgets
   top_bar_->AddPageButton();
   top_bar_->UpdatePageButtonName(page_index);
@@ -113,15 +110,15 @@ void Session::DeletePage(int page_idx) {
   page_list_.removeAt(page_idx);
 
   // Check if page list is empty
-  if(page_list_.size() == 0) {
+  if (page_list_.size() == 0) {
     this->SetCurrentPageIndex(-1);
   } else {
     int index = 0;
-    foreach (PortPage* port_page, page_list_) {
+    foreach (PortPage* port_page, page_list_) { // NOLINT
       port_page->SetPageIndex(index);
     }
 
-    if(page_idx == 0) {
+    if (page_idx == 0) {
       this->SetCurrentPageIndex(0);
     } else if (page_idx == old_last_idx) {
       this->SetCurrentPageIndex(page_list_.size()-1);
@@ -136,32 +133,13 @@ void Session::DeletePage(int page_idx) {
 }
 
 void Session::AddPort(int page_idx, ComPortSettings* port_settings) {
-
   PortPage* page = page_list_.at(page_idx);
 
   // Add port in page
   page->AddPort(port_settings);
 
+  // Update page button in top bar
   top_bar_->UpdatePageButtonName(page_idx);
-//  // Create new port manager
-//  ComPortManager* com_port_mgr = new ComPortManager(port_settings);
-//  com_port_mgr_list_.append(com_port_mgr);
-
-//  // Create thread for this port manager
-//  QThread* thread = new QThread(this);
-//  thread_list_.append(thread);
-//  com_port_mgr->moveToThread(thread);
-//  thread->start(QThread::TimeCriticalPriority);
-
-//  // Create page
-//  PortPage* page = new PortPage(this, page_idx);
-//  page->AddPortMgr(com_port_mgr);
-//  page_list_.append(page);
-//  int page_index = page_container_->addWidget(page);
-//  page_container_->setCurrentIndex(page_index);
-
-//  current_port_mgr_index_ = page_idx;
-//  emit PortAdded(current_port_mgr_index_);
 }
 
 void Session::AddPort(int page_idx, const QJsonObject& port_object) {
@@ -186,12 +164,6 @@ void Session::AddPort(int page_idx, const QJsonObject& port_object) {
 
   // Call overloaded AddPort function
   this->AddPort(page_idx, port_settings);
-}
-
-void Session::UpdatePortSettings(int page_idx,
-                        int port_idx,
-                        ComPortSettings* port_settings) {
-
 }
 
 void Session::DeletePort(int page_idx, int port_idx) {
@@ -228,47 +200,19 @@ void Session::AddView(int page_idx, const QJsonObject& view_object) {
   this->AddView(page_idx, settings);
 }
 
-void Session::UpdateViewSettings(int page_idx,
-                                 int view_idx,
-                                 ViewSettings *settings) {
-
-}
-
-void Session::DeleteView(int page_idx, int view_idx) {
-  //page_list_.at(page_idx)->GetViewList()->removeAt(view_idx);
-}
-
 void Session::SetCurrentPageIndex(int page_index) {
   current_page_index_ = page_index;
   top_bar_->UpdateSwitcherButtonStatus();
 
-  if(page_index >= 0) {
+  if (page_index >= 0) {
     top_bar_->UpdateSelectorButtonStatus();
     page_container_->setCurrentIndex(page_index);
   }
 }
 
-//void Session::OpenPort(qint32 index) {
-//  ComPortManager* port_mgr = com_port_mgr_list_.at(index);
-//  QTimer::singleShot(0, port_mgr, &ComPortManager::OpenPort);
-//}
-
-//void Session::ClosePort(qint32 index) {
-//  ComPortManager* port_mgr = com_port_mgr_list_.at(index);
-//  QTimer::singleShot(0, port_mgr, &ComPortManager::ClosePort);
-//}
-
-//int Session::GetPortNumber(void) {
-//  return com_port_mgr_list_.size();
-//}
-
 int Session::GetCurrentPageIndex(void) {
   return current_page_index_;
 }
-
-//ComPortManager* Session::GetPortManager(qint32 index) {
-//  return com_port_mgr_list_.at(index);
-//}
 
 void Session::LoadFromFile(QString filepath) {
   QFile session_file(filepath);

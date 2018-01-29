@@ -40,37 +40,12 @@ class PortInfoWidget : public QGroupBox {
                           int port_idx,
                           QWidget *parent = 0);
 
-  //! Set port settings
-  //void SetPortSettings(ComPortSettings* port_settings);
-
   void SetPortIndex(int port_index);
   void SetLastInList(bool last_in_list);
 
- signals:
-//  //! Emitted when the new port button is clicked
-//  void NewPortClicked(void);
-
-//  //! Emitted when the new view button is clicked
-//  void NewViewClicked(void);
-
-//  //! Emitted on click on open button
-//  void OpenPortClicked(void);
-
-//  //! Emitted on click on close button
-//  void ClosePortClicked(void);
-
  private:
-  //! Group box of settings
-  //QGroupBox* settings_group_box_ {NULL};
-
   //! Group box vertical layout
   QVBoxLayout* group_box_layout_ {NULL};
-
-//  //! Port index
-//  qint32 port_index_ {-1};
-
-  //! Main vertical layout
-  //QVBoxLayout* main_layout_ {NULL};
 
   //! Port name label
   QLabel* port_name_ {NULL};

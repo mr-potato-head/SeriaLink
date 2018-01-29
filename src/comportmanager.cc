@@ -90,7 +90,7 @@ void ComPortManager::OnStartManualSequence(DataParser::ParserType eParser,
 
   double progress = static_cast<double>(sequence_repeat_ - pending_repeat_)/
                     static_cast<double>(sequence_repeat_);
-  //emit SequenceProgress(static_cast<int>(progress*100.0));
+  emit SequenceProgress(static_cast<int>(progress*100.0));
 
   // Check if a sequence has been requested
   if (pending_repeat_ > 0) {

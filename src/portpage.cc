@@ -29,7 +29,6 @@ PortPage::PortPage(Session* session,
   : QWidget(parent),
     session_(session),
     page_index_{page_index} {
-  //port_info_ = new PortInfoWidget(&port_mgr_list_, this);
   port_info_area_widget_ = new PortInfoAreaWidget(session, page_index, this);
   send_widget_ = new SendWidget(&port_mgr_list_, this);
   view_widget_ = new QWidget(this);
@@ -75,7 +74,7 @@ PortPage::~PortPage() {
   //  }
 
   // Delete threads
-  foreach (QThread* thread, thread_list_) {
+  foreach (QThread* thread, thread_list_) { // NOLINT
     thread->quit();
     if (!thread->wait(1000)) {
       qDebug() << "Timeout arret du thread.";
@@ -84,16 +83,14 @@ PortPage::~PortPage() {
   }
 
   // Delete port managers
-  foreach (ComPortManager* port_mgr, port_mgr_list_) {
+  foreach (ComPortManager* port_mgr, port_mgr_list_) { // NOLINT
     delete port_mgr;
   }
 
   // Delete views
-  foreach (PortView* port_view, view_list_) {
+  foreach (PortView* port_view, view_list_) { // NOLINT
     delete port_view;
   }
-
-
 }
 
 void PortPage::OnNewViewClicked(void) {
@@ -117,7 +114,9 @@ void PortPage::OnNewViewClicked(void) {
 
 void PortPage::OnNewPortClicked(void) {
   ComPortSettings* port_settings = new ComPortSettings();
-  AddOrModifyPortDialog addDialog(port_settings, AddOrModifyPortDialog::ActionType::kAdd, this);
+  AddOrModifyPortDialog addDialog(port_settings,
+                                  AddOrModifyPortDialog::ActionType::kAdd,
+                                  this);
   qint32 result = addDialog.exec();
 
   switch (result) {
@@ -133,20 +132,6 @@ void PortPage::OnNewPortClicked(void) {
 }
 
 void PortPage::AddView(ViewSettings* settings) {
-
-
-  //  view_layout_->addWidget(view);
-  //  view_list_.append(view);
-
-  //  connect(view, &PortView::DeleteView, [=](PortView* view) {
-  //    for (int i=0 ; i < view_list_.size() ; i++) {
-  //      if (view_list_.at(i) == view) {
-  //        delete view;
-  //        view_list_.removeAt(i);
-  //      }
-  //    }
-  //  });
-
   PortView* view;
   switch (settings->GetViewType()) {
   case ViewSettings::ViewType::kDump:
@@ -165,7 +150,7 @@ void PortPage::AddView(ViewSettings* settings) {
   view_list_.append(view);
 
   // Connect port managers to this new view
-  foreach (ComPortManager* port_mgr, port_mgr_list_) {
+  foreach (ComPortManager* port_mgr, port_mgr_list_) { // NOLINT
     connect(port_mgr, SIGNAL(DataReceived(DataPacket)),
             view, SLOT(OnReceivedData(DataPacket)));
     connect(port_mgr, SIGNAL(DataSent(DataPacket)),
@@ -174,17 +159,9 @@ void PortPage::AddView(ViewSettings* settings) {
 
   // Process DeleteView signal
   connect(view, &PortView::DeleteView, [=](PortView* view) {
-
     int view_idx = view_list_.indexOf(view);
     view_list_.removeAt(view_idx);
     delete view;
-
-//    for (int i=0 ; i<view_list_.size() ; i++) {
-//      if (view_list_.at(i) == view) {
-//        delete view;
-//        session_->DeleteView(port_index_, i);
-//      }
-//    }
   });
 }
 
@@ -194,7 +171,7 @@ void PortPage::AddPort(ComPortSettings* settings) {
   port_mgr_list_.append(port_mgr);
 
   // Connect views to this port manager
-  foreach (PortView* view, view_list_) {
+  foreach (PortView* view, view_list_) { // NOLINT
     connect(port_mgr, SIGNAL(Receive(DataPacket const&)),
             view, SLOT(OnReceivedData(DataPacket const&)));
   }
@@ -205,19 +182,8 @@ void PortPage::AddPort(ComPortSettings* settings) {
   port_mgr->moveToThread(thread);
   thread->start(QThread::TimeCriticalPriority);
 
-  // TODO: refaire les connexions avec les vues et les widgets
-  // et/ou appeler directement les méthodes dédiées des widgets ?
-
-//  connect(port_info_, &PortInfoWidget::OpenPortClicked,
-//          port_mgr, &ComPortManager::OpenPort);
-//  connect(port_info_, &PortInfoWidget::ClosePortClicked,
-//          port_mgr, &ComPortManager::ClosePort);
-
-  //port_info_->SetPortSettings(port_mgr->GetPortSettings());
   port_info_area_widget_->AddPort(port_mgr_list_.size()-1);
-  send_widget_->PortListUpdated(); // TODO : à modifier, moisi
-  // TODO delete this, work with lists in port info widget
-  // warn info widget and send widget that new port has been added
+  send_widget_->PortListUpdated();
 }
 
 void PortPage::DeletePort(int port_idx) {

@@ -61,7 +61,7 @@ void PageSelector::DeleteButton(int page_idx) {
   delete button;
 
   int index = 0;
-  foreach (QPushButton* button, button_list_) {
+  foreach (QPushButton* button, button_list_) { // NOLINT
     connect(button, SIGNAL(clicked()), signal_mapper_, SLOT(map()));
     signal_mapper_->setMapping(button, index);
     index++;

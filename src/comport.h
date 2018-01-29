@@ -59,7 +59,7 @@ class ComPort : public QObject {
   //! Executed to send data
   virtual void Send(DataPacket packet) = 0;
 
-signals:
+ signals:
 
   //! Emitted when the port is successfully opened
   void PortOpened(void);

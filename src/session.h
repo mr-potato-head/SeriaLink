@@ -61,11 +61,6 @@ class Session : public QObject {
   //! Add port in page from JSON array
   void AddPort(int page_idx, const QJsonObject& port_object);
 
-  //! Update port settings
-  void UpdatePortSettings(int page_idx,
-                          int port_idx,
-                          ComPortSettings* port_settings);
-
   //! Delete port
   void DeletePort(int page_idx, int port_idx);
 
@@ -75,22 +70,8 @@ class Session : public QObject {
   //! Add view in page from JSON array
   void AddView(int page_idx, const QJsonObject& view_object);
 
-  //! Update view in page
-  void UpdateViewSettings(int page_idx,
-                          int view_idx,
-                          ViewSettings* settings);
-
-  //! Delete view in page
-  void DeleteView(int page_idx, int view_idx);
-
-  //! Get port number
-  //int GetPortNumber(void);
-
   //! Get current page index
   int GetCurrentPageIndex(void);
-
-  //! Get a COM port manager
-  //ComPortManager* GetPortManager(qint32 index);
 
   //! Get page list
   QList<PortPage*>* GetPortPageList(void);
@@ -101,12 +82,6 @@ class Session : public QObject {
  public slots: //NOLINT
   //! Set current page index
   void SetCurrentPageIndex(int page_index);
-
-  //! Open port
-  //void OpenPort(qint32 index);
-
-  //! Close port
-  //void ClosePort(qint32 index);
 
   //! Load session from file
   void LoadFromFile(QString filepath);
@@ -121,25 +96,10 @@ class Session : public QObject {
   //! Emitted when the current port index is changed
   void IndexChanged(int);
 
-  //! Emitted for opening the port
-  //void OpenPortSignal(void);
-
-  //! Emitted for closing the port
-  //void ClosePortSignal(void);
-
-  //! Emitted for adding view
-  //void ViewAdded(qint8, ViewSettings*);
-
   //! Emitted when the last page has been deleted
   void LastPageDeleted(void);
 
  private:
-  //! COM port list
-  //QList<ComPortManager*> com_port_mgr_list_;
-
-  //! Thread list
-  //QList<QThread*> thread_list_;
-
   //! Index of the current page index;
   int current_page_index_ {0};
 

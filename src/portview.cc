@@ -137,10 +137,10 @@ PortView::PortView(ViewSettings* view_settings,
   });
 
   connect(edit_button_, &QPushButton::clicked, [=](void) {
-    ViewSettingDialog view_setting_dialog(view_settings_,
-                                          ViewSettingDialog::ActionType::kUpdate,
-                                          this);
-    view_setting_dialog.exec();
+    ViewSettingDialog setting_dialog(view_settings_,
+                                     ViewSettingDialog::ActionType::kUpdate,
+                                     this);
+    setting_dialog.exec();
   });
 }
 

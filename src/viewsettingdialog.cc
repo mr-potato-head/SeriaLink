@@ -61,18 +61,24 @@ ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
   FillDataSizeList();
 
   // Special process if add or update view
-  if(action_type == ActionType::kAdd) {
+  if (action_type == ActionType::kAdd) {
     this->setWindowTitle(tr("Choose view settings"));
-  } else if(action_type == ActionType::kUpdate) {
+  } else if (action_type == ActionType::kUpdate) {
     this->setWindowTitle(tr("Update view settings"));
 
     // Preset old settings
     int index = 0;
-    index = view_type_combobox_->findData(static_cast<qint32>(view_settings->GetViewType()));
+
+    int view_value = static_cast<qint32>(view_settings->GetViewType());
+    index = view_type_combobox_->findData(view_value);
     view_type_combobox_->setCurrentIndex(index);
-    index = display_type_combobox_->findData(static_cast<qint32>(view_settings->GetDisplayType()));
+
+    int display_value = static_cast<qint32>(view_settings->GetDisplayType());
+    index = display_type_combobox_->findData(display_value);
     display_type_combobox_->setCurrentIndex(index);
-    index = data_size_combobox_->findData(static_cast<qint32>(view_settings->GetDataSize()));
+
+    int datasize = static_cast<qint32>(view_settings->GetDataSize());
+    index = data_size_combobox_->findData(datasize);
     data_size_combobox_->setCurrentIndex(index);
 
     view_type_combobox_->setEnabled(false);

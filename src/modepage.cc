@@ -72,8 +72,7 @@ ModePage::ModePage(QList<ComPortManager*>* port_mgr_list,
 ModePage::~ModePage() {}
 
 void ModePage::ChangePortManagerIndex(int index) {
-
-  if(port_manager_ != nullptr) {
+  if (port_manager_ != nullptr) {
     // Disconnect all signals from old port manager
     disconnect(this, &ModePage::StartDumpSequence,
                port_manager_, &ComPortManager::OnStartDumpSequence);
@@ -89,7 +88,7 @@ void ModePage::ChangePortManagerIndex(int index) {
                port_manager_, &ComPortManager::OnStopSequence);
   }
 
-  if(index >= 0) {
+  if (index >= 0) {
     // Set new port manager
     port_manager_ = port_mgr_list_->at(index);
 
@@ -121,8 +120,7 @@ void ModePage::ChangePortManagerIndex(int index) {
   //          port_manager_, &ComPortManager::OnStopSequence);
 }
 
-void ModePage::OnStopButtonClicked(void)
-{
+void ModePage::OnStopButtonClicked(void) {
   start_button_->setEnabled(true);
   stop_button_->setEnabled(false);
 }

@@ -32,7 +32,6 @@ class AddOrModifyPortDialog : public QDialog {
   Q_OBJECT
 
  public:
-
   enum class ActionType {
     kAdd = 0,
     kUpdate

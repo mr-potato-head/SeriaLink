@@ -22,7 +22,6 @@
 
 CentralWidget::CentralWidget(QWidget *parent) :
   QWidget(parent) {
-
   // Create widget
   page_container_ = new PageContainer(this);
   top_bar_ = new TopBar(this);
@@ -64,7 +63,7 @@ CentralWidget::CentralWidget(QWidget *parent) :
     menu->setFocus();
   });
 
-  connect(drag_drop_area_, &DragDropArea::sessionFileDropped, [=](QString filepath) {
+  connect(drag_drop_area_, &DragDropArea::fileDropped, [=](QString filepath) {
     drag_drop_area_->hide();
     page_container_->show();
     session_->LoadFromFile(filepath);

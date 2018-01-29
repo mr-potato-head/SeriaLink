@@ -103,25 +103,34 @@ AddOrModifyPortDialog::AddOrModifyPortDialog(ComPortSettings* port_settings,
   FillFlowControlList();
 
   // Special process if add or update port settings
-  if(action_type == ActionType::kAdd) {
+  if (action_type == ActionType::kAdd) {
     this->setWindowTitle(tr("Choose port settings"));
-  } else if(action_type == ActionType::kUpdate) {
+  } else if (action_type == ActionType::kUpdate) {
     this->setWindowTitle(tr("Update port settings"));
 
     // Preset old settings
     int index = 0;
     port_combobox_->setCurrentText(port_settings->GetPortInfo().portName());
-    index = baudrate_combobox_->findData(static_cast<qint32>(port_settings->GetBaudRate()));
-    baudrate_combobox_->setCurrentIndex(index);
-    index = parity_combobox_->findData(static_cast<qint32>(port_settings->GetParity()));
-    parity_combobox_->setCurrentIndex(index);
-    index = data_bits_combobox_->findData(static_cast<qint32>(port_settings->GetDataBits()));
-    data_bits_combobox_->setCurrentIndex(index);
-    index = stop_bits_combobox_->findData(static_cast<qint32>(port_settings->GetStopBits()));
-    stop_bits_combobox_->setCurrentIndex(index);
-    index = flow_control_combobox_->findData(static_cast<qint32>(port_settings->GetFlowControl()));
-    flow_control_combobox_->setCurrentIndex(index);
 
+    int baudrate_value = static_cast<qint32>(port_settings->GetBaudRate());
+    index = baudrate_combobox_->findData(baudrate_value);
+    baudrate_combobox_->setCurrentIndex(index);
+
+    int parity_value = static_cast<qint32>(port_settings->GetParity());
+    index = parity_combobox_->findData(parity_value);
+    parity_combobox_->setCurrentIndex(index);
+
+    int databit_value = static_cast<qint32>(port_settings->GetDataBits());
+    index = data_bits_combobox_->findData(databit_value);
+    data_bits_combobox_->setCurrentIndex(index);
+
+    int stopbit_value = static_cast<qint32>(port_settings->GetStopBits());
+    index = stop_bits_combobox_->findData(stopbit_value);
+    stop_bits_combobox_->setCurrentIndex(index);
+
+    int flowctrl_value = static_cast<qint32>(port_settings->GetFlowControl());
+    index = flow_control_combobox_->findData(flowctrl_value);
+    flow_control_combobox_->setCurrentIndex(index);
   } else {
     // Should not happened
     this->setWindowTitle(tr("Port settings"));

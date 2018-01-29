@@ -21,7 +21,7 @@
 
 #include <QWidget>
 #include <QVBoxLayout>
-#include "dragdroparea.h"
+#include "src/dragdroparea.h"
 #include "src/topbar.h"
 #include "src/pagecontainer.h"
 #include "src/session.h"
