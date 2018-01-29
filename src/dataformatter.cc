@@ -20,8 +20,8 @@
 
 DataFormatter::DataFormatter() {}
 
-QString DataFormatter::formatData(const ViewSettings& settings,
-                                  const DataPacket& packet) {
+QString DataFormatter::formatData(ViewSettings settings,
+                                  DataPacket packet) {
   ViewSettings::DataSize eDataSize = settings.GetDataSize();
   ViewSettings::DisplayType eDisplayType = settings.GetDisplayType();
 
@@ -50,7 +50,7 @@ QString DataFormatter::formatData(const ViewSettings& settings,
   if (qint8_size != -1) {
     out += "|";
   }
-  int int_index = 0;
+  quint32 int_index = 0;
   int int_datasize = packet.GetData().size();
   for (; int_index < int_datasize ; int_index+=qint8_size) {
     QByteArray dataBlock = packet.GetData().mid(int_index, qint8_size);

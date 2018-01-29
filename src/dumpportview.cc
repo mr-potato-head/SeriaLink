@@ -30,7 +30,7 @@ DumpPortView::DumpPortView(ViewSettings* view_settings, QWidget* parent)
   });
 }
 
-void DumpPortView::OnReceivedData(const DataPacket& packet) {
+void DumpPortView::OnReceivedData(DataPacket packet) {
   QString str = packet.GetDateTime().toString("dd.MM.yyyy at hh:mm:ss.zzz");
   str += "\r  ";
   str += DataFormatter::formatData(*view_settings_, packet);
@@ -40,7 +40,7 @@ void DumpPortView::OnReceivedData(const DataPacket& packet) {
   }
 }
 
-void DumpPortView::OnDataSent(const DataPacket& packet) {
+void DumpPortView::OnDataSent(DataPacket packet) {
   QString str = packet.GetDateTime().toString("dd.MM.yyyy at hh:mm:ss.zzz");
   str += "\r  ";
   str += DataFormatter::formatData(*view_settings_, packet);

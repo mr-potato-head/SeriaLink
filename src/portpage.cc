@@ -166,10 +166,10 @@ void PortPage::AddView(ViewSettings* settings) {
 
   // Connect port managers to this new view
   foreach (ComPortManager* port_mgr, port_mgr_list_) {
-    connect(port_mgr, SIGNAL(DataReceived(DataPacket const&)),
-            view, SLOT(OnReceivedData(DataPacket const&)));
-    connect(port_mgr, SIGNAL(DataSent(DataPacket const&)),
-            view, SLOT(OnDataSent(DataPacket const&)));
+    connect(port_mgr, SIGNAL(DataReceived(DataPacket)),
+            view, SLOT(OnReceivedData(DataPacket)));
+    connect(port_mgr, SIGNAL(DataSent(DataPacket)),
+            view, SLOT(OnDataSent(DataPacket)));
   }
 
   // Process DeleteView signal
@@ -195,8 +195,8 @@ void PortPage::AddPort(ComPortSettings* settings) {
 
   // Connect views to this port manager
   foreach (PortView* view, view_list_) {
-    connect(port_mgr, SIGNAL(Receive(DataPacket&)),
-            view, SLOT(OnReceivedData(DataPacket&)));
+    connect(port_mgr, SIGNAL(Receive(DataPacket const&)),
+            view, SLOT(OnReceivedData(DataPacket const&)));
   }
 
   // Create thread for this port manager

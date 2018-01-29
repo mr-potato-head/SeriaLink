@@ -26,8 +26,8 @@ class DataPacket {
  public:
   DataPacket();
   explicit DataPacket(const QByteArray& data);
-  const QByteArray& GetData(void) const;
-  const QDateTime& GetDateTime(void) const;
+  QByteArray GetData(void) const;
+  QDateTime GetDateTime(void) const;
  private:
   QByteArray data_;
   QDateTime datetime_;

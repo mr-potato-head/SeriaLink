@@ -63,9 +63,9 @@ void LocalComPort::OnReadyRead(void) {
 }
 
 void LocalComPort::Send(DataPacket packet) {
-  const QByteArray& data = packet.GetData();
+  QByteArray data = packet.GetData();
   serial_port_->write(data, data.size());
-  emit DataSent(packet);
+  //emit DataSent(packet);
 }
 
 //! Getter of port status

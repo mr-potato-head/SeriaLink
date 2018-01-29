@@ -40,11 +40,11 @@ void ComPortManager::OpenPort(void) {
   com_port_ = new LocalComPort(this);
   com_port_->SetPortSettings(com_port_settings_);
 
-  connect(com_port_, SIGNAL(DataReceived(const DataPacket&)),
-          this, SIGNAL(DataReceived(const DataPacket&)));
+  connect(com_port_, SIGNAL(DataReceived(DataPacket)),
+          this, SIGNAL(DataReceived(DataPacket)));
 
-  connect(com_port_, SIGNAL(DataSent(const DataPacket&)),
-          this, SIGNAL(DataSent(const DataPacket&)));
+  connect(com_port_, SIGNAL(DataSent(DataPacket)),
+          this, SIGNAL(DataSent(DataPacket)));
 
   connect(com_port_, SIGNAL(PortOpened()),
           this, SIGNAL(PortOpened()));
@@ -90,7 +90,7 @@ void ComPortManager::OnStartManualSequence(DataParser::ParserType eParser,
 
   double progress = static_cast<double>(sequence_repeat_ - pending_repeat_)/
                     static_cast<double>(sequence_repeat_);
-  emit SequenceProgress(static_cast<int>(progress*100.0));
+  //emit SequenceProgress(static_cast<int>(progress*100.0));
 
   // Check if a sequence has been requested
   if (pending_repeat_ > 0) {

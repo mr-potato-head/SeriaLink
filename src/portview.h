@@ -52,10 +52,10 @@ class PortView : public QWidget {
 
  public slots: //NOLINT
   //! Executed when new data are received
-  virtual void OnReceivedData(DataPacket const& packet) = 0;
+  virtual void OnReceivedData(DataPacket packet) = 0;
 
   //! Executed when new data are received
-  virtual void OnDataSent(DataPacket const& packet) = 0;
+  virtual void OnDataSent(DataPacket packet) = 0;
 
  protected:
   //! Main grid layout of the view

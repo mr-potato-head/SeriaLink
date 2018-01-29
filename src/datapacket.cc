@@ -25,10 +25,10 @@ DataPacket::DataPacket(const QByteArray &data)
   datetime_ = QDateTime::currentDateTime();
 }
 
-const QByteArray& DataPacket::GetData(void) const {
+QByteArray DataPacket::GetData(void) const {
     return data_;
 }
 
-const QDateTime& DataPacket::GetDateTime(void) const {
+QDateTime DataPacket::GetDateTime(void) const {
     return datetime_;
 }
