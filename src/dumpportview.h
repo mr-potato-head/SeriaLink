@@ -31,7 +31,7 @@ class DumpPortView : public PortView {
 
  public slots: //NOLINT
   //! Executed when new data are received
-  virtual void OnReceivedData(DataPacket packet);
+  virtual void TreatDataPacket(DataPacket packet);
 
   virtual void OnDataSent(DataPacket packet);
 

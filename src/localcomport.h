@@ -21,7 +21,6 @@
 
 #include <QSerialPort>
 #include <QDebug>
-#include <QTimer>
 #include <QByteArray>
 #include "src/comport.h"
 #include "src/datapacket.h"
@@ -38,7 +37,7 @@ class LocalComPort : public ComPort {
 
  signals:
   //! Emitted when data have been received
-  void DataReceived(DataPacket data);
+  void DataReceived(QByteArray data);
 
   //! Emitted when data have been sent
   void DataSent(DataPacket data);

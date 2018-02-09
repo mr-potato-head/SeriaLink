@@ -151,8 +151,8 @@ void PortPage::AddView(ViewSettings* settings) {
 
   // Connect port managers to this new view
   foreach (ComPortManager* port_mgr, port_mgr_list_) { // NOLINT
-    connect(port_mgr, SIGNAL(DataReceived(DataPacket)),
-            view, SLOT(OnReceivedData(DataPacket)));
+    connect(port_mgr, SIGNAL(DataReceived(QByteArray)),
+            view, SLOT(OnReceivedData(QByteArray)));
     connect(port_mgr, SIGNAL(DataSent(DataPacket)),
             view, SLOT(OnDataSent(DataPacket)));
   }

@@ -65,6 +65,12 @@ class ViewSettings {
   //! Get data size
   DataSize GetDataSize(void) const;
 
+  //! Get end of data block timeout
+  int GetDataBlockTimeout(void) const;
+
+  //! Get data block size
+  int GetDataBlockSize(void) const;
+
   //! Set view type
   void SetViewType(ViewSettings::ViewType view_type);
 
@@ -73,6 +79,12 @@ class ViewSettings {
 
   //! Set data size
   void SetDataSize(ViewSettings::DataSize data_size);
+
+  //! Set data block size
+  void SetDataBlockSize(int data_block_size);
+
+  //! Set data block timeout;
+  void SetDataBlockTimeout(int data_block_timeout);
 
   //! Get JSON translation
   QJsonObject ToJson(void);
@@ -104,6 +116,12 @@ class ViewSettings {
 
   //! Data block size
   DataSize data_size_ {DataSize::kUnknown};
+
+  //! Timeout for data packet
+  int data_block_timeout_ {5000};
+
+  //! Data block size
+  int data_block_size_ {10};
 };
 
 #endif  // SRC_VIEWSETTINGS_H_

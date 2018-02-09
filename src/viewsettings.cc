@@ -87,6 +87,14 @@ ViewSettings::DataSize ViewSettings::GetDataSize(void) const {
   return data_size_;
 }
 
+int ViewSettings::GetDataBlockTimeout(void) const {
+  return data_block_timeout_;
+}
+
+int ViewSettings::GetDataBlockSize(void) const {
+  return data_block_size_;
+}
+
 void ViewSettings::SetViewType(ViewSettings::ViewType view_type) {
   view_type_ = view_type;
 }
@@ -97,6 +105,14 @@ void ViewSettings::SetDisplayType(ViewSettings::DisplayType display_type) {
 
 void ViewSettings::SetDataSize(DataSize data_size) {
   data_size_ = data_size;
+}
+
+void ViewSettings::SetDataBlockSize(int data_block_size) {
+  data_block_size_ = data_block_size;
+}
+
+void ViewSettings::SetDataBlockTimeout(int data_block_timeout) {
+  data_block_timeout_ = data_block_timeout;
 }
 
 QJsonObject ViewSettings::ToJson(void) {

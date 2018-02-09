@@ -90,6 +90,11 @@ PortView::PortView(ViewSettings* view_settings,
   main_layout_->setRowStretch(1, 75);
   main_layout_->setRowStretch(2, 20);
 
+  receive_timer_ = new QTimer(this);
+  receive_timer_->setSingleShot(true);
+  connect(receive_timer_, SIGNAL(timeout()),
+          this, SLOT(OnTimeout()));
+
   connect(delete_button_, &QPushButton::clicked, [=](void) {
     emit DeleteView(this);
   });
@@ -145,10 +150,81 @@ PortView::PortView(ViewSettings* view_settings,
 }
 
 PortView::~PortView(void) {
+  receive_timer_->stop();
+  delete receive_timer_;
   delete capture_file_;
   delete view_settings_;
 }
 
 ViewSettings* PortView::GetViewSettings(void) {
   return view_settings_;
+}
+
+void PortView::OnReceivedData(QByteArray data) {
+  int block_size = view_settings_->GetDataBlockSize();
+  int block_timeout = view_settings_->GetDataBlockTimeout();
+
+  if (block_size != 0) {
+    if (waiting_data_) {
+      data_packet_.AddData(data);
+    } else {
+      data_packet_.SetDatetime(QDateTime::currentDateTime());
+      data_packet_.SetData(data);
+    }
+    if (data_packet_.GetData().size() == block_size) {
+      this->TreatDataPacket(data_packet_);
+      waiting_data_ = false;
+    } else if (data_packet_.GetData().size() > block_size) {
+      int pos = 0;
+      int arrsize = data_packet_.GetData().size();
+      DataPacket tmp_packet;
+      tmp_packet.SetDatetime(QDateTime::currentDateTime());
+      while (pos < arrsize) {
+        QByteArray arr = data_packet_.GetData().mid(pos, block_size);
+        pos+=arr.size();
+        if (arr.size() == block_size) {
+          tmp_packet.SetData(arr);
+          this->TreatDataPacket(tmp_packet);
+        } else {
+          data_packet_.SetData(arr);
+          if (block_timeout != 0) {
+            receive_timer_->start(block_timeout);
+            waiting_data_ = true;
+          } else {
+            // Wait block size Ad vitam æternam...
+            waiting_data_ = true;
+          }
+        }
+      }
+    } else {
+      if (block_timeout != 0) {
+        receive_timer_->start(block_timeout);
+        waiting_data_ = true;
+      } else {
+        // Wait block size Ad vitam æternam...
+        waiting_data_ = true;
+      }
+    }
+  } else {
+    if (block_timeout != 0) {
+      if (waiting_data_) {
+        data_packet_.AddData(data);
+      } else {
+        data_packet_.SetDatetime(QDateTime::currentDateTime());
+        data_packet_.SetData(data);
+      }
+      receive_timer_->start(block_timeout);
+      waiting_data_ = true;
+    } else {
+      data_packet_.SetDatetime(QDateTime::currentDateTime());
+      data_packet_.SetData(data);
+      this->TreatDataPacket(data_packet_);
+      waiting_data_ = false;
+    }
+  }
+}
+
+void PortView::OnTimeout(void) {
+  this->TreatDataPacket(data_packet_);
+  waiting_data_ = false;
 }

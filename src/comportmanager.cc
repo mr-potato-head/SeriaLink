@@ -40,8 +40,8 @@ void ComPortManager::OpenPort(void) {
   com_port_ = new LocalComPort(this);
   com_port_->SetPortSettings(com_port_settings_);
 
-  connect(com_port_, SIGNAL(DataReceived(DataPacket)),
-          this, SIGNAL(DataReceived(DataPacket)));
+  connect(com_port_, SIGNAL(DataReceived(QByteArray)),
+          this, SIGNAL(DataReceived(QByteArray)));
 
   connect(com_port_, SIGNAL(DataSent(DataPacket)),
           this, SIGNAL(DataSent(DataPacket)));

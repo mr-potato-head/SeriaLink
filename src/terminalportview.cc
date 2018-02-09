@@ -30,9 +30,9 @@ TerminalPortView::TerminalPortView(ViewSettings* view_settings, QWidget* parent)
   });
 }
 
-void TerminalPortView::OnReceivedData(DataPacket packet) {
+void TerminalPortView::TreatDataPacket(DataPacket packet) {
   QString str = DataFormatter::formatData(*view_settings_, packet);
-  text_edit_->appendPlainText(str);
+  text_edit_->insertPlainText(str);
   if (capture_in_progress_) {
     *capture_stream_ << str;
   }
@@ -40,7 +40,7 @@ void TerminalPortView::OnReceivedData(DataPacket packet) {
 
 void TerminalPortView::OnDataSent(DataPacket packet) {
   QString str = DataFormatter::formatData(*view_settings_, packet);
-  text_edit_->appendPlainText(str);
+  text_edit_->insertPlainText(str);
   if (capture_in_progress_) {
     *capture_stream_ << str;
   }

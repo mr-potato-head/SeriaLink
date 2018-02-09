@@ -44,7 +44,7 @@ class ComPortManager : public QObject {
 
  signals:
   //! Emitted when new data are received
-  void DataReceived(DataPacket);
+  void DataReceived(QByteArray);
 
   //! Emitted when new data are received
   void DataSent(DataPacket);

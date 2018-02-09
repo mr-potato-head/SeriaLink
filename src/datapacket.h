@@ -28,6 +28,10 @@ class DataPacket {
   explicit DataPacket(const QByteArray& data);
   QByteArray GetData(void) const;
   QDateTime GetDateTime(void) const;
+  void ClearData(void);
+  void SetData(QByteArray data);
+  void AddData(QByteArray data);
+  void SetDatetime(QDateTime datetime);
  private:
   QByteArray data_;
   QDateTime datetime_;

@@ -32,3 +32,19 @@ QByteArray DataPacket::GetData(void) const {
 QDateTime DataPacket::GetDateTime(void) const {
     return datetime_;
 }
+
+void DataPacket::ClearData(void) {
+  data_.clear();
+}
+
+void DataPacket::SetData(QByteArray data) {
+  data_ = data;
+}
+
+void DataPacket::AddData(QByteArray data) {
+  data_.append(data);
+}
+
+void DataPacket::SetDatetime(QDateTime datetime) {
+  datetime_ = datetime;
+}

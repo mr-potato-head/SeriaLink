@@ -58,17 +58,15 @@ void LocalComPort::ClosePort(void) {
 }
 
 void LocalComPort::OnReadyRead(void) {
-  DataPacket packet(serial_port_->readAll());
-  emit DataReceived(packet);
+  emit DataReceived(serial_port_->readAll());
 }
 
 void LocalComPort::Send(DataPacket packet) {
   QByteArray data = packet.GetData();
-  serial_port_->write(data, data.size());
+  qDebug() << "Emis : " << serial_port_->write(data, data.size());
   emit DataSent(packet);
 }
 
-//! Getter of port status
 bool LocalComPort::IsOpen(void) {
   return serial_port_->isOpen();
 }

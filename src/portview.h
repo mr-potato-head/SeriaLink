@@ -28,6 +28,7 @@
 #include <QRadioButton>
 #include <QLineEdit>
 #include <QFile>
+#include <QTimer>
 #include <QTextStream>
 #include "src/viewsettings.h"
 #include "src/datapacket.h"
@@ -52,10 +53,13 @@ class PortView : public QWidget {
 
  public slots: //NOLINT
   //! Executed when new data are received
-  virtual void OnReceivedData(DataPacket packet) = 0;
+  virtual void TreatDataPacket(DataPacket packet) = 0;
 
   //! Executed when new data are received
   virtual void OnDataSent(DataPacket packet) = 0;
+
+  //! Executed when data are received
+  void OnReceivedData(QByteArray data);
 
  protected:
   //! Main grid layout of the view
@@ -72,6 +76,10 @@ class PortView : public QWidget {
 
   //! Text stream of capture file
   QTextStream* capture_stream_ {nullptr};
+
+ private slots: //NOLINT
+  //! Executed when received timer timeout occurred
+  void OnTimeout(void);
 
  private:
   //! Horizontal layout of up buttons
@@ -121,6 +129,15 @@ class PortView : public QWidget {
 
   //! Pointer on capture file
   QFile* capture_file_ {nullptr};
+
+  //! Receive timeout timer
+  QTimer* receive_timer_ {nullptr};
+
+  //! Current data packet
+  DataPacket data_packet_;
+
+  //! Waiting for more data indicator
+  bool waiting_data_ {false};
 };
 
 #endif  // SRC_PORTVIEW_H_
