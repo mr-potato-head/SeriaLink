@@ -90,14 +90,14 @@ class Session : public QObject {
   void SaveInFile(QString filepath);
 
  signals:
-  //! Emitted when a new port is added in session
-  void PageAdded(int);
-
   //! Emitted when the current port index is changed
   void IndexChanged(int);
 
   //! Emitted when the last page has been deleted
   void LastPageDeleted(void);
+
+  //! Emitted when first page has been added
+  void FirstPageAdded(void);
 
  private:
   //! Index of the current page index;

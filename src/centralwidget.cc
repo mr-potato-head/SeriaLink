@@ -73,6 +73,11 @@ CentralWidget::CentralWidget(QWidget *parent) :
     drag_drop_area_->show();
     page_container_->hide();
   });
+
+  connect(session_, &Session::FirstPageAdded, [=](void) {
+    drag_drop_area_->hide();
+    page_container_->show();
+  });
 }
 
 CentralWidget::~CentralWidget() {

@@ -88,6 +88,9 @@ void Session::AddPage(ComPortSettings* port_settings) {
 
   // Add page in container
   int page_index = page_container_->addWidget(page);
+  if (page_container_->count() == 1) {
+    emit FirstPageAdded();
+  }
   page_container_->setCurrentIndex(page_index);
 
   // Add port in page
