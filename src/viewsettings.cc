@@ -32,15 +32,6 @@ ViewSettings::kDisplayTypeFromString {
   {"dec", ViewSettings::DisplayType::kDec}
 };
 
-const QMap<QString, ViewSettings::DataSize>
-ViewSettings::kDataSizeFromString {
-  {"no_size", ViewSettings::DataSize::kNoSize},
-  {"1_byte", ViewSettings::DataSize::k1Byte},
-  {"2_bytes", ViewSettings::DataSize::k2Bytes},
-  {"4_bytes", ViewSettings::DataSize::k4Bytes},
-  {"8_bytes", ViewSettings::DataSize::k8Bytes},
-};
-
 const QMap<ViewSettings::ViewType, QString>
 ViewSettings::kStringFromViewType {
   {ViewSettings::ViewType::kDump, "dump"},
@@ -55,15 +46,6 @@ ViewSettings::kStringFromDisplayType {
   {ViewSettings::DisplayType::kDec, "dec"}
 };
 
-const QMap<ViewSettings::DataSize, QString>
-ViewSettings::kStringFromDataSize {
-  {ViewSettings::DataSize::kNoSize, "no_size"},
-  {ViewSettings::DataSize::k1Byte, "1_byte"},
-  {ViewSettings::DataSize::k2Bytes, "2_bytes"},
-  {ViewSettings::DataSize::k4Bytes, "4_bytes"},
-  {ViewSettings::DataSize::k8Bytes, "8_bytes"},
-};
-
 ViewSettings::ViewSettings() {}
 
 ViewSettings::ViewSettings(QJsonObject view_object) {
@@ -71,8 +53,8 @@ ViewSettings::ViewSettings(QJsonObject view_object) {
   view_type_ = kViewTypeFromString.value(view_type_str);
   QString display_type_str = view_object["view_display"].toString();
   display_type_ = kDisplayTypeFromString.value(display_type_str);
-  QString data_size_str = view_object["view_size"].toString();
-  data_size_ = kDataSizeFromString.value(data_size_str);
+  data_block_timeout_ = view_object["view_block_timeout"].toInt();
+  data_block_size_ = view_object["view_block_size"].toInt();
 }
 
 ViewSettings::ViewType ViewSettings::GetViewType(void) {
@@ -81,10 +63,6 @@ ViewSettings::ViewType ViewSettings::GetViewType(void) {
 
 ViewSettings::DisplayType ViewSettings::GetDisplayType(void) const {
   return display_type_;
-}
-
-ViewSettings::DataSize ViewSettings::GetDataSize(void) const {
-  return data_size_;
 }
 
 int ViewSettings::GetDataBlockTimeout(void) const {
@@ -103,10 +81,6 @@ void ViewSettings::SetDisplayType(ViewSettings::DisplayType display_type) {
   display_type_ = display_type;
 }
 
-void ViewSettings::SetDataSize(DataSize data_size) {
-  data_size_ = data_size;
-}
-
 void ViewSettings::SetDataBlockSize(int data_block_size) {
   data_block_size_ = data_block_size;
 }
@@ -119,6 +93,7 @@ QJsonObject ViewSettings::ToJson(void) {
   QJsonObject view_object;
   view_object["view_type"] = kStringFromViewType.value(view_type_);
   view_object["view_display"] = kStringFromDisplayType.value(display_type_);
-  view_object["view_size"] = kStringFromDataSize.value(data_size_);
+  view_object["view_block_timeout"] = data_block_timeout_;
+  view_object["view_block_size"] = data_block_size_;
   return view_object;
 }

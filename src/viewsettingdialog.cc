@@ -104,6 +104,8 @@ void ViewSettingDialog::FillViewSettings(void) {
         static_cast<ViewSettings::DisplayType>(
           display_type_combobox_->itemData(
             display_type_combobox_->currentIndex()).toInt()));
+  view_settings_->SetDataBlockSize(block_size_spinbox_->value());
+  view_settings_->SetDataBlockTimeout(block_timeout_spinbox_->value());
   this->accept();
 }
 

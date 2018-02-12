@@ -22,59 +22,28 @@ DataFormatter::DataFormatter() {}
 
 QString DataFormatter::formatData(ViewSettings settings,
                                   DataPacket packet) {
-  ViewSettings::DataSize eDataSize = settings.GetDataSize();
   ViewSettings::DisplayType eDisplayType = settings.GetDisplayType();
 
-  qint8 qint8_size = 0;
-  switch (eDataSize) {
-  case ViewSettings::DataSize::k1Byte:
-    qint8_size = 1;
+  QString out;
+  QByteArray dataBlock = packet.GetData();
+  switch (eDisplayType) {
+  case ViewSettings::DisplayType::kAscii:
+    dataBlock = dataBlock.replace("\r", "\\r");
+    dataBlock = dataBlock.replace("\n", "\\n");
+    out += QString(dataBlock);
     break;
-  case ViewSettings::DataSize::k2Bytes:
-    qint8_size = 2;
+  case ViewSettings::DisplayType::kHexa:
+    out += QString(dataBlock.toHex().toUpper());
     break;
-  case ViewSettings::DataSize::k4Bytes:
-    qint8_size = 4;
+  case ViewSettings::DisplayType::kDec:
+  {
+    bool ok = false;
+    out += QString::number(dataBlock.toHex().toUInt(&ok, 16));
     break;
-  case ViewSettings::DataSize::k8Bytes:
-    qint8_size = 8;
-    break;
-  case ViewSettings::DataSize::kNoSize:
-  case ViewSettings::DataSize::kUnknown:
+  }
   default:
-    qint8_size = -1;
     break;
   }
 
-  QString out;
-  if (qint8_size != -1) {
-    out += "|";
-  }
-  quint32 int_index = 0;
-  int int_datasize = packet.GetData().size();
-  for (; int_index < int_datasize ; int_index+=qint8_size) {
-    QByteArray dataBlock = packet.GetData().mid(int_index, qint8_size);
-    switch (eDisplayType) {
-    case ViewSettings::DisplayType::kAscii:
-      dataBlock = dataBlock.replace("\r", "\\r");
-      dataBlock = dataBlock.replace("\n", "\\n");
-      out += QString(dataBlock);
-      break;
-    case ViewSettings::DisplayType::kHexa:
-      out += QString(dataBlock.toHex().toUpper());
-      break;
-    case ViewSettings::DisplayType::kDec:
-    {
-      bool coucou = false;
-      out += QString::number(dataBlock.toHex().toUInt(&coucou, 16));
-      break;
-    }
-    default:
-      break;
-    }
-    if (qint8_size != -1) {
-      out += "|";
-    }
-  }
   return out;
 }

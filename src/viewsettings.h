@@ -40,16 +40,6 @@ class ViewSettings {
     kDec
   };
 
-  //! Data data size
-  enum class DataSize {
-    kUnknown = 0,
-    kNoSize,
-    k1Byte,
-    k2Bytes,
-    k4Bytes,
-    k8Bytes
-  };
-
   //! Default constructor
   ViewSettings();
 
@@ -62,9 +52,6 @@ class ViewSettings {
   //! Get display type
   DisplayType GetDisplayType(void) const;
 
-  //! Get data size
-  DataSize GetDataSize(void) const;
-
   //! Get end of data block timeout
   int GetDataBlockTimeout(void) const;
 
@@ -76,9 +63,6 @@ class ViewSettings {
 
   //! Set display type
   void SetDisplayType(ViewSettings::DisplayType display_type);
-
-  //! Set data size
-  void SetDataSize(ViewSettings::DataSize data_size);
 
   //! Set data block size
   void SetDataBlockSize(int data_block_size);
@@ -96,26 +80,17 @@ class ViewSettings {
   //! Map ViewType<>JsonStrDisplayType
   static const QMap<QString, ViewSettings::DisplayType> kDisplayTypeFromString;
 
-  //! Map ViewType<>JsonStrSize
-  static const QMap<QString, ViewSettings::DataSize> kDataSizeFromString;
-
   //! Map ViewType<>JsonStrViewType
   static const QMap<ViewSettings::ViewType, QString> kStringFromViewType;
 
   //! Map ViewType<>JsonStrDisplayType
   static const QMap<ViewSettings::DisplayType, QString> kStringFromDisplayType;
 
-  //! Map ViewType<>JsonStrSize
-  static const QMap<ViewSettings::DataSize, QString> kStringFromDataSize;
-
   //! View type
   ViewType view_type_ {ViewType::kUnknown};
 
   //! Display type
   DisplayType display_type_ {DisplayType::kUnknown};
-
-  //! Data block size
-  DataSize data_size_ {DataSize::kUnknown};
 
   //! Timeout for data packet
   int data_block_timeout_ {5000};
