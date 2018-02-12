@@ -68,12 +68,6 @@ class ViewSettingDialog : public QDialog {
   //! Combo box display type choice
   QComboBox* display_type_combobox_ {NULL};
 
-  //! Label "Data size"
-  QLabel* data_size_label_ {NULL};
-
-  //! Combo box data size
-  QComboBox* data_size_combobox_ {NULL};
-
   //! Label for block timeout
   QLabel* block_timeout_label_ {NULL};
 
@@ -91,9 +85,6 @@ class ViewSettingDialog : public QDialog {
 
   //! Fill display type comboBox
   void FillDisplayTypeList(void);
-
-  //! Fill data size comboBox
-  void FillDataSizeList(void);
 };
 
 #endif  // SRC_VIEWSETTINGDIALOG_H_

@@ -29,8 +29,6 @@ ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
   view_type_combobox_ = new QComboBox(this);
   display_type_label_ = new QLabel(tr("Display type"), this);
   display_type_combobox_ = new QComboBox(this);
-  data_size_label_ = new QLabel(tr("Data size"), this);
-  data_size_combobox_ = new QComboBox(this);
   block_timeout_label_ = new QLabel(tr("Packet timeout (ms)"), this);
   block_timeout_spinbox_ = new QSpinBox(this);
   block_timeout_spinbox_->setMinimum(0);
@@ -44,8 +42,6 @@ ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
                                      QSizePolicy::Expanding);
   display_type_combobox_->setSizePolicy(QSizePolicy::Expanding,
                                         QSizePolicy::Expanding);
-  data_size_combobox_->setSizePolicy(QSizePolicy::Expanding,
-                                     QSizePolicy::Expanding);
 
   button_bar_ = new QDialogButtonBox(QDialogButtonBox::Ok |
                                      QDialogButtonBox::Cancel);
@@ -59,8 +55,6 @@ ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
   form_grid_layout_->addWidget(view_type_combobox_, row_index++, 1);
   form_grid_layout_->addWidget(display_type_label_, row_index, 0);
   form_grid_layout_->addWidget(display_type_combobox_, row_index++, 1);
-  form_grid_layout_->addWidget(data_size_label_, row_index, 0);
-  form_grid_layout_->addWidget(data_size_combobox_, row_index++, 1);
   form_grid_layout_->addWidget(block_timeout_label_, row_index, 0);
   form_grid_layout_->addWidget(block_timeout_spinbox_, row_index++, 1);
   form_grid_layout_->addWidget(block_size_label_, row_index, 0);
@@ -70,7 +64,6 @@ ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
   // Fill comboboxes
   FillViewTypeList();
   FillDisplayTypeList();
-  FillDataSizeList();
 
   // Special process if add or update view
   if (action_type == ActionType::kAdd) {
@@ -88,10 +81,6 @@ ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
     int display_value = static_cast<qint32>(view_settings->GetDisplayType());
     index = display_type_combobox_->findData(display_value);
     display_type_combobox_->setCurrentIndex(index);
-
-    int datasize = static_cast<qint32>(view_settings->GetDataSize());
-    index = data_size_combobox_->findData(datasize);
-    data_size_combobox_->setCurrentIndex(index);
 
     block_timeout_spinbox_->setValue(view_settings->GetDataBlockTimeout());
     block_size_spinbox_->setValue(view_settings->GetDataBlockSize());
@@ -115,10 +104,6 @@ void ViewSettingDialog::FillViewSettings(void) {
         static_cast<ViewSettings::DisplayType>(
           display_type_combobox_->itemData(
             display_type_combobox_->currentIndex()).toInt()));
-  view_settings_->SetDataSize(
-        static_cast<ViewSettings::DataSize>(
-          data_size_combobox_->itemData(
-            data_size_combobox_->currentIndex()).toInt()));
   this->accept();
 }
 
@@ -140,18 +125,4 @@ void ViewSettingDialog::FillDisplayTypeList(void) {
   display_type_combobox_->addItem(QStringLiteral("Dec"),
                                   (qint32)ViewSettings::DisplayType::kDec);
   display_type_combobox_->setCurrentIndex(0);
-}
-
-void ViewSettingDialog::FillDataSizeList(void) {
-  data_size_combobox_->addItem(QStringLiteral("No size"),
-                               (qint32)ViewSettings::DataSize::kNoSize);
-  data_size_combobox_->addItem(QStringLiteral("1 Byte"),
-                               (qint32)ViewSettings::DataSize::k1Byte);
-  data_size_combobox_->addItem(QStringLiteral("2 Bytes"),
-                               (qint32)ViewSettings::DataSize::k2Bytes);
-  data_size_combobox_->addItem(QStringLiteral("4 Bytes"),
-                               (qint32)ViewSettings::DataSize::k4Bytes);
-  data_size_combobox_->addItem(QStringLiteral("8 Bytes"),
-                               (qint32)ViewSettings::DataSize::k8Bytes);
-  data_size_combobox_->setCurrentIndex(0);
 }
