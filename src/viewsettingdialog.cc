@@ -31,6 +31,14 @@ ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
   display_type_combobox_ = new QComboBox(this);
   data_size_label_ = new QLabel(tr("Data size"), this);
   data_size_combobox_ = new QComboBox(this);
+  block_timeout_label_ = new QLabel(tr("Packet timeout (ms)"), this);
+  block_timeout_spinbox_ = new QSpinBox(this);
+  block_timeout_spinbox_->setMinimum(0);
+  block_timeout_spinbox_->setMaximum(INT32_MAX);
+  block_size_label_ = new QLabel(tr("Packet size"), this);
+  block_size_spinbox_ = new QSpinBox(this);
+  block_size_spinbox_->setMinimum(0);
+  block_size_spinbox_->setMaximum(INT32_MAX);
 
   view_type_combobox_->setSizePolicy(QSizePolicy::Expanding,
                                      QSizePolicy::Expanding);
@@ -53,6 +61,10 @@ ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
   form_grid_layout_->addWidget(display_type_combobox_, row_index++, 1);
   form_grid_layout_->addWidget(data_size_label_, row_index, 0);
   form_grid_layout_->addWidget(data_size_combobox_, row_index++, 1);
+  form_grid_layout_->addWidget(block_timeout_label_, row_index, 0);
+  form_grid_layout_->addWidget(block_timeout_spinbox_, row_index++, 1);
+  form_grid_layout_->addWidget(block_size_label_, row_index, 0);
+  form_grid_layout_->addWidget(block_size_spinbox_, row_index++, 1);
   form_grid_layout_->addWidget(button_bar_, row_index, 0, 1, 2);
 
   // Fill comboboxes
@@ -80,6 +92,9 @@ ViewSettingDialog::ViewSettingDialog(ViewSettings* view_settings,
     int datasize = static_cast<qint32>(view_settings->GetDataSize());
     index = data_size_combobox_->findData(datasize);
     data_size_combobox_->setCurrentIndex(index);
+
+    block_timeout_spinbox_->setValue(view_settings->GetDataBlockTimeout());
+    block_size_spinbox_->setValue(view_settings->GetDataBlockSize());
 
     view_type_combobox_->setEnabled(false);
   } else {

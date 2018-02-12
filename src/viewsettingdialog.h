@@ -25,6 +25,7 @@
 #include <QGridLayout>
 #include <QComboBox>
 #include <QLabel>
+#include <QSpinBox>
 #include "src/viewsettings.h"
 
 class ViewSettingDialog : public QDialog {
@@ -72,6 +73,18 @@ class ViewSettingDialog : public QDialog {
 
   //! Combo box data size
   QComboBox* data_size_combobox_ {NULL};
+
+  //! Label for block timeout
+  QLabel* block_timeout_label_ {NULL};
+
+  //! Spinbox  for block timeout
+  QSpinBox* block_timeout_spinbox_ {NULL};
+
+  //! Label for block size
+  QLabel* block_size_label_ {NULL};
+
+  //! Spinbox  for block size
+  QSpinBox* block_size_spinbox_ {NULL};
 
   //! Fill view type comboBox
   void FillViewTypeList(void);
