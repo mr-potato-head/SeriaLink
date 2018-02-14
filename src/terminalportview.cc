@@ -21,7 +21,7 @@
 
 TerminalPortView::TerminalPortView(ViewSettings* view_settings, QWidget* parent)
   : PortView{view_settings, parent} {
-  text_edit_ = new QPlainTextEdit(this);
+  text_edit_ = new QTextEdit(this);
   main_layout_->addWidget(text_edit_, 1, 0);
 
   // Signal connections
@@ -32,7 +32,8 @@ TerminalPortView::TerminalPortView(ViewSettings* view_settings, QWidget* parent)
 
 void TerminalPortView::TreatDataPacket(DataPacket packet) {
   QString str = DataFormatter::formatData(*view_settings_, packet);
-  text_edit_->insertPlainText(str);
+  QTextCursor cursor(text_edit_->document());
+  cursor.insertText(str, rx_format_);
   if (capture_in_progress_) {
     *capture_stream_ << str;
   }
@@ -40,7 +41,8 @@ void TerminalPortView::TreatDataPacket(DataPacket packet) {
 
 void TerminalPortView::OnDataSent(DataPacket packet) {
   QString str = DataFormatter::formatData(*view_settings_, packet);
-  text_edit_->insertPlainText(str);
+  QTextCursor cursor(text_edit_->document());
+  cursor.insertText(str, tx_format_);
   if (capture_in_progress_) {
     *capture_stream_ << str;
   }

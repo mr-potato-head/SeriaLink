@@ -19,7 +19,7 @@
 #ifndef SRC_TERMINALPORTVIEW_H_
 #define SRC_TERMINALPORTVIEW_H_
 
-#include <QPlainTextEdit>
+#include <QTextEdit>
 #include "src/portview.h"
 
 class TerminalPortView : public PortView {
@@ -37,7 +37,7 @@ class TerminalPortView : public PortView {
 
  private:
   //! Text edit of the view
-  QPlainTextEdit* text_edit_ {nullptr};
+  QTextEdit* text_edit_ {nullptr};
 };
 
 #endif  // SRC_TERMINALPORTVIEW_H_

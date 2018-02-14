@@ -92,6 +92,10 @@ PortView::PortView(ViewSettings* view_settings,
 
   receive_timer_ = new QTimer(this);
   receive_timer_->setSingleShot(true);
+
+  tx_format_.setForeground(Qt::darkBlue);
+  rx_format_.setForeground(Qt::darkGreen);
+
   connect(receive_timer_, SIGNAL(timeout()),
           this, SLOT(OnTimeout()));
 

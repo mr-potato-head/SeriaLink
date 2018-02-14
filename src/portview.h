@@ -30,6 +30,7 @@
 #include <QFile>
 #include <QTimer>
 #include <QTextStream>
+#include <QTextCharFormat>
 #include "src/viewsettings.h"
 #include "src/datapacket.h"
 
@@ -76,6 +77,12 @@ class PortView : public QWidget {
 
   //! Text stream of capture file
   QTextStream* capture_stream_ {nullptr};
+
+  //! Text char format for TX data
+  QTextCharFormat tx_format_;
+
+  //! Text char format for RX data
+  QTextCharFormat rx_format_;
 
  private slots: //NOLINT
   //! Executed when received timer timeout occurred
