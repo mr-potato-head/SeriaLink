@@ -1,3 +1,7 @@
+#!/bin/sh
+
+echo "Start Git version generation..."
+
 echo "/*" > src/version.h
 echo "* Copyright (C) 2016 Guilhem GUYONNET" >> src/version.h
 echo "*" >> src/version.h
@@ -25,3 +29,5 @@ echo "#define VERSION \"$RESULT\"" >> src/version.h
 
 echo "" >> src/version.h
 echo "#endif  // SRC_VERSION_H_" >> src/version.h
+
+echo "End of Git version generation."
