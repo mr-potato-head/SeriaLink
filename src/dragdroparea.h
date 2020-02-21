@@ -19,13 +19,18 @@
 #ifndef SRC_DRAGDROPAREA_H_
 #define SRC_DRAGDROPAREA_H_
 
+#include <QWidget>
+#include <QGridLayout>
 #include <QLabel>
+#include <QPixmap>
+#include <QFont>
 #include <QDragEnterEvent>
 
-class DragDropArea : public QLabel {
+class DragDropArea : public QWidget {
   Q_OBJECT
  public:
-  explicit DragDropArea(QWidget *parent = 0);
+  explicit DragDropArea(QWidget *parent = nullptr);
+ virtual ~DragDropArea();
 
   void dragEnterEvent(QDragEnterEvent *event);
 
@@ -34,6 +39,22 @@ class DragDropArea : public QLabel {
  signals:
 
   void fileDropped(QString filepath);
+
+ private:
+  //! Vertical layout
+  QGridLayout* main_layout_ {nullptr};
+
+  //! Drag & Drop text
+  QLabel* dragdrop_label_ {nullptr};
+
+  //! Drag & Drop icon
+  QLabel* dragdrop_icon_ {nullptr};
+
+  //! Icon for Drag & Drop
+  QPixmap* dragdrop_picture_ {nullptr};
+
+  //! Font for drag & drop text
+  QFont* font_ {nullptr};
 };
 
 #endif  // SRC_DRAGDROPAREA_H_

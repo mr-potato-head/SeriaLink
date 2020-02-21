@@ -19,11 +19,35 @@
 #include <QMimeData>
 #include "src/dragdroparea.h"
 
-DragDropArea::DragDropArea(QWidget *parent) : QLabel(parent) {
+DragDropArea::DragDropArea(QWidget *parent) : QWidget(parent) {
+  dragdrop_label_ = new QLabel(tr("Drag & Drop session file here."), this);
+  font_ = new QFont();
+  font_->setPointSize(20);
+  dragdrop_label_->setFont(*font_);
+  dragdrop_label_->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+  dragdrop_icon_ = new QLabel(this);
+  dragdrop_picture_ = new QPixmap();
+  dragdrop_picture_->load(":/icons/icons/data-transfer-upload-8x.png");
+  dragdrop_icon_->setPixmap(*dragdrop_picture_);
+  dragdrop_icon_->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+  main_layout_ = new QGridLayout(parent);
+  main_layout_->addWidget(dragdrop_label_, 1, 0);
+  main_layout_->addWidget(dragdrop_icon_, 2, 0);
+  main_layout_->setRowStretch(0,30);
+  main_layout_->setRowStretch(1,20);
+  main_layout_->setRowStretch(2,20);
+  main_layout_->setRowStretch(3,30);
+
+  this->setLayout(main_layout_);
   this->setAcceptDrops(true);
-  this->setText(tr("Drag && Drop session file here."));
 }
 
+DragDropArea::~DragDropArea() {
+  delete dragdrop_picture_;
+  delete font_;
+}
 
 void DragDropArea::dragEnterEvent(QDragEnterEvent *event) {
   if (event->mimeData()->hasUrls())

@@ -19,5 +19,6 @@
         <file>icons/folder-8x.png</file>
         <file>icons/print-8x.png</file>
         <file>icons/hard-drive-8x.png</file>
+        <file>icons/data-transfer-upload-8x.png</file>
     </qresource>
 </RCC>
