@@ -1,0 +1,20 @@
+name: QMake Build Matrix
+
+on: [push]
+
+env:
+  QT_VERSION: 5.14.0
+  QT_CREATOR_VERSION: 4.11.0
+  PLUGIN_PRO: doxygen.pro
+  PLUGIN_NAME: Doxygen
+
+jobs:
+  build:
+    name: coucou
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: welcome
+      run: echo 'Just a first test with echo !'
