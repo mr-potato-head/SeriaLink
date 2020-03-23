@@ -95,14 +95,11 @@ jobs:
       shell: cmake -P {0}
       run: |
       set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
-			include(ProcessorCount)
-			ProcessorCount(N)
-			set(make_program make -j ${N})
-			execute_process(
-				COMMAND ${make_program}
-				RESULT_VARIABLE result
-			)
-			if (NOT result EQUAL 0)
-				message(FATAL_ERROR "Bad exit status")
-			endif()
-			file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/serialink-${{ matrix.config.artifact }}" artifact)
+      include(ProcessorCount)
+      ProcessorCount(N)
+      set(make_program make -j ${N})
+      execute_process(COMMAND ${make_program}	RESULT_VARIABLE result)
+      if (NOT result EQUAL 0)
+        message(FATAL_ERROR "Bad exit status")
+      endif()
+      file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/serialink-${{ matrix.config.artifact }}" artifact)
