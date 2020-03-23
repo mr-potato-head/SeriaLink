@@ -4,9 +4,6 @@ on: [push]
 
 env:
   QT_VERSION: 5.14.0
-  QT_CREATOR_VERSION: 4.11.0
-  PLUGIN_PRO: doxygen.pro
-  PLUGIN_NAME: Doxygen
 
 jobs:
   build:
@@ -94,3 +91,18 @@ jobs:
         if (NOT result EQUAL 0)
           message(FATAL_ERROR "Bad exit status")
         endif()
+    - name: Build
+      shell: cmake -P {0}
+      run: |
+        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
+        include(ProcessorCount)
+        ProcessorCount(N)
+        set(make_program make -j ${N})
+        execute_process(
+          COMMAND ${make_program}
+          RESULT_VARIABLE result
+        )
+        if (NOT result EQUAL 0)
+          message(FATAL_ERROR "Bad exit status")
+        endif()
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/serialink-${{ matrix.config.artifact }}" artifact)
