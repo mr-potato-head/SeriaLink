@@ -118,10 +118,10 @@ jobs:
       shell: cmake -P {0}
       run: |
         file(MAKE_DIRECTORY deploy)
-        file(COPY release/SeriaLink.exe
-             DESTINATION deploy/SeriaLink.exe)
+        file(COPY release\SeriaLink.exe
+             DESTINATION deploy\SeriaLink.exe)
         execute_process(
-          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/windeployqt release
+          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/windeployqt deploy
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)
@@ -131,5 +131,5 @@ jobs:
     - uses: actions/upload-artifact@v1
       id: upload_artifact
       with:
-        path: release
+        path: deploy
         name: test
