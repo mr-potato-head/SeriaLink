@@ -83,7 +83,7 @@ void ModePage::ChangePortManagerIndex(int index) {
     disconnect(port_manager_, &ComPortManager::SequenceProgress,
                progress_bar_, &QProgressBar::setValue);
     disconnect(port_manager_, &ComPortManager::SequenceOver,
-               this, ModePage::OnStopButtonClicked);
+               this, &ModePage::OnStopButtonClicked);
     disconnect(stop_button_, &QPushButton::clicked,
                port_manager_, &ComPortManager::OnStopSequence);
   }
@@ -102,7 +102,7 @@ void ModePage::ChangePortManagerIndex(int index) {
     connect(port_manager_, &ComPortManager::SequenceProgress,
             progress_bar_, &QProgressBar::setValue);
     connect(port_manager_, &ComPortManager::SequenceOver,
-            this, ModePage::OnStopButtonClicked);
+            this, &ModePage::OnStopButtonClicked);
     connect(stop_button_, &QPushButton::clicked,
             port_manager_, &ComPortManager::OnStopSequence);
   }
