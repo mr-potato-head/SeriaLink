@@ -117,6 +117,7 @@ jobs:
     - name: Deploy
       shell: cmake -P {0}
       run: |
+        file(MAKE_DIRECTORY deploy)
         file(COPY release/SeriaLink.exe
              DESTINATION deploy/SeriaLink.exe)
         execute_process(
