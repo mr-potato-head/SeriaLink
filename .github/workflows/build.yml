@@ -119,7 +119,7 @@ jobs:
       run: |
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/release" release_dir)
         execute_process(
-          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/windeployqt $release_dir
+          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/windeployqt ${release_dir}
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)
