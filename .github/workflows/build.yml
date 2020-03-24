@@ -117,9 +117,11 @@ jobs:
     - name: Deploy
       shell: cmake -P {0}
       run: |
-        file(MAKE_DIRECTORY deploy)
-        file(COPY release\SeriaLink.exe
-             DESTINATION deploy\SeriaLink.exe)
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/deploy deploy_path)
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/release release_path)
+        file(MAKE_DIRECTORY ${coucou})
+        file(COPY ${release_path}/SeriaLink.exe
+             DESTINATION ${deploy_path}/SeriaLink.exe)
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/windeployqt deploy
           RESULT_VARIABLE result
