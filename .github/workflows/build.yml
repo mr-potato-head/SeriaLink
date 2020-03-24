@@ -4,9 +4,6 @@ on: [push]
 
 env:
   QT_VERSION: 5.14.0
-  QT_CREATOR_VERSION: 4.11.0
-  PLUGIN_PRO: doxygen.pro
-  PLUGIN_NAME: Doxygen
 
 jobs:
   build:
@@ -23,6 +20,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+    - run: git fetch --prune --unshallow
+
+    - name: Generate version file
+      shell: bash
+      run: |
+        ./version.sh
 
     - name: Download Qt
       id: qt
@@ -94,3 +98,36 @@ jobs:
         if (NOT result EQUAL 0)
           message(FATAL_ERROR "Bad exit status")
         endif()
+    - name: Build
+      shell: cmake -P {0}
+      run: |
+        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
+        include(ProcessorCount)
+        ProcessorCount(N)
+        set(make_program make -j ${N})
+        if ("${{ runner.os }}" STREQUAL "Windows")
+          set(make_program "nmake")
+        endif()
+        execute_process(COMMAND ${make_program}	RESULT_VARIABLE result)
+        if (NOT result EQUAL 0)
+          message(FATAL_ERROR "Bad exit status")
+        endif()
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/serialink-${{ matrix.config.artifact }}" artifact)
+
+    - name: Deploy
+      shell: cmake -P {0}
+      run: |
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/release" release_dir)
+        execute_process(
+          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/windeployqt ${release_dir}
+          RESULT_VARIABLE result
+        )
+        if (NOT result EQUAL 0)
+          message(FATAL_ERROR "Bad exit status")
+        endif()
+
+    - uses: actions/upload-artifact@v1
+      id: upload_artifact
+      with:
+        path: release
+        name: test
