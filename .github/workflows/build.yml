@@ -24,7 +24,7 @@ jobs:
     - name: Generate version file
       shell: bash
       run: |
-        version.sh
+        ./version.sh
 
     - name: Download Qt
       id: qt
@@ -96,11 +96,6 @@ jobs:
         if (NOT result EQUAL 0)
           message(FATAL_ERROR "Bad exit status")
         endif()
-    - name: Get makefile
-      uses: actions/upload-artifact@v1
-      with:
-        name: makefile
-        path: Makefile
     - name: Build
       shell: cmake -P {0}
       run: |
