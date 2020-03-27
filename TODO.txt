@@ -1,0 +1,19 @@
+- Faire une icône
+- Mettre l'icône sur le bouton de l'ajout de vue
+- Mettre l'icône sur le bouton de l'ajout de port
+- Passer sur un menu classique avec QSS
+- Gérer/limiter (avec scroll bar ?) l'ajout de beaucoup de vues ou de ports
+- Complêter la fenêtre "A propos"
+- Faire la traduction en français et ajouter le choix au menu
+- Améliorer la CI pour Windows
+- Mettre en place la CI Ubuntu
+- Gérer les sauts de ligne (\r\, \n et \r\n)
+- Peaufiner l'IHM de la partie "envoi"
+- Faire un coup de QSS léger sur toute l'appli
+- Améliorer/finir l'IHM de l'affichage des ports à gauche
+- Améliorer l'IHM de l'affichage des noms d'onglets en haut
+- Choix de la taille de police pour les vues (dans le menu ?)
+- Faire une page web monopage
+
+
+- Faire une première version de l'envoi "automatique" ?
