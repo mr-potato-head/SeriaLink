@@ -21,7 +21,8 @@ jobs:
     steps:
 
     # Clone / Checkout
-    - uses: actions/checkout@v2
+    - name: Clone / Checkout
+      uses: actions/checkout@v2
 
     - name: Fetch history and tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/* && git fetch --prune --unshallow
@@ -124,8 +125,8 @@ jobs:
 
     # Create directory for deployment
     - name: Create deploy directory
-      shell: cmake -P {0}
-      run: file(MAKE_DIRECTORY deploy)
+      shell: python
+      run: import os; os.mkdir(deploy)
 
     # Copy executable into deployment directory
     - name: Copy binary into deploy directory
@@ -145,7 +146,8 @@ jobs:
         endif()
     
     # Create zip and upload deployment zip as an artifact
-    - uses: actions/upload-artifact@v1
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1
       id: upload_artifact
       with:
         path: deploy
