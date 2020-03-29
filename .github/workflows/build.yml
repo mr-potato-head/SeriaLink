@@ -130,8 +130,8 @@ jobs:
 
     # Copy executable into deployment directory
     - name: Copy binary into deploy directory
-      shell: bash
-      run: cp release/SeriaLink.exe deploy/SeriaLink.exe
+      shell: python
+      run: from shutil import copyfile; copyfile("release/SeriaLink.exe" "deploy/SeriaLink.exe")
 
     # Call Windeployqt to add dll etc.
     - name: Deploy
