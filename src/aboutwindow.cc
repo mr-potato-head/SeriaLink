@@ -21,6 +21,9 @@
 
 AboutWindow::AboutWindow(QWidget* parent)
   : QDialog(parent) {
+  // Set window title
+  this->setWindowTitle(tr("SeriaLink"));
+
   main_layout_ = new QGridLayout(this);
   version_label_ = new QLabel(VERSION, this);
   version_label_->setAlignment(Qt::AlignCenter);
