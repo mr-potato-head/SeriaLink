@@ -126,7 +126,7 @@ jobs:
     # Create directory for deployment
     - name: Create deploy directory
       shell: python
-      run: import os; os.mkdir(deploy)
+      run: import os; os.mkdir("deploy")
 
     # Copy executable into deployment directory
     - name: Copy binary into deploy directory
