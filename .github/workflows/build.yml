@@ -122,15 +122,25 @@ jobs:
         endif()
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/serialink-${{ matrix.config.artifact }}" artifact)
 
-    # Run Windeployqt
+    - name: PWD
+      shell: bash
+      run: pwd
+
+    - name: Create deploy folder
+      shell: cmake -P {0}
+      run: |
+        file(MAKE_DIRECTORY deploy)
+    - name: Copy binary
+      shell: bash
+      run: cp release/SeriaLink.exe deploy/SeriaLink.exe
+
+    - name: LS
+      shell: bash
+      run: ls -larth deploy
+
     - name: Deploy
       shell: cmake -P {0}
       run: |
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/deploy deploy_path)
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/release release_path)
-        file(MAKE_DIRECTORY ${coucou})
-        file(COPY ${release_path}/SeriaLink.exe
-             DESTINATION ${deploy_path}/SeriaLink.exe)
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/windeployqt deploy
           RESULT_VARIABLE result
@@ -138,8 +148,7 @@ jobs:
         if (NOT result EQUAL 0)
           message(FATAL_ERROR "Bad exit status")
         endif()
-    
-    # Upload deployment folder as an artifact
+        
     - uses: actions/upload-artifact@v1
       id: upload_artifact
       with:
