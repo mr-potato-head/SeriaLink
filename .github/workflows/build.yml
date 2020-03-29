@@ -21,15 +21,17 @@ jobs:
     steps:
 
     # Clone / Checkout
-    - name: Clone / Checkout
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+
+    - name: Fetch history and tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/* && git fetch --prune --unshallow
 
+    # Create version file
     - name: Generate version file
       shell: bash
-      run: |
-        ./version.sh
+      run: ./version.sh
 
+    # Download Qt
     - name: Download Qt
       id: qt
       shell: cmake -P {0}
@@ -75,6 +77,8 @@ jobs:
         string(REPLACE "licheck64" "" qtconfig "${qtconfig}")
         string(REPLACE "licheck_mac" "" qtconfig "${qtconfig}")
         file(WRITE "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" "${qtconfig}")
+
+    # Run QMake
     - name: Configure
       shell: cmake -P {0}
       run: |
@@ -100,6 +104,8 @@ jobs:
         if (NOT result EQUAL 0)
           message(FATAL_ERROR "Bad exit status")
         endif()
+
+    # Run Make
     - name: Build
       shell: cmake -P {0}
       run: |
@@ -116,6 +122,7 @@ jobs:
         endif()
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/serialink-${{ matrix.config.artifact }}" artifact)
 
+    # Run Windeployqt
     - name: Deploy
       shell: cmake -P {0}
       run: |
@@ -131,7 +138,8 @@ jobs:
         if (NOT result EQUAL 0)
           message(FATAL_ERROR "Bad exit status")
         endif()
-        
+    
+    # Upload deployment folder as an artifact
     - uses: actions/upload-artifact@v1
       id: upload_artifact
       with:
