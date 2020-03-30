@@ -122,12 +122,7 @@ jobs:
           message(FATAL_ERROR "Bad exit status")
         endif()
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/serialink-${{ matrix.config.artifact }}" artifact)
-
-    # Create directory for deployment
-    - name: Create deploy directory
-      shell: python
-      run: import os; os.mkdir("deploy")
-
+        
     # Copy executable into deployment directory
     - name: Copy binary into deploy directory
       shell: python
