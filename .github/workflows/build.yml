@@ -86,7 +86,7 @@ jobs:
         # Import modules
         import subprocess
         # Prepare environment
-        subprocess.run(${{ matrix.config.environment_script }})
+        subprocess.run("${{ matrix.config.environment_script }}")
         if status.returncode != 0:
           print("Can't prepare environment")
         # Run QMake
