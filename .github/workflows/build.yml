@@ -135,15 +135,12 @@ jobs:
 
     # Call Windeployqt to add dll etc.
     - name: Deploy
-      shell: cmake -P {0}
+      shell: python
       run: |
-        execute_process(
-          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/windeployqt deploy
-          RESULT_VARIABLE result
-        )
-        if (NOT result EQUAL 0)
-          message(FATAL_ERROR "Bad exit status")
-        endif()
+        import subprocess
+        status = subprocess.run(["${{ steps.qt.outputs.qt_dir }}/bin/windeployqt", "deploy"])
+        if status != 0
+          print("An error occurred with windeployqt")
     
     # Create zip and upload deployment zip as an artifact
     - name: Upload artifact
