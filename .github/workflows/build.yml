@@ -139,7 +139,7 @@ jobs:
       run: |
         import subprocess
         status = subprocess.run(["${{ steps.qt.outputs.qt_dir }}/bin/windeployqt", "deploy"])
-        if status != 0
+        if status.returncode != 0
           print("An error occurred with windeployqt")
     
     # Create zip and upload deployment zip as an artifact
