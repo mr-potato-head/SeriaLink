@@ -112,7 +112,7 @@ jobs:
       run: |
         import os
         import subprocess
-        os.environ["PATH"] += os.pathsep + "${{ steps.qt.outputs.qt_dir }}/bin/
+        os.environ["PATH"] += os.pathsep + "${{ steps.qt.outputs.qt_dir }}/bin/"
         status = subprocess.run("nmake")
         if status.returncode != 0:
           print("An error occurred with nmake")
