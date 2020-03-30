@@ -108,20 +108,14 @@ jobs:
 
     # Run Make
     - name: Build
-      shell: cmake -P {0}
+      shell: python
       run: |
-        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
-        include(ProcessorCount)
-        ProcessorCount(N)
-        set(make_program make -j ${N})
-        if ("${{ runner.os }}" STREQUAL "Windows")
-          set(make_program "nmake")
-        endif()
-        execute_process(COMMAND ${make_program}	RESULT_VARIABLE result)
-        if (NOT result EQUAL 0)
-          message(FATAL_ERROR "Bad exit status")
-        endif()
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/serialink-${{ matrix.config.artifact }}" artifact)
+        import os
+        import subprocess
+        os.environ["PATH"] += os.pathsep + "${{ steps.qt.outputs.qt_dir }}/bin/
+        status = subprocess.run("nmake")
+        if status.returncode != 0:
+          print("An error occurred with nmake")
 
     # Copy executable into deployment directory
     - name: Copy binary into deploy directory
