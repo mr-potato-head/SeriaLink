@@ -83,7 +83,13 @@ jobs:
     - name: Configure
       shell: python
       run: |
+        # Import modules
         import subprocess
+        # Prepare environment
+        subprocess.run(${{ matrix.config.environment_script }})
+        if status.returncode != 0:
+          print("Can't prepare environment")
+        # Run QMake
         status = subprocess.run(["${{ steps.qt.outputs.qt_dir }}/bin/qmake", "CONFIG+=release"])
         if status.returncode != 0:
           print("An error occurred with qmake")
