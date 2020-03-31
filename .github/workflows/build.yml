@@ -101,7 +101,7 @@ jobs:
           if x:
             print("Set environment variable.")
             os.environ[x.group(1)] = x.group(2)
-          else
+          else:
             print("no match.")
                
         # Run QMake
