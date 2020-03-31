@@ -87,7 +87,7 @@ jobs:
         import subprocess
                
         # Run QMake
-        status = subprocess.run('"${{ matrix.config.environment_script }}" && "${{ steps.qt.outputs.qt_dir }}/bin/qmake CONFIG+=release"')
+        status = subprocess.run('"${{ matrix.config.environment_script }}" && "${{ steps.qt.outputs.qt_dir }}/bin/qmake CONFIG+=release"', shell=True)
         if status.returncode != 0:
           print("An error occurred with qmake")
 
