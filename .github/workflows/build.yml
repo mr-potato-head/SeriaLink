@@ -117,7 +117,7 @@ jobs:
       run: |
         import os
         import subprocess
-        status = subprocess.run("nmake", shell=True)
+        status = subprocess.run('"${{ matrix.config.environment_script }}" && nmake', shell=True)
         if status.returncode != 0:
           print("An error occurred with nmake")
 
