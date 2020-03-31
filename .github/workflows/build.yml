@@ -95,7 +95,7 @@ jobs:
 
         # Get environment variables
         status = subprocess.run("set", shell=True, capture_output=True, text=True)
-        env_variables = status.stdout.split()
+        env_variables = status.stdout.splitlines()
         for variable in env_variables:
           print(variable)
           x=re.search("^([a-zA-Z0-9_-]+)=(.*)$", variable)
