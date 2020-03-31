@@ -93,7 +93,7 @@ jobs:
           print("Can't run environment script.")
 
         # Get environment variables
-        status = subprocess.run(['set'], capture_output=True, text=True)
+        status = subprocess.run("set", shell=True, capture_output=True, text=True)
         env_variables = status.stdout.split()
         for variable in env_variables:
           print(variable)
