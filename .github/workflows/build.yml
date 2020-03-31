@@ -85,10 +85,21 @@ jobs:
       run: |
         # Import modules
         import subprocess
+        import re
+
         # Prepare environment
         status = subprocess.run("${{ matrix.config.environment_script }}")
         if status.returncode != 0:
-          print("Can't prepare environment")
+          print("Can't run environment script.")
+
+        # Get environment variables
+        status = subprocess.run(['ls', '-l'], capture_output=True, text=True)
+        env_variables = status.stdout.split()
+        for variable in env_variables:
+          x=re.search("^([a-zA-Z0-9_-]+)=(.*)$", variable)
+            if x:
+              os.environ[x.group(1)] = x.group(2)
+               
         # Run QMake
         status = subprocess.run(["${{ steps.qt.outputs.qt_dir }}/bin/qmake", "CONFIG+=release"])
         if status.returncode != 0:
