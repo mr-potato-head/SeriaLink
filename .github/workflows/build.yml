@@ -97,8 +97,8 @@ jobs:
         env_variables = status.stdout.split()
         for variable in env_variables:
           x=re.search("^([a-zA-Z0-9_-]+)=(.*)$", variable)
-            if x:
-              os.environ[x.group(1)] = x.group(2)
+          if x:
+            os.environ[x.group(1)] = x.group(2)
                
         # Run QMake
         status = subprocess.run(["${{ steps.qt.outputs.qt_dir }}/bin/qmake", "CONFIG+=release"])
