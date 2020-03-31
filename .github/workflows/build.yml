@@ -89,12 +89,12 @@ jobs:
         import os
 
         # Prepare environment
-        status = subprocess.run("${{ matrix.config.environment_script }}")
-        if status.returncode != 0:
-          print("Can't run environment script.")
+        status = subprocess.run("${{ matrix.config.environment_script }} && set", shell=True, capture_output=True, text=True)
+        #if status.returncode != 0:
+        #  print("Can't run environment script.")
 
         # Get environment variables
-        status = subprocess.run("set", shell=True, capture_output=True, text=True)
+        #status = subprocess.run("set", shell=True, capture_output=True, text=True)
         env_variables = status.stdout.splitlines()
         for variable in env_variables:
           print(variable)
