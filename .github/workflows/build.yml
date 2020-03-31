@@ -86,6 +86,7 @@ jobs:
         # Import modules
         import subprocess
         import re
+        import os
 
         # Prepare environment
         status = subprocess.run("${{ matrix.config.environment_script }}")
