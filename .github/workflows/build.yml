@@ -42,7 +42,7 @@ jobs:
         import os
         import fileinput
         
-        qt_version $ENV{QT_VERSION}
+        qt_version = $ENV{QT_VERSION}
         qt_version_dotless = qt_version.replace(".", "")
         url_os = "windows_x86"
         qt_package_name = "qt.qt5.${qt_version_dotless}.win64_msvc2017_64"
