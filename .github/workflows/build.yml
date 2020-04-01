@@ -43,7 +43,6 @@ jobs:
         import fileinput
         
         qt_version = os.environ["QT_VERSION"]
-        print("Coucou :" + qt_version)
         qt_version_dotless = qt_version.replace(".", "")
         url_os = "windows_x86"
         qt_package_name = "qt.qt5." + qt_version_dotless + ".win64_msvc2017_64"
@@ -54,7 +53,9 @@ jobs:
         data = response.read()
         text = data.decode('utf-8')
 
-        x=re.search("<Name>${qt_package_name}.*<Version>([0-9+-.]+)</Version>.*<DownloadableArchives>qtbase([a-zA-Z0-9_-]+).7z", text)
+        print(text)
+        reg = "<Name>" + qt_package_name + ".*<Version>([0-9+-.]+)</Version>.*<DownloadableArchives>qtbase([a-zA-Z0-9_-]+).7z"
+        x=re.search(reg , text)
         if x:
           package_version = x.group(1)
           package_suffix = x.group(2)
