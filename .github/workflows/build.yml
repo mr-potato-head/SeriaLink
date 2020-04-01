@@ -72,7 +72,7 @@ jobs:
           if status.returncode != 0:
             print("Can't extract ${package}.7z.")
         
-        with fileinput.FileInput(qt5/${qt_dir_prefix}/mkspecs/qconfig.pri, inplace=True, backup='.bak') as file:
+        with fileinput.FileInput("qt5/${qt_dir_prefix}/mkspecs/qconfig.pri", inplace=True, backup='.bak') as file:
           for line in file:
             print(line.replace("Enterprise", "OpenSource"), end='')
             print(line.replace("licheck.exe", ""), end='')
