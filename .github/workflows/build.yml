@@ -41,6 +41,7 @@ jobs:
         import re
         import os
         import fileinput
+        import subprocess
         
         qt_version = os.environ["QT_VERSION"]
         qt_version_dotless = qt_version.replace(".", "")
