@@ -66,7 +66,7 @@ jobs:
         os.mkdir("qt5")
 
         packages = ['qtbase', 'qtdeclarative', 'qttools', 'qtsvg', 'qtserialport']
-        for word in packages:
+        for package in packages:
           response = urllib.request.urlopen(qt_base_url + "/" + qt_package_name + "/" + package_version + package + package_suffix + ".7z")
           with open('./${package}.7z', 'wb') as f:
             f.write(response.content)
