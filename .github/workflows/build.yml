@@ -52,8 +52,8 @@ jobs:
         response = urllib.request.urlopen(qt_base_url + "/Updates.xml")
         data = response.read()
         text = data.decode('utf-8')
-        
-        reg = "<Name>" + qt_package_name + ".*<Version>([0-9+-.]+)</Version>.*<DownloadableArchives>qtbase([a-zA-Z0-9_-]+).7z"
+
+        reg = "<Name>" + qt_package_name + "</Name>[\s\S]*<Version>([0-9+-.]+)</Version>[\s\S]*<DownloadableArchives>[\s\S]*qtbase([a-zA-Z0-9_-]+).7z"
         print(reg)
         x=re.search(reg , text)
         if x:
