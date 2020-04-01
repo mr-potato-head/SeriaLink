@@ -47,7 +47,7 @@ jobs:
         url_os = "windows_x86"
         qt_package_name = "qt.qt5.${qt_version_dotless}.win64_msvc2017_64"
         qt_dir_prefix = "${qt_version}/msvc2017_64"
-        qt_base_url = "https://download.qt.io/online/qtsdkrepository/${url_os}/desktop/qt5_${qt_version_dotless}"
+        qt_base_url = "https://download.qt.io/online/qtsdkrepository/" + url_os + "/desktop/qt5_" + qt_version_dotless
 
         response = urllib.request.urlopen(qt_base_url + "/Updates.xml")
         data = response.read()
