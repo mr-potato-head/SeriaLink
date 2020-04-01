@@ -52,9 +52,9 @@ jobs:
         response = urllib.request.urlopen(qt_base_url + "/Updates.xml")
         data = response.read()
         text = data.decode('utf-8')
-
-        print(text)
+        
         reg = "<Name>" + qt_package_name + ".*<Version>([0-9+-.]+)</Version>.*<DownloadableArchives>qtbase([a-zA-Z0-9_-]+).7z"
+        print(reg)
         x=re.search(reg , text)
         if x:
           package_version = x.group(1)
@@ -67,7 +67,7 @@ jobs:
 
         packages = ['qtbase', 'qtdeclarative', 'qttools', 'qtsvg', 'qtserialport']
         for word in packages:
-          response = urllib.request.urlopen("${qt_base_url}/${qt_package_name}/${package_version}${package}${package_suffix}.7z")
+          response = urllib.request.urlopen(qt_base_url + "/" + qt_package_name + "/" + package_version + package + package_suffix + ".7z")
           with open('./${package}.7z', 'wb') as f:
             f.write(response.content)
           status.subprocess.run('cd qt5 && tar xvf ../${package}.7z')
