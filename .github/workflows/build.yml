@@ -37,7 +37,7 @@ jobs:
       id: qt
       shell: python
       run: |
-        import urllib
+        import urllib.request
         import re
         import os
         import fileinput
