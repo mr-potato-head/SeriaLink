@@ -66,6 +66,9 @@ jobs:
 
         os.mkdir("qt5")
 
+        qt_dir = os.environ["GITHUB_WORKSPACE"] + "/qt5/" + qt_dir_prefix
+        print("::set-output name=qt_dir::" + qt_dir)
+
         packages = ['qtbase', 'qtdeclarative', 'qttools', 'qtsvg', 'qtserialport']
         for package in packages:
           response = urllib.request.urlopen(qt_base_url + "/" + qt_package_name + "/" + package_version + package + package_suffix + ".7z")
