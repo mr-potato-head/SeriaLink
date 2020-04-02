@@ -95,6 +95,9 @@ jobs:
         print("Try to replace in file")
         with open("qt5/" + qt_dir_prefix + "/mkspecs/qconfig.pri", 'r') as file :
           filedata = file.read()
+          
+        print("BEFORE")
+        print(filedata)
 
         # Replace the target string
         filedata.replace("Enterprise", "OpenSource")
@@ -102,10 +105,13 @@ jobs:
         filedata.replace("licheck64", "")
         filedata.replace("licheck_mac", "")
 
+        print("AFTER")
+        print(filedata)
+
         # Write the file out again
         with open("qt5/" + qt_dir_prefix + "/mkspecs/qconfig.pri", 'w') as file:
           file.write(filedata)
-
+          
     # PWD
     - name: Display qt_dir content
       shell: bash
