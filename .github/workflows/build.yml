@@ -55,7 +55,7 @@ jobs:
         text = data.decode('utf-8')
 
         reg = "<Name>" + qt_package_name + "</Name>[\s\S]*<Version>([0-9+-.]+)</Version>[\s\S]*<DownloadableArchives>[\s\S]*qtbase([a-zA-Z0-9_-]+).7z"
-        print(reg)
+        
         x=re.search(reg , text)
         if x:
           package_version = x.group(1)
@@ -87,6 +87,10 @@ jobs:
             print(line.replace("licheck64", ""), end='')
             print(line.replace("licheck_mac", ""), end='')
 
+    # Display qt_dir content
+    - name: Display qt_dir content
+      run: ls -larth && echo ********* && la -larth ${{ steps.qt.outputs.qt_dir }}
+
     # Run QMake
     - name: Configure
       shell: python
@@ -98,12 +102,9 @@ jobs:
 
         # Prepare environment
         status = subprocess.run('"${{ matrix.config.environment_script }}" && set', shell=True, capture_output=True, text=True)
-        print(status)
-        #if status.returncode != 0:
-        #  print("Can't run environment script.")
+        if status.returncode != 0:
+          print("Can't run environment script.")
 
-        # Get environment variables
-        #status = subprocess.run("set", shell=True, capture_output=True, text=True)
         env_variables = status.stdout.splitlines()
         for variable in env_variables:
           print(variable)
