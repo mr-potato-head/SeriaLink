@@ -17,6 +17,11 @@ jobs:
             os: windows-latest,
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
           }
+        - {
+            name: "Windows Latest x86", artifact: "Windows-x86.zip",
+            os: windows-latest,
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars32.bat"
+          }
 
     steps:
 
@@ -50,8 +55,14 @@ jobs:
         qt_version = os.environ["QT_VERSION"]
         qt_version_dotless = qt_version.replace(".", "")
         url_os = "windows_x86"
-        qt_package_name = "qt.qt5." + qt_version_dotless + ".win64_msvc2017_64"
-        qt_dir_prefix = qt_version + "/msvc2017_64"
+
+        if "vcvars64.bat" in ${{ matrix.config.environment_script }}:
+          qt_package_name = "qt.qt5." + qt_version_dotless + ".win64_msvc2017_64"
+          qt_dir_prefix = qt_version + "/msvc2017_64"
+        elif "vcvars32.bat" in ${{ matrix.config.environment_script }}:
+          qt_package_name = "qt.qt5." + qt_version_dotless + ".win32_msvc2017"
+          qt_dir_prefix = qt_version + "/msvc2017"
+
         qt_base_url = "https://download.qt.io/online/qtsdkrepository/" + url_os + "/desktop/qt5_" + qt_version_dotless
 
         # Get Update.xml file from Qt servers
@@ -144,7 +155,7 @@ jobs:
         import os
         import shutil
         os.mkdir("deploy")
-        shutil.copyfile("release/SeriaLink.exe", "deploy/SeriaLink.exe")
+        shutil.copyfile("release/SeriaLink.exe", "deploy/SeriaLink-${{ matrix.config.artifact }}.exe")
 
     # Call Windeployqt to add dll etc.
     - name: Deploy
@@ -161,4 +172,4 @@ jobs:
       id: upload_artifact
       with:
         path: deploy
-        name: test
+        name: SeriaLink-${{ matrix.config.artifact }}
