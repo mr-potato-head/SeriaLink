@@ -56,10 +56,10 @@ jobs:
         qt_version_dotless = qt_version.replace(".", "")
         url_os = "windows_x86"
 
-        if "vcvars64.bat" in ${{ matrix.config.environment_script }}:
+        if "vcvars64.bat" in "${{ matrix.config.environment_script }}":
           qt_package_name = "qt.qt5." + qt_version_dotless + ".win64_msvc2017_64"
           qt_dir_prefix = qt_version + "/msvc2017_64"
-        elif "vcvars32.bat" in ${{ matrix.config.environment_script }}:
+        elif "vcvars32.bat" in "${{ matrix.config.environment_script }}":
           qt_package_name = "qt.qt5." + qt_version_dotless + ".win32_msvc2017"
           qt_dir_prefix = qt_version + "/msvc2017"
 
