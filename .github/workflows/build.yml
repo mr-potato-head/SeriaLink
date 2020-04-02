@@ -42,7 +42,7 @@ jobs:
         import os
         import fileinput
         import subprocess
-        from pathlib import Path
+        from pathlib import *
         
         qt_version = os.environ["QT_VERSION"]
         qt_version_dotless = qt_version.replace(".", "")
@@ -67,7 +67,8 @@ jobs:
 
         os.mkdir("qt5")
 
-        qt_dir = os.environ["GITHUB_WORKSPACE"] + "/qt5/" + qt_dir_prefix
+        qt_dir = PurePath(os.environ["GITHUB_WORKSPACE"] + "/qt5/" + qt_dir_prefix)
+        print(qt_dir)
         print("::set-output name=qt_dir::" + qt_dir)
 
         packages = ['qtbase', 'qtdeclarative', 'qttools', 'qtsvg', 'qtserialport']
