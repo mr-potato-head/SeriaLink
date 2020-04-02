@@ -87,9 +87,20 @@ jobs:
             print(line.replace("licheck64", ""), end='')
             print(line.replace("licheck_mac", ""), end='')
 
-    # Display qt_dir content
+    # PWD
     - name: Display qt_dir content
-      run: pwd && ls -larth
+      shell: bash
+      run: pwd
+    
+    # LS .
+    - name: LS .
+      shell: bash
+      run: ls -larth
+
+    # LS qt_dir
+    - name: LS qt_dir
+      shell: bash
+      run: ls -larth ${{ steps.qt.outputs.qt_dir }}
 
     # Run QMake
     - name: Configure
