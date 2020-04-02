@@ -89,7 +89,9 @@ jobs:
         # Download and extract useful packages
         packages = ['qtbase', 'qtdeclarative', 'qttools', 'qtsvg', 'qtserialport']
         for package in packages:
-          response = urllib.request.urlopen(qt_base_url + "/" + qt_package_name + "/" + package_version + package + package_suffix + ".7z")
+          url = qt_base_url + "/" + qt_package_name + "/" + package_version + package + package_suffix + ".7z"
+          print(url)
+          response = urllib.request.urlopen(url)
           with open("./" +  package + ".7z", 'wb') as f:
             f.write(response.read())
             
