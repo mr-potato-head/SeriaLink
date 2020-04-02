@@ -129,6 +129,7 @@ jobs:
                
         # Run QMake
         status = subprocess.run(["qt5/5.14.0/msvc2017_64/bin/qmake", "CONFIG+=release"], shell=True, capture_output=True)
+        print(status)
         if status.returncode != 0:
           print("An error occurred with qmake")
 
