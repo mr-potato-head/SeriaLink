@@ -85,6 +85,7 @@ jobs:
         
         with fileinput.FileInput("qt5/" + qt_dir_prefix + "/mkspecs/qconfig.pri", inplace=True, backup='.bak') as file:
           for line in file:
+            print("Line coucou: " + line)
             print(line.replace("Enterprise", "OpenSource"), end='')
             print(line.replace("licheck.exe", ""), end='')
             print(line.replace("licheck64", ""), end='')
