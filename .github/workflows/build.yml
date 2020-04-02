@@ -59,9 +59,11 @@ jobs:
         if "vcvars64.bat" in "${{ matrix.config.environment_script }}":
           qt_package_name = "qt.qt5." + qt_version_dotless + ".win64_msvc2017_64"
           qt_dir_prefix = qt_version + "/msvc2017_64"
+          pattern = "<Name>" + qt_package_name + "</Name>[\s\S]*<Version>([0-9+-.]+)</Version>[\s\S]*<DownloadableArchives>[\s\S]*qtbase([a-zA-Z0-9_-]+X86_64).7z"
         elif "vcvars32.bat" in "${{ matrix.config.environment_script }}":
           qt_package_name = "qt.qt5." + qt_version_dotless + ".win32_msvc2017"
           qt_dir_prefix = qt_version + "/msvc2017"
+          pattern = "<Name>" + qt_package_name + "</Name>[\s\S]*<Version>([0-9+-.]+)</Version>[\s\S]*<DownloadableArchives>[\s\S]*qtbase([a-zA-Z0-9_-]+X86).7z"
 
         qt_base_url = "https://download.qt.io/online/qtsdkrepository/" + url_os + "/desktop/qt5_" + qt_version_dotless
 
@@ -70,8 +72,6 @@ jobs:
         data = response.read()
         update_file_content = data.decode('utf-8')
 
-        pattern = "<Name>" + qt_package_name + "</Name>[\s\S]*<Version>([0-9+-.]+)</Version>[\s\S]*<DownloadableArchives>[\s\S]*qtbase([a-zA-Z0-9_-]+).7z"
-        
         regex_result = re.search(pattern , update_file_content)
         if regex_result:
           package_version = regex_result.group(1)
