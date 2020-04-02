@@ -71,7 +71,7 @@ jobs:
           response = urllib.request.urlopen(qt_base_url + "/" + qt_package_name + "/" + package_version + package + package_suffix + ".7z")
           with open('./${package}.7z', 'wb') as f:
             f.write(response.read())
-          un7z_cmd = "cd qt5 && " + os.eniron[CMAKE_COMMAND] + "-E tar xvf ../${package}.7z"
+          un7z_cmd = "cd qt5 && " + os.environ[CMAKE_COMMAND] + "-E tar xvf ../${package}.7z"
           status = subprocess.run(un7z_cmd, shell=True)
           if status.returncode != 0:
             print("Can't extract ${package}.7z.")
