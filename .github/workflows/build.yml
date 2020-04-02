@@ -68,7 +68,7 @@ jobs:
         os.mkdir("qt5")
 
         qt_dir = str(PurePath(os.environ["GITHUB_WORKSPACE"] + "/qt5/" + qt_dir_prefix))
-        qt_dir = qt_dir.replace("\", "/")
+        qt_dir = qt_dir.replace("\\", "/")
         print(qt_dir)
         print("::set-output name=qt_dir::" + qt_dir)
 
