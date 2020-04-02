@@ -128,7 +128,7 @@ jobs:
             print("no match.")
                
         # Run QMake
-        status = subprocess.run(["${{ steps.qt.outputs.qt_dir }}/bin/qmake", "CONFIG+=release"], shell=True)
+        status = subprocess.run(["qt5/5.14.0/msvc2017_64/bin/qmake", "CONFIG+=release"], shell=True)
         if status.returncode != 0:
           print("An error occurred with qmake")
 
