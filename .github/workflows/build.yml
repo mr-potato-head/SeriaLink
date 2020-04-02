@@ -89,7 +89,7 @@ jobs:
 
     # Display qt_dir content
     - name: Display qt_dir content
-      run: ls -larth && echo ********* && ls -larth ${{ steps.qt.outputs.qt_dir }}
+      run: pwd && ls -larth
 
     # Run QMake
     - name: Configure
