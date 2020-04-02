@@ -24,6 +24,7 @@ jobs:
     - name: Clone / Checkout
       uses: actions/checkout@v2
 
+    # Fetch history and tags
     - name: Fetch history and tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/* && git fetch --prune --unshallow
 
@@ -37,6 +38,7 @@ jobs:
       id: qt
       shell: python
       run: |
+        # Imports
         import urllib.request
         import re
         import os
@@ -44,6 +46,7 @@ jobs:
         import subprocess
         from pathlib import *
         
+        # Initialize some variables
         qt_version = os.environ["QT_VERSION"]
         qt_version_dotless = qt_version.replace(".", "")
         url_os = "windows_x86"
@@ -51,81 +54,51 @@ jobs:
         qt_dir_prefix = qt_version + "/msvc2017_64"
         qt_base_url = "https://download.qt.io/online/qtsdkrepository/" + url_os + "/desktop/qt5_" + qt_version_dotless
 
+        # Get Update.xml file from Qt servers
         response = urllib.request.urlopen(qt_base_url + "/Updates.xml")
         data = response.read()
-        text = data.decode('utf-8')
+        update_file_content = data.decode('utf-8')
 
-        reg = "<Name>" + qt_package_name + "</Name>[\s\S]*<Version>([0-9+-.]+)</Version>[\s\S]*<DownloadableArchives>[\s\S]*qtbase([a-zA-Z0-9_-]+).7z"
+        pattern = "<Name>" + qt_package_name + "</Name>[\s\S]*<Version>([0-9+-.]+)</Version>[\s\S]*<DownloadableArchives>[\s\S]*qtbase([a-zA-Z0-9_-]+).7z"
         
-        x=re.search(reg , text)
-        if x:
+        regex_result = re.search(pattern , update_file_content)
+        if regex_result:
           package_version = x.group(1)
           package_suffix = x.group(2)
           package_suffix = package_suffix.replace("-debug-symbols", "")
         else:
           print("Error with the regex.")
 
+        # Make directory for Qt files and store path
         os.mkdir("qt5")
-
         qt_dir = str(PurePath(os.environ["GITHUB_WORKSPACE"] + "/qt5/" + qt_dir_prefix))
         qt_dir = qt_dir.replace("\\", "/")
-        print(qt_dir)
         print("::set-output name=qt_dir::" + qt_dir)
 
+        # Download and extract useful packages
         packages = ['qtbase', 'qtdeclarative', 'qttools', 'qtsvg', 'qtserialport']
         for package in packages:
           response = urllib.request.urlopen(qt_base_url + "/" + qt_package_name + "/" + package_version + package + package_suffix + ".7z")
           with open("./" +  package + ".7z", 'wb') as f:
             f.write(response.read())
+            
           # Use cmake environment in order tar to be able t extract 7z file, I don't really know why the default 'tar' can't extract it...
           un7z_cmd = "cd qt5 && cmake -E tar xvf ../" + package + ".7z"
           status = subprocess.run(un7z_cmd, shell=True)
           if status.returncode != 0:
             print("Can't extract " + package + ".7z.")
-        
-        #with fileinput.FileInput("qt5/" + qt_dir_prefix + "/mkspecs/qconfig.pri", inplace=True, backup='.bak') as file:
-        #  for line in file:
-        #    print("Line coucou: " + line)
-        #    print(line.replace("Enterprise", "OpenSource"), end='')
-        #    print(line.replace("licheck.exe", ""), end='')
-        #    print(line.replace("licheck64", ""), end='')
-        #    print(line.replace("licheck_mac", ""), end='')
 
-        # Read in the file
-        print("Try to replace in file")
+        # Update qconfig file to use opensource config
         with open("qt5/" + qt_dir_prefix + "/mkspecs/qconfig.pri", 'r') as file :
           filedata = file.read()
-          
-        print("BEFORE")
-        print(filedata)
-
-        # Replace the target string
+        
         filedata = filedata.replace("Enterprise", "OpenSource")
         filedata = filedata.replace("licheck.exe", "")
         filedata = filedata.replace("licheck64", "")
         filedata = filedata.replace("licheck_mac", "")
 
-        print("AFTER")
-        print(filedata)
-
-        # Write the file out again
         with open("qt5/" + qt_dir_prefix + "/mkspecs/qconfig.pri", 'w') as file:
           file.write(filedata)
-          
-    # PWD
-    - name: Display qt_dir content
-      shell: bash
-      run: pwd
-    
-    # LS .
-    - name: LS .
-      shell: bash
-      run: ls -larth
-
-    # LS qt_dir
-    - name: LS qt_dir
-      shell: bash
-      run: ls -larth qt5/5.14.0/msvc2017_64
 
     # Run QMake
     - name: Configure
@@ -144,16 +117,13 @@ jobs:
         env_variables = status.stdout.splitlines()
         for variable in env_variables:
           print(variable)
-          x=re.search("^([a-zA-Z0-9_-]+)=(.*)$", variable)
-          if x:
+          regex_result = re.search("^([a-zA-Z0-9_-]+)=(.*)$", variable)
+          if regex_result:
             print("Set environment variable.")
             os.environ[x.group(1)] = x.group(2)
-          else:
-            print("no match.")
                
         # Run QMake
         status = subprocess.run(["${{ steps.qt.outputs.qt_dir }}/bin/qmake", "CONFIG+=release"], shell=True, capture_output=True)
-        print(status)
         if status.returncode != 0:
           print("An error occurred with qmake")
 
