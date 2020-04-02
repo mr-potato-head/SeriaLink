@@ -100,10 +100,10 @@ jobs:
         print(filedata)
 
         # Replace the target string
-        filedata.replace("Enterprise", "OpenSource")
-        filedata.replace("licheck.exe", "")
-        filedata.replace("licheck64", "")
-        filedata.replace("licheck_mac", "")
+        filedata = filedata.replace("Enterprise", "OpenSource")
+        filedata = filedata.replace("licheck.exe", "")
+        filedata = filedata.replace("licheck64", "")
+        filedata = filedata.replace("licheck_mac", "")
 
         print("AFTER")
         print(filedata)
