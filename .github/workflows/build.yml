@@ -63,8 +63,8 @@ jobs:
         
         regex_result = re.search(pattern , update_file_content)
         if regex_result:
-          package_version = x.group(1)
-          package_suffix = x.group(2)
+          package_version = regex_result.group(1)
+          package_suffix = regex_result.group(2)
           package_suffix = package_suffix.replace("-debug-symbols", "")
         else:
           print("Error with the regex.")
@@ -120,7 +120,7 @@ jobs:
           regex_result = re.search("^([a-zA-Z0-9_-]+)=(.*)$", variable)
           if regex_result:
             print("Set environment variable.")
-            os.environ[x.group(1)] = x.group(2)
+            os.environ[regex_result.group(1)] = regex_result.group(2)
                
         # Run QMake
         status = subprocess.run(["${{ steps.qt.outputs.qt_dir }}/bin/qmake", "CONFIG+=release"], shell=True, capture_output=True)
