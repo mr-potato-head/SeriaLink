@@ -42,6 +42,7 @@ jobs:
         import os
         import fileinput
         import subprocess
+        from pathlib import Path
         
         qt_version = os.environ["QT_VERSION"]
         qt_version_dotless = qt_version.replace(".", "")
@@ -72,13 +73,13 @@ jobs:
         packages = ['qtbase', 'qtdeclarative', 'qttools', 'qtsvg', 'qtserialport']
         for package in packages:
           response = urllib.request.urlopen(qt_base_url + "/" + qt_package_name + "/" + package_version + package + package_suffix + ".7z")
-          with open('./${package}.7z', 'wb') as f:
+          with open("./" +  package + ".7z", 'wb') as f:
             f.write(response.read())
           # Use cmake environment in order tar to be able t extract 7z file, I don't really know why the default 'tar' can't extract it...
-          un7z_cmd = "cd qt5 && cmake -E tar xvf ../${package}.7z"
+          un7z_cmd = "cd qt5 && cmake -E tar xvf ../" + package + ".7z"
           status = subprocess.run(un7z_cmd, shell=True)
           if status.returncode != 0:
-            print("Can't extract ${package}.7z.")
+            print("Can't extract " + package + ".7z.")
         
         with fileinput.FileInput("qt5/" + qt_dir_prefix + "/mkspecs/qconfig.pri", inplace=True, backup='.bak') as file:
           for line in file:
@@ -100,7 +101,7 @@ jobs:
     # LS qt_dir
     - name: LS qt_dir
       shell: bash
-      run: ls -larth ${{ steps.qt.outputs.qt_dir }}
+      run: ls -larth qt5/5.14.0/msvc2017_64
 
     # Run QMake
     - name: Configure
