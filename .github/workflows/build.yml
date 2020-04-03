@@ -42,7 +42,7 @@ jobs:
       run: |
         import subprocess
         if ("${{ runner.os }}" == "Linux"):
-          status = subprocess.run("sudo apt install libgl1-mesa-dev", shell=True)
+          status = subprocess.run("sudo apt install libgl1-mesa-dev libicu-dev", shell=True)
           if status.returncode != 0:
             print("Can't install libgl1-mesa-dev")
 
