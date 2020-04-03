@@ -29,6 +29,13 @@ jobs:
 
     steps:
 
+    # Init Python
+    - name: Initialize Python shell
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+        architecture: 'x64'
+
     # Clone / Checkout
     - name: Clone / Checkout
       uses: actions/checkout@v2
