@@ -22,6 +22,10 @@ jobs:
             os: windows-latest,
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars32.bat"
           }
+        - {
+            name: "Linux Latest x64", artifact: "Linux-x64.zip",
+            os: ubuntu-latest
+          }
 
     steps:
 
@@ -54,16 +58,21 @@ jobs:
         # Initialize some variables
         qt_version = os.environ["QT_VERSION"]
         qt_version_dotless = qt_version.replace(".", "")
-        url_os = "windows_x86"
-
-        if "vcvars64.bat" in "${{ matrix.config.environment_script }}":
-          qt_package_name = "qt.qt5." + qt_version_dotless + ".win64_msvc2017_64"
-          qt_dir_prefix = qt_version + "/msvc2017_64"
-          pattern = "<Name>" + qt_package_name + "</Name>[\s\S]*<Version>([0-9+-.]+)</Version>[\s\S]*<DownloadableArchives>[\s\S]*qtbase([a-zA-Z0-9_-]+X86_64).7z"
-        elif "vcvars32.bat" in "${{ matrix.config.environment_script }}":
-          qt_package_name = "qt.qt5." + qt_version_dotless + ".win32_msvc2017"
-          qt_dir_prefix = qt_version + "/msvc2017"
-          pattern = "<Name>" + qt_package_name + "</Name>[\s\S]*<Version>([0-9+-.]+)</Version>[\s\S]*<DownloadableArchives>[\s\S]*qtbase([a-zA-Z0-9_-]+X86).7z"
+        
+        if ("${{ runner.os }}" == "Windows"):
+          url_os = "windows_x86"
+          if "vcvars64.bat" in "${{ matrix.config.environment_script }}":
+            qt_package_name = "qt.qt5." + qt_version_dotless + ".win64_msvc2017_64"
+            qt_dir_prefix = qt_version + "/msvc2017_64"
+            pattern = "<Name>" + qt_package_name + "</Name>[\s\S]*<Version>([0-9+-.]+)</Version>[\s\S]*<DownloadableArchives>[\s\S]*qtbase([a-zA-Z0-9_-]+X86_64).7z"
+          elif "vcvars32.bat" in "${{ matrix.config.environment_script }}":
+            qt_package_name = "qt.qt5." + qt_version_dotless + ".win32_msvc2017"
+            qt_dir_prefix = qt_version + "/msvc2017"
+            pattern = "<Name>" + qt_package_name + "</Name>[\s\S]*<Version>([0-9+-.]+)</Version>[\s\S]*<DownloadableArchives>[\s\S]*qtbase([a-zA-Z0-9_-]+X86).7z"
+        elif ("${{ runner.os }}" == "Linux"):
+          url_os = "linux_x64"
+          qt_package_name = "qt.qt5." + qt_version_dotless + ".gcc_64"
+          qt_dir_prefix = qt_version + "/gcc_64"
 
         qt_base_url = "https://download.qt.io/online/qtsdkrepository/" + url_os + "/desktop/qt5_" + qt_version_dotless
 
@@ -122,18 +131,19 @@ jobs:
         import re
         import os
 
-        # Prepare environment
-        status = subprocess.run('"${{ matrix.config.environment_script }}" && set', shell=True, capture_output=True, text=True)
-        if status.returncode != 0:
-          print("Can't run environment script.")
+        if ("${{ runner.os }}" == "Windows"):
+          # Prepare environment
+          status = subprocess.run('"${{ matrix.config.environment_script }}" && set', shell=True, capture_output=True, text=True)
+          if status.returncode != 0:
+            print("Can't run environment script.")
 
-        env_variables = status.stdout.splitlines()
-        for variable in env_variables:
-          print(variable)
-          regex_result = re.search("^([a-zA-Z0-9_-]+)=(.*)$", variable)
-          if regex_result:
-            print("Set environment variable.")
-            os.environ[regex_result.group(1)] = regex_result.group(2)
+          env_variables = status.stdout.splitlines()
+          for variable in env_variables:
+            print(variable)
+            regex_result = re.search("^([a-zA-Z0-9_-]+)=(.*)$", variable)
+            if regex_result:
+              print("Set environment variable.")
+              os.environ[regex_result.group(1)] = regex_result.group(2)
                
         # Run QMake
         status = subprocess.run(["${{ steps.qt.outputs.qt_dir }}/bin/qmake", "CONFIG+=release"], shell=True, capture_output=True)
@@ -146,9 +156,12 @@ jobs:
       run: |
         import os
         import subprocess
-        status = subprocess.run('"${{ matrix.config.environment_script }}" && nmake', shell=True)
+        if ("${{ runner.os }}" == "Windows"):
+          status = subprocess.run('"${{ matrix.config.environment_script }}" && nmake', shell=True)
+        else
+          status = subprocess.run('make', shell=True)
         if status.returncode != 0:
-          print("An error occurred with nmake")
+          print("An error occurred with make/nmake")
 
     # Copy executable into deployment directory
     - name: Copy binary into deploy directory
