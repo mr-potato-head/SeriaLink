@@ -166,7 +166,7 @@ jobs:
         import subprocess
         if ("${{ runner.os }}" == "Windows"):
           status = subprocess.run('"${{ matrix.config.environment_script }}" && nmake', shell=True)
-        else
+        else:
           status = subprocess.run('make', shell=True)
         if status.returncode != 0:
           print("An error occurred with make/nmake")
