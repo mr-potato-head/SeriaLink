@@ -40,7 +40,7 @@ jobs:
     # Create version file
     - name: Generate version file
       shell: bash
-      run: ./version.sh
+      run: chmod +x version.sh && ./version.sh
 
     # Download Qt
     - name: Download Qt
