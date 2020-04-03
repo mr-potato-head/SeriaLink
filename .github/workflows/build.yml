@@ -176,9 +176,8 @@ jobs:
         import subprocess
         if ("${{ runner.os }}" == "Windows"):
           status = subprocess.run('"${{ matrix.config.environment_script }}" && nmake', shell=True)
-        else:
-          os.environ["LD_LIBRARY_PATH"] =  "${{ steps.qt.outputs.qt_dir }}/lib:" + os.environ["LD_LIBRARY_PATH"]
-          status = subprocess.run('make', shell=True)
+        else:          
+          status = subprocess.run('export LD_LIBRARY_PATH=/usr/local/Qt/5.5/gcc_64/lib:$LD_LIBRARY_PATH && make', shell=True)
         if status.returncode != 0:
           print("An error occurred with make/nmake")
 
