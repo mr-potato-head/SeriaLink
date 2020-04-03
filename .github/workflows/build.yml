@@ -80,6 +80,7 @@ jobs:
           url_os = "linux_x64"
           qt_package_name = "qt.qt5." + qt_version_dotless + ".gcc_64"
           qt_dir_prefix = qt_version + "/gcc_64"
+          pattern = "<Name>" + qt_package_name + "</Name>[\s\S]*<Version>([0-9+-.]+)</Version>[\s\S]*<DownloadableArchives>[\s\S]*qtbase([a-zA-Z0-9_-]+X86_64).7z"
 
         qt_base_url = "https://download.qt.io/online/qtsdkrepository/" + url_os + "/desktop/qt5_" + qt_version_dotless
 
