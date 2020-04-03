@@ -36,6 +36,16 @@ jobs:
         python-version: '3.x'
         architecture: 'x64'
 
+    # Install system lib for Linux
+    - name: Installing system libs
+      shell: python
+      run: |
+        import subprocess
+        if ("${{ runner.os }}" == "Linux"):
+          status = subprocess.run("sudo apt install libgl1-mesa-dev", shell=True)
+          if status.returncode != 0:
+            print("Can't install libgl1-mesa-dev")
+
     # Clone / Checkout
     - name: Clone / Checkout
       uses: actions/checkout@v2
