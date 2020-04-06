@@ -202,7 +202,7 @@ jobs:
         if ("${{ runner.os }}" == "Windows"):
           shutil.copyfile("release/SeriaLink.exe", "deploy/SeriaLink-${{ matrix.config.artifact }}.exe")
         else:
-          shutil.copyfile("release/SeriaLink", "deploy/SeriaLink-${{ matrix.config.artifact }}")
+          shutil.copyfile("SeriaLink", "deploy/SeriaLink-${{ matrix.config.artifact }}")
 
     # Call Windeployqt to add dll etc.
     - name: Deploy
