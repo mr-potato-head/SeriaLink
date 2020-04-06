@@ -24,7 +24,7 @@ echo "#ifndef SRC_VERSION_H_" >> src/version.h
 echo "#define SRC_VERSION_H_" >> src/version.h
 echo "" >> src/version.h
 
-RESULT=`git.exe describe --tags --long --dirty`
+RESULT=`git describe --tags --long --dirty`
 echo "#define VERSION \"$RESULT\"" >> src/version.h
 
 echo "" >> src/version.h
