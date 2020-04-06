@@ -104,11 +104,11 @@ jobs:
         # libicu
         url = qt_base_url + "/" + qt_package_name + "/" + package_version + "icu-linux-Rhel7.2-x64.7z"
         response = urllib.request.urlopen(url)
-          with open("./libicu.7z", 'wb') as f:
-            f.write(response.read())
+        with open("./libicu.7z", 'wb') as f:
+        	f.write(response.read())
         un7z_cmd = "cd qt5 && cmake -E tar xvf ../libicu.7z"
-          status = subprocess.run(un7z_cmd, shell=True)
-          if status.returncode != 0:
+        status = subprocess.run(un7z_cmd, shell=True)
+        if status.returncode != 0:
             print("Can't extract libicu.7z.")
 
         # Update qconfig file to use opensource config
