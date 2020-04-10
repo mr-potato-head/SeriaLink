@@ -202,7 +202,14 @@ jobs:
         if ("${{ runner.os }}" == "Windows"):
           shutil.copyfile("release/SeriaLink.exe", "deploy/SeriaLink-${{ matrix.config.artifact }}.exe")
         else:
-          shutil.copyfile("SeriaLink", "deploy/SeriaLink-${{ matrix.config.artifact }}")
+          os.mkdir("deploy/usr")
+          os.mkdir("deploy/usr/bin")
+          os.mkdir("deploy/usr/lib")
+          os.mkdir("deploy/usr/share")
+          os.mkdir("deploy/usr/share/applications")
+          os.mkdir("deploy/usr/share/icons")
+          shutil.copyfile("SeriaLink.desktop", "deploy/usr/share/applications/SeriaLink.desktop")
+          shutil.copyfile("SeriaLink", "deploy/usr/bin/SeriaLink")
 
     # Download linuxdeployqt
     - name: Download linuxdeployqt
@@ -216,7 +223,7 @@ jobs:
           response = urllib.request.urlopen(url)
           with open("./linuxdeployqt-6-x86_64.AppImage", 'wb') as f:
             f.write(response.read())
-            
+
           status = subprocess.run('chmod a+x linuxdeployqt-6-x86_64.AppImage', shell=True)
           if status.returncode != 0:
             print("An error occurred with chmod")
@@ -228,6 +235,10 @@ jobs:
         import subprocess
         if ("${{ runner.os }}" == "Windows"):
           status = subprocess.run(["${{ steps.qt.outputs.qt_dir }}/bin/windeployqt", "deploy"])
+          if status.returncode != 0:
+            print("An error occurred with windeployqt")
+        elif ("${{ runner.os }}" == "Linux"):
+          status = subprocess.run("./linuxdeployqt-6-x86_64.AppImage deploy/usr/share/applications/*.desktop -appimage")
           if status.returncode != 0:
             print("An error occurred with windeployqt")
     
