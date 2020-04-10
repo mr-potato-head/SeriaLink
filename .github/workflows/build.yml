@@ -23,8 +23,8 @@ jobs:
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars32.bat"
           }
         - {
-            name: "Linux Latest x64", artifact: "Linux-x64.zip",
-            os: ubuntu-latest
+            name: "Linux 16.04 x64", artifact: "Linux-x64.zip",
+            os: ubuntu-16.04
           }
 
     steps:
@@ -204,7 +204,21 @@ jobs:
         else:
           shutil.copyfile("SeriaLink", "deploy/SeriaLink-${{ matrix.config.artifact }}")
 
-    # Call Windeployqt to add dll etc.
+    # Download linuxdeployqt
+    - name: Download linuxdeployqt
+      shell: python
+      run: |
+        if ("${{ runner.os }}" == "Linux"):
+          url = "https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage"
+          response = urllib.request.urlopen(url)
+          with open("./linuxdeployqt-6-x86_64.AppImage", 'wb') as f:
+            f.write(response.read())
+          if response.returncode != 0:
+            status = subprocess.run('chmod a+x linuxdeployqt-6-x86_64.AppImage', shell=True)
+            if status.returncode != 0:
+              print("An error occurred with chmod")
+
+    # Call *deployqt to add dll etc.
     - name: Deploy
       shell: python
       run: |
