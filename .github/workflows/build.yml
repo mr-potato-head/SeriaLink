@@ -216,10 +216,10 @@ jobs:
           response = urllib.request.urlopen(url)
           with open("./linuxdeployqt-6-x86_64.AppImage", 'wb') as f:
             f.write(response.read())
-          if response.returncode != 0:
-            status = subprocess.run('chmod a+x linuxdeployqt-6-x86_64.AppImage', shell=True)
-            if status.returncode != 0:
-              print("An error occurred with chmod")
+            
+          status = subprocess.run('chmod a+x linuxdeployqt-6-x86_64.AppImage', shell=True)
+          if status.returncode != 0:
+            print("An error occurred with chmod")
 
     # Call *deployqt to add dll etc.
     - name: Deploy
