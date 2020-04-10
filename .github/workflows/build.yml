@@ -208,6 +208,9 @@ jobs:
     - name: Download linuxdeployqt
       shell: python
       run: |
+        import urllib.request
+        import subprocess
+
         if ("${{ runner.os }}" == "Linux"):
           url = "https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage"
           response = urllib.request.urlopen(url)
