@@ -211,7 +211,7 @@ jobs:
           shutil.copyfile("SeriaLink.desktop", "deploy/usr/share/applications/SeriaLink.desktop")
           shutil.copyfile("SeriaLink", "deploy/usr/bin/SeriaLink")
 
-    - name: Download linuxdeployqt
+    - name: LS
       run: ls -lR
 
     # Download linuxdeployqt
