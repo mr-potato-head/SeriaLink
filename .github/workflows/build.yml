@@ -12,16 +12,16 @@ jobs:
     strategy:
       matrix:
         config:
-        - {
-            name: "Windows Latest x64", artifact: "Windows-x64.zip",
-            os: windows-latest,
-            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
-          }
-        - {
-            name: "Windows Latest x86", artifact: "Windows-x86.zip",
-            os: windows-latest,
-            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars32.bat"
-          }
+        # - {
+        #     name: "Windows Latest x64", artifact: "Windows-x64.zip",
+        #     os: windows-latest,
+        #     environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
+        #   }
+        # - {
+        #     name: "Windows Latest x86", artifact: "Windows-x86.zip",
+        #     os: windows-latest,
+        #     environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars32.bat"
+        #   }
         - {
             name: "Linux 16.04 x64", artifact: "Linux-x64.zip",
             os: ubuntu-16.04
@@ -244,11 +244,14 @@ jobs:
           status = subprocess.run("./linuxdeployqt-6-x86_64.AppImage deploy/usr/share/applications/SeriaLink.desktop -appimage", shell=True)
           if status.returncode != 0:
             print("An error occurred with windeployqt")
+          status = subprocess.run("tar -czvf file.tar.gz deploy", shell=True)
+          if status.returncode != 0:
+            print("Can't create tar")
     
     # Create zip and upload deployment zip as an artifact
     - name: Upload artifact
       uses: actions/upload-artifact@v1
       id: upload_artifact
       with:
-        path: deploy
+        path: file.tar.gz
         name: SeriaLink-${{ matrix.config.artifact }}
