@@ -242,7 +242,7 @@ jobs:
           if status.returncode != 0:
             print("An error occurred with windeployqt")
         elif ("${{ runner.os }}" == "Linux"):
-          status = subprocess.run("./linuxdeployqt-6-x86_64.AppImage deploy/usr/share/applications/SeriaLink.desktop -appimage", shell=True)
+          status = subprocess.run("cd deploy && ./linuxdeployqt-6-x86_64.AppImage deploy/usr/share/applications/SeriaLink.desktop -appimage", shell=True)
           if status.returncode != 0:
             print("An error occurred with linuxdeployqt")
     
