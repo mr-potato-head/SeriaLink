@@ -209,6 +209,7 @@ jobs:
           os.mkdir("deploy/usr/share/applications")
           os.mkdir("deploy/usr/share/icons")
           shutil.copyfile("SeriaLink.desktop", "deploy/usr/share/applications/SeriaLink.desktop")
+          shutil.copyfile("SeriaLink", "deploy/usr/share/applications/SeriaLink")
           shutil.copyfile("SeriaLink", "deploy/usr/bin/SeriaLink")
 
     - name: LS
