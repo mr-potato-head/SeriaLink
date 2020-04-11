@@ -241,12 +241,9 @@ jobs:
           if status.returncode != 0:
             print("An error occurred with windeployqt")
         elif ("${{ runner.os }}" == "Linux"):
-          status = subprocess.run("./linuxdeployqt-6-x86_64.AppImage deploy/usr/share/applications/SeriaLink.desktop -appimage", shell=True)
+          status = subprocess.run("./linuxdeployqt-6-x86_64.AppImage deploy/usr/share/applications/SeriaLink.desktop -appimage")
           if status.returncode != 0:
-            print("An error occurred with windeployqt")
-          status = subprocess.run("tar -czvf file.tar.gz deploy", shell=True)
-          if status.returncode != 0:
-            print("Can't create tar")
+            print("An error occurred with linuxdeployqt")
     
     # Create zip and upload deployment zip as an artifact
     - name: Upload artifact
