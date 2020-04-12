@@ -211,6 +211,7 @@ jobs:
           shutil.copyfile("SeriaLink.desktop", "deploy/usr/share/applications/SeriaLink.desktop")
           shutil.copyfile("SeriaLink", "deploy/usr/share/applications/SeriaLink")
           shutil.copyfile("SeriaLink", "deploy/usr/bin/SeriaLink")
+          shutil.copyfile("SeriaLink.desktop", "deploy/usr/bin/SeriaLink.desktop")
 
     - name: LS
       run: ls -lR
