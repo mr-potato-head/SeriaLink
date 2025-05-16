@@ -44,7 +44,7 @@ CentralWidget::CentralWidget(QWidget *parent) :
 //  main_layout_->setStretchFactor(static_cast<QWidget*>(top_bar_), 10);
 //  main_layout_->setStretchFactor(static_cast<QWidget*>(page_container_), 90);
 
-  main_layout_->setMargin(0);
+  //main_layout_->setMargin(0);
   main_layout_->setSpacing(0);
 
   // Register metatypes

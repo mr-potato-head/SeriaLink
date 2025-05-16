@@ -72,19 +72,19 @@ class ComPortSettings {
   QSerialPortInfo port_info_;
 
   //! Baud rate of the port
-  QSerialPort::BaudRate port_baud_rate_ {QSerialPort::UnknownBaud};
+  QSerialPort::BaudRate port_baud_rate_ {QSerialPort::Baud115200};
 
   //! Parity of the port
-  QSerialPort::Parity port_parity_ {QSerialPort::UnknownParity};
+  QSerialPort::Parity port_parity_ {QSerialPort::NoParity};
 
   //! Data bits of the port
-  QSerialPort::DataBits port_data_bits_ {QSerialPort::UnknownDataBits};
+  QSerialPort::DataBits port_data_bits_ {QSerialPort::Data8};
 
   //! Stop bits of the port
-  QSerialPort::StopBits port_stop_bits_ {QSerialPort::UnknownStopBits};
+  QSerialPort::StopBits port_stop_bits_ {QSerialPort::OneStop};
 
   //! Flow control of the port
-  QSerialPort::FlowControl port_flow_control_ {QSerialPort::UnknownFlowControl};
+  QSerialPort::FlowControl port_flow_control_ {QSerialPort::NoFlowControl};
 };
 
 #endif  // SRC_COMPORTSETTINGS_H_

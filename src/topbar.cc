@@ -32,7 +32,7 @@ TopBar::TopBar(QWidget *parent)
   main_layout_->setStretchFactor(static_cast<QWidget*>(page_selector_), 70);
   main_layout_->setStretchFactor(static_cast<QWidget*>(page_switcher_), 30);
 
-  main_layout_->setMargin(0);
+  //main_layout_->setMargin(0);
   main_layout_->setSpacing(0);
 
   connect(page_switcher_, SIGNAL(IncreaseCurrentPageIndex()),

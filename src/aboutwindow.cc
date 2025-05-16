@@ -17,7 +17,7 @@
  */
 
 #include "src/aboutwindow.h"
-#include "src/version.h"
+//#include "src/version.h"
 
 AboutWindow::AboutWindow(QWidget* parent)
   : QDialog(parent) {
@@ -25,11 +25,11 @@ AboutWindow::AboutWindow(QWidget* parent)
   this->setWindowTitle(tr("SeriaLink"));
 
   main_layout_ = new QGridLayout(this);
-  version_label_ = new QLabel(VERSION, this);
-  version_label_->setAlignment(Qt::AlignCenter);
+  //version_label_ = new QLabel(VERSION, this);
+  //version_label_->setAlignment(Qt::AlignCenter);
   button_box_ = new QDialogButtonBox(QDialogButtonBox::Ok,
                                      Qt::Horizontal, this);
   connect(button_box_, &QDialogButtonBox::accepted, this, &QDialog::accept);
-  main_layout_->addWidget(version_label_);
+  //main_layout_->addWidget(version_label_);
   main_layout_->addWidget(button_box_);
 }
